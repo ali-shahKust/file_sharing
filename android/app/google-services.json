@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1096192277578",
+    "project_id": "filesharing-1fe65",
+    "storage_bucket": "filesharing-1fe65.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1096192277578:android:0e064822fe93d3bc257ab3",
+        "android_client_info": {
+          "package_name": "com.dummyapp.glass_mor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1096192277578-m4nnhn1e92jo37l5fs40bhf63ud1kqpl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCAgr9rK8AMJVCntv9t-yok3ls8JYdnRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1096192277578-m4nnhn1e92jo37l5fs40bhf63ud1kqpl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
