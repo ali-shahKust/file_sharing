@@ -141,39 +141,39 @@ class DashBoardVm extends BaseVm {
     });
     File zipFile = File(encoder.zipPath);
     uploadFile(context, zipFile).then((Myvalue) {
-      showDialog(context: context, builder: (BuildContext dContext){
-        return Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      primary: CustomTheme.primaryColor),
-                  onPressed: () {
-                    Navigator.pop(dContext);
-
-                  },
-                  child: PrimaryText(
-                    "Generate Bar Code",
-                    color: Colors.white,
-                  )),
-            ],
-          ),
-        );
-      }).then((value) {
-        showDialog(context: context, builder: (BuildContext barcodeContext){
-          return Center(
-            child: Container(
-              color: Colors.white,
-              child: QrImage(
-                data: Myvalue,
-                version: QrVersions.auto,
-                size: 200.0,
-              ),
-            ),
-          );
-        });
-      });
+      // showDialog(context: context, builder: (BuildContext dContext){
+      //   return Center(
+      //     child: Column(
+      //       mainAxisSize: MainAxisSize.min,
+      //       children: [
+      //         ElevatedButton(
+      //             style: ElevatedButton.styleFrom(
+      //                 primary: CustomTheme.primaryColor),
+      //             onPressed: () {
+      //               Navigator.pop(dContext);
+      //
+      //             },
+      //             child: PrimaryText(
+      //               "Generate Bar Code",
+      //               color: Colors.white,
+      //             )),
+      //       ],
+      //     ),
+      //   );
+      // }).then((value) {
+      //   showDialog(context: context, builder: (BuildContext barcodeContext){
+      //     return Center(
+      //       child: Container(
+      //         color: Colors.white,
+      //         child: QrImage(
+      //           data: Myvalue,
+      //           version: QrVersions.auto,
+      //           size: 200.0,
+      //         ),
+      //       ),
+      //     );
+      //   });
+      // });
     });
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_vm.dart';
+import 'package:glass_mor/ui/dashboard/queues_screen.dart';
 import 'package:glass_mor/utills/i_utills.dart';
 import 'package:glass_mor/widget/primary_text.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,15 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   Widget build(BuildContext context) {
     return Consumer<DashBoardVm>(
       builder: (context, vm, _) => Scaffold(
+        drawer:  Drawer(
+          child:Center(
+            child: InkWell(
+                onTap: (){
+                  Navigator.push(context,MaterialPageRoute(builder: (context)=>QuesScreen()));
+                },
+                child: Text('Queue')),
+          ),
+        ),
         body: SafeArea(
           child: SizedBox(
             width: getScreenWidth(context),
@@ -75,5 +85,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    print("Dispose Called");
+    super.dispose();
+
   }
 }
