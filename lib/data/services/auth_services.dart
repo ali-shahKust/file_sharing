@@ -3,13 +3,15 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../amplifyconfiguration.dart';
 
 class AuthService {
-  // AuthService(){
-  //   configureAmplify();
-  // }
+  AuthService() {
+    init();
+  }
+
   static const platform = const MethodChannel('flutter.native/helper');
 
   final auth = FirebaseAuth.instance;
@@ -26,6 +28,35 @@ class AuthService {
     });
     await Future.delayed(Duration.zero);
 
+    return result;
+  }
+
+  late GoogleSignIn _googleSignIn;
+  User? _user;
+
+  init() {
+    _googleSignIn = GoogleSignIn();
+  }
+
+  Future<String?> signInWithGoogle() async {
+    String? result;
+
+    final GoogleSignInAccount? googleSignInAccount =
+        await _googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount!.authentication;
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+    await auth.signInWithCredential(credential);
+    print("Token ${credential.token}");
+    _user = auth.currentUser;
+     await _user!.getIdToken().then((value) async {
+      await sendTokenToNative(value).then((value) async {
+        result = value;
+      });
+    });
     return result;
   }
 

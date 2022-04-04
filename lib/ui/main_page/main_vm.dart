@@ -29,7 +29,7 @@ class MainVm extends BaseVm {
   getStarted(context) async {
     isLoading = true;
     await AuthService.configureAmplify().whenComplete(() {
-      repo.signInAnnoynomously().then((value) async {
+      repo.signInWithGoogle().then((value) async {
         print("AWS Token $value");
         if (value != null) {
           Navigator.pushNamed(context, DashBoardScreen.routeName);

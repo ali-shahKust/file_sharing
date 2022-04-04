@@ -3,7 +3,7 @@ import 'package:glass_mor/data/repo/main/main_repo.dart';
 
 class MainRepoImp extends MainRepo {
   @override
-  Future<String?> signInAnnoynomously() async {
-    return await authRepo.signInAnnonynomously();
+  Future<String?> signInWithGoogle() async {
+    return await authRepo.signInWithGoogle();
   }
 }
