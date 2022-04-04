@@ -10,6 +10,7 @@ import 'package:glass_mor/data/base/base_vm.dart';
 import 'package:glass_mor/utills/custom_theme.dart';
 import 'package:glass_mor/utills/i_utills.dart';
 import 'package:glass_mor/widget/primary_text.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -17,6 +18,7 @@ import '../../utills/amplify_utills.dart';
 
 class DashBoardVm extends BaseVm {
   List<File> _files = [];
+  List _pics = [];
 
   List<File> get files => _files;
   bool _isUploading = false;
@@ -24,6 +26,13 @@ class DashBoardVm extends BaseVm {
   set files(List<File> value) {
     _files = value;
     notifyListeners();
+  }
+
+
+  List get pics => _pics;
+
+  set pics(List value) {
+    _pics = value;
   }
 
   pickFile({context}) async {
@@ -73,31 +82,35 @@ class DashBoardVm extends BaseVm {
                                 zipFile(context, files);
                               } else {
                                 uploadFile(context, files[0]).then((Myvalue) {
-                                  showDialog(context: context, builder: (BuildContext dContext){
-                                    return Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                                primary: CustomTheme.primaryColor),
-                                            onPressed: () {
-                                              Navigator.pop(dContext);
-
-                                            },
-                                            child: PrimaryText(
-                                              "Generate Bar Code",
-                                              color: Colors.white,
-                                            )),
-                                      ],
-                                    );
-                                  }).then((value) {
-                                    showDialog(context: context, builder: (BuildContext barcodeContext){
-                                      return QrImage(
-                                        data: Myvalue,
-                                        version: QrVersions.auto,
-                                        size: 200.0,
-                                      );
-                                    });
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext dContext) {
+                                        return Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    primary: CustomTheme
+                                                        .primaryColor),
+                                                onPressed: () {
+                                                  Navigator.pop(dContext);
+                                                },
+                                                child: PrimaryText(
+                                                  "Generate Bar Code",
+                                                  color: Colors.white,
+                                                )),
+                                          ],
+                                        );
+                                      }).then((value) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext barcodeContext) {
+                                          return QrImage(
+                                            data: Myvalue,
+                                            version: QrVersions.auto,
+                                            size: 200.0,
+                                          );
+                                        });
                                   });
                                 });
                               }
@@ -177,5 +190,48 @@ class DashBoardVm extends BaseVm {
     });
   }
 
+  Future<void> listItems() async {
+    try {
+      pics.clear();
+      final ListResult result = await Amplify.Storage.list();
+      final List<StorageItem> items = result.items;
 
+      for(int i=0; i <items.length; i++){
+        if(items[i].key.contains("community")){
+          final GetUrlResult result =
+          await Amplify.Storage.getUrl(key: items[i].key);
+          pics.add({"url":result.url,"key":items[i].key});
+          notifyListeners();
+        }
+      }
+    } on StorageException catch (e) {
+      print('Error listing items: $e');
+    }
+  }
+
+  Future<void> downloadFile(String key,) async {
+    final documentsDir = await getApplicationDocumentsDirectory();
+    final filepath = documentsDir.path + '/$key';
+    final file = File(filepath);
+    bool fileExists = await file.exists();
+    if(!fileExists){
+      try {
+        await Amplify.Storage.downloadFile(
+            key: key,
+            local: file,
+            onProgress: (progress) {
+              print("Fraction completed: " + progress.getFractionCompleted().toString());
+            }
+        );
+        OpenFile.open(file.path);
+
+
+      } on StorageException catch (e) {
+        print('Error downloading file: $e');
+      }
+    }
+    else {
+      print("File Already Exist");
+    }
+  }
 }

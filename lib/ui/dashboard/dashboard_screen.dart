@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_vm.dart';
+import 'package:glass_mor/ui/dashboard/files_list.dart';
 import 'package:glass_mor/ui/dashboard/queues_screen.dart';
 import 'package:glass_mor/utills/i_utills.dart';
 import 'package:glass_mor/widget/primary_text.dart';
@@ -65,16 +66,21 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                 fontSize: 18,
                               ))),
                         ),
-                        iUtills.glassContainer(
-                            context: context,
-                            width: getScreenWidth(context) / 2.5,
-                            height: getScreenHeight(context) * 0.1833,
-                            child: Center(
-                                child: PrimaryText(
-                              'Receive File',
-                              color: Colors.white,
-                              fontSize: 18,
-                            ))),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, PicturesScreen.routeName);
+                          },
+                          child: iUtills.glassContainer(
+                              context: context,
+                              width: getScreenWidth(context) / 2.5,
+                              height: getScreenHeight(context) * 0.1833,
+                              child: Center(
+                                  child: PrimaryText(
+                                'Receive File',
+                                color: Colors.white,
+                                fontSize: 18,
+                              ))),
+                        ),
                       ],
                     ),
                   ),

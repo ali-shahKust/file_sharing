@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_screen.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_vm.dart';
+import 'package:glass_mor/ui/dashboard/files_list.dart';
 import 'package:glass_mor/ui/main_page/main_screen.dart';
 import 'package:glass_mor/ui/main_page/main_vm.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +22,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(
               create: (context) => DashBoardVm(), child: DashBoardScreen()));
-
+    case PicturesScreen.routeName:
+      return MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+              create: (context) => DashBoardVm(), child: PicturesScreen()));
 
     default:
       return errorRoute();

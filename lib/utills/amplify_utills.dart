@@ -17,8 +17,7 @@ Future<String> uploadFile(context, File file) async {
   try {
     final UploadFileResult result = await Amplify.Storage.uploadFile(
         local: file,
-        options: UploadFileOptions(),
-        key: "sharedfiles/" + key,
+        key: "community/" + key,
         onProgress: (progress) {
           Provider.of<AppModel>(context,listen: false).queue =QueueModel(status: true, progress: progress.getFractionCompleted().toString());
           // showDialog(context: context, builder: (context){
@@ -36,5 +35,5 @@ Future<String> uploadFile(context, File file) async {
   } on StorageException catch (e) {
     print("Dxdiag: ${e.message}");
   }
-  return "sharedfiles/" + key;
+  return "community/" + key;
 }
