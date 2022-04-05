@@ -41,7 +41,6 @@ dependencies:
   google_sign_in: ^5.2.4
   path_provider: ^2.0.9
   glassmorphism:
-  animated_splash_screen:
   firebase_messaging: ^11.2.11
   flutter_spinkit:
   firebase_auth: ^3.3.11
@@ -55,24 +54,6 @@ dependencies:
   amplify_auth_cognito: ^0.3.2
   amplify_flutter: ^0.3.2
   amplify_storage_s3: ^0.3.2
-
-  # FILE MANAGER PACKAGES
-
-  mime_type: ^1.0.0
-  device_info: ^2.0.2
-  path: ^1.7.0
-  fluttertoast: ^8.0.7
-  device_apps: ^2.1.1
-  video_player: ^2.1.10
-  isolate_handler: ^1.0.0
-  share_plus: ^3.1.0
-  percent_indicator: ^3.0.1
-  intl: ^0.17.0
-  shared_preferences: ^2.0.13
-
-  flutter_easyloading: ^3.0.3
-  permission_handler: ^9.0.1
-  flutter_svg: ^0.21.0+1
 
 dev_dependencies:
   flutter_test:

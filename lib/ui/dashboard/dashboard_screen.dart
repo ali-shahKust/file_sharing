@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:glass_mor/file_manager/views/FileManager/file_manager_home.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_vm.dart';
 import 'package:glass_mor/ui/dashboard/files_list.dart';
 import 'package:glass_mor/ui/dashboard/queues_screen.dart';
+import 'package:glass_mor/utills/custom_theme.dart';
 import 'package:glass_mor/utills/i_utills.dart';
 import 'package:glass_mor/widget/primary_text.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +29,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                 child: Text('Queue')),
           ),
         ),
-        body: SafeArea(
+        body: vm.ziping?Center(child: SpinKitCircle(color: CustomTheme.primaryColor,),):SafeArea(
           child: SizedBox(
             width: getScreenWidth(context),
             height: getScreenHeight(context),
@@ -54,8 +55,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                       children: [
                         InkWell(
                           onTap: () {
-                            Navigator.pushNamed(context, FileManagerHome.routeName);
-
+                            vm.pickFile(context: context);
                           },
                           child: iUtills.glassContainer(
                               context: context,

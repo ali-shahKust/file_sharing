@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:glass_mor/ui/main_page/main_screen.dart';
 import 'package:glass_mor/ui/splash/splash_vm.dart';

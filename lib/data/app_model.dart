@@ -6,12 +6,12 @@ class AppModel extends BaseVm  {
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
-  late QueueModel _queue;
+   List<QueueModel?> _queue=[];
 
-  QueueModel get queue => _queue;
+  List<QueueModel?> get queue => _queue;
 
 
-  set queue(QueueModel value) {
+  set queue( List<QueueModel?> value) {
     _queue = value;
     notifyListeners();
   }
