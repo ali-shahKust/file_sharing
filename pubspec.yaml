@@ -39,7 +39,7 @@ dependencies:
   qr_flutter: ^4.0.0
   flutter_background: ^1.1.0
   google_sign_in: ^5.2.4
-  path_provider: ^2.0.8
+  path_provider: ^2.0.9
   glassmorphism:
   animated_splash_screen:
   firebase_messaging: ^11.2.11
