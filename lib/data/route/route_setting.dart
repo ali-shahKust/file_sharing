@@ -6,6 +6,7 @@ import 'package:glass_mor/ui/main_page/main_screen.dart';
 import 'package:glass_mor/ui/main_page/main_vm.dart';
 import 'package:provider/provider.dart';
 
+import '../../ui/dashboard/queues_screen.dart';
 import '../../ui/splash/splash.dart';
 import '../../ui/splash/splash_vm.dart';
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -22,6 +23,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(
               create: (context) => DashBoardVm(), child: DashBoardScreen()));
+    case QuesScreen.routeName:
+      return MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+              create: (context) => DashBoardVm(), child: QuesScreen(files: [],)));
     case PicturesScreen.routeName:
       return MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(

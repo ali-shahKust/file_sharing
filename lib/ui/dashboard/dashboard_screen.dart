@@ -24,7 +24,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
           child:Center(
             child: InkWell(
                 onTap: (){
-                  Navigator.push(context,MaterialPageRoute(builder: (context)=>QuesScreen()));
+                  Navigator.pushNamed(context,QuesScreen.routeName
+                  );
                 },
                 child: Text('Queue')),
           ),

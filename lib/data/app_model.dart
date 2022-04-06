@@ -9,7 +9,15 @@ class AppModel extends BaseVm  {
    List<QueueModel?> _queue=[];
 
   List<QueueModel?> get queue => _queue;
+  String _progress='0.0';
 
+
+  String get progress => _progress;
+
+  set progress(String value) {
+    _progress = value;
+    notifyListeners();
+  }
 
   set queue( List<QueueModel?> value) {
     _queue = value;

@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:archive/archive_io.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,22 +23,37 @@ import '../../data/app_model.dart';
 import '../../data/queue_model.dart';
 import '../../utills/amplify_utills.dart';
 
+int completed = 0;
+
 class DashBoardVm extends BaseVm {
   List<File> _files = [];
   List _pics = [];
   bool _ziping = false;
+  StreamSubscription? subscription;
 
   List<File> get files => _files;
   bool _isUploading = false;
 
   bool get ziping => _ziping;
 
+  bool _connectionLost = false;
+  var queue = GetIt.I.get<AppModel>().queue;
+
   set ziping(bool value) {
     _ziping = value;
     notifyListeners();
   }
 
+
+  bool get connectionLost => _connectionLost;
+
+  set connectionLost(bool value) {
+    _connectionLost = value;
+    notifyListeners();
+  }
+
   bool get isUploading => _isUploading;
+
 
   set isUploading(bool value) {
     _isUploading = value;
@@ -54,24 +71,46 @@ class DashBoardVm extends BaseVm {
     _pics = value;
   }
 
+  DashBoardVm() {
+    checkConnection();
+  }
+
   pickFile({context}) async {
-    files.clear();
     var mfile = await FilePicker.platform.pickFiles(allowMultiple: true);
     if (mfile != null && mfile.files.isNotEmpty) {
+      files.clear();
       files = mfile.paths.map((path) => File(path!)).toList();
-      showDialog(
-          context: context,
-          builder: (BuildContext mcontext) {
-            return AlertDialog(content: QuesScreen());
-          });
-       uploadFile(context, files);
+
+      uploadFile(context, files);
+      Navigator.pushNamed(context, QuesScreen.routeName);
+      // Navigator.push(context, MaterialPageRoute(builder: (context)=>QuesScreen(files: files,),fullscreenDialog: true));
+
     }
   }
 
-  static Future<File?> createZipFile(BuildContext context, files) async {
-    await Future.delayed(Duration(seconds: 1));
-    return zipFile(files);
+  bool shouldShow = false;
+
+  checkConnection() async {
+    subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) {
+      // Got a new connectivity status!
+      print("Connection name ${result.name}");
+
+        if(result.name == 'none') {
+          connectionLost = true;
+        }
+        else {
+          connectionLost = false;
+        }
+    });
   }
+
+
+  // static Future<File?> createZipFile(BuildContext context, files) async {
+  //   await Future.delayed(Duration(seconds: 1));
+  //   return zipFile(files);
+  // }
 
   Future<void> listItems() async {
     try {
@@ -116,56 +155,41 @@ class DashBoardVm extends BaseVm {
       print("File Already Exist");
     }
   }
-  uploadFile(context, List<File> file) async {
 
+  uploadFile(context, List<File> file) async {
+    queue.clear();
     file.forEach((element) {
       String key = element.path.split('/').last;
 
-      GetIt.I.get<AppModel>().queue.add(QueueModel(
-          id: 1,
+      queue.add(QueueModel(
+          id: null,
           name: key,
           date: element.lastModified().toString(),
           size: element.lengthSync().toString(),
           status: "pending",
-          progress:"pending"));
+          progress: "pending"));
     });
+
     for (int i = 0; i < file.length; i++) {
-
       String key = file[i].path.split('/').last;
-      print("Dxdiag: ${key}");
-
-      await Amplify.Storage.uploadFile(
-          local: file[i],
-          key: "community/" + key,
-          onProgress: (progress) {
-            GetIt.I.get<AppModel>().queue[i]!.name = key;
-            GetIt.I.get<AppModel>().queue[i]!.progress = progress.getFractionCompleted().toString();
-            print("Dxdiag: ${GetIt.I.get<AppModel>().queue[i]!.progress}");
-
-            notifyListeners();
-          });
-      print("Dxdiag: ${key}");
-
-
+      try {
+        await Amplify.Storage.uploadFile(
+            local: file[i],
+            key: "community/" + key,
+            onProgress: (progress) {
+              queue[i]!.progress =
+                  (progress.getFractionCompleted() * 100).round().toString();
+              print("PROGRESS: ${queue[i]!.progress}");
+              GetIt.I.get<AppModel>().progress =
+                  (progress.getFractionCompleted() * 100).round().toString();
+              if ((progress.getFractionCompleted() * 100).round() == 100) {
+                completed = i + 1;
+              }
+              notifyListeners();
+            });
+      } on StorageException catch (e) {
+        print(e.message);
+      } catch (e) {}
     }
-
-
   }
-
 }
-
-Future<File> zipFile(files) async {
-  var pathDown = await getTemporaryDirectory();
-  int fileName = DateTime.now().millisecondsSinceEpoch;
-  String zipPath = pathDown.path + "/" + '$fileName.zip';
-  print('path in the device is....$zipPath');
-  var encoder = ZipFileEncoder();
-  encoder.create(zipPath);
-  files.forEach((element) {
-    encoder.addFile(File(element.path));
-  });
-  File zipFile = File(encoder.zipPath);
-  return zipFile;
-}
-
-
