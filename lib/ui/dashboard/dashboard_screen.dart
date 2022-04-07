@@ -20,17 +20,16 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   Widget build(BuildContext context) {
     return Consumer<DashBoardVm>(
       builder: (context, vm, _) => Scaffold(
-        drawer:  Drawer(
-          child:Center(
+        drawer: Drawer(
+          child: Center(
             child: InkWell(
-                onTap: (){
-                  Navigator.pushNamed(context,QuesScreen.routeName
-                  );
+                onTap: () {
+                  Navigator.pushNamed(context, QuesScreen.routeName);
                 },
-                child: Text('Queue')),
+                child: const Text('Queue')),
           ),
         ),
-        body: vm.ziping?Center(child: SpinKitCircle(color: CustomTheme.primaryColor,),):SafeArea(
+        body: SafeArea(
           child: SizedBox(
             width: getScreenWidth(context),
             height: getScreenHeight(context),
@@ -71,7 +70,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                         ),
                         InkWell(
                           onTap: () {
-                            Navigator.pushNamed(context, PicturesScreen.routeName);
+                            Navigator.pushNamed(
+                                context, PicturesScreen.routeName);
                           },
                           child: iUtills.glassContainer(
                               context: context,
@@ -98,8 +98,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
   @override
   void dispose() {
-    print("Dispose Called");
-    super.dispose();
 
+    super.dispose();
   }
 }

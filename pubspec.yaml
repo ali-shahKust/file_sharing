@@ -41,6 +41,9 @@ dependencies:
   google_sign_in: ^5.2.4
   path_provider: ^2.0.9
   connectivity_plus: ^2.2.1
+  intl:
+  image:
+  permission_handler: any
   glassmorphism:
   firebase_messaging: ^11.2.11
   flutter_spinkit:

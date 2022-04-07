@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_vm.dart';
+import 'package:glass_mor/ui/dashboard/queues_screen.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class PicturesScreen extends StatefulWidget {
@@ -21,6 +23,22 @@ class _PicturesScreenState extends State<PicturesScreen> {
     return Consumer<DashBoardVm>(builder: (context, vm, _) {
   
       return  Scaffold(
+        bottomNavigationBar: BottomAppBar(
+          child: ElevatedButton(
+            onPressed: () async{
+              bool granted = await Permission.manageExternalStorage.isGranted;
+              if(granted){
+                vm.downloadFile(vm.pics);
+
+                  Navigator.pushNamed(context, QuesScreen.routeName);
+              }
+              else {
+                await Permission.manageExternalStorage.request();
+              }
+            },
+            child:const Text("Restore all"),
+          ),
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -32,7 +50,7 @@ class _PicturesScreenState extends State<PicturesScreen> {
                     height: 250,
                     child: InkWell(
                         onTap: (){
-                          vm.downloadFile(vm.pics[i]['key']);
+                          // vm.downloadFile(vm.pics);
                         },
                         child: Image.network(vm.pics[i]['url'],fit: BoxFit.cover,)),
                   ),
