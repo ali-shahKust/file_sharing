@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:glass_mor/data/base/base_vm.dart';
+import 'package:glass_mor/data/local_db/database_helper.dart';
 import 'package:glass_mor/ui/dashboard/queues_screen.dart';
 import 'package:image/image.dart' as image;
 import 'package:path_provider/path_provider.dart';
@@ -25,9 +26,18 @@ class DashBoardVm extends BaseVm {
   bool _ziping = false;
   bool _fileExist = true;
   StreamSubscription? subscription;
+  var dbHelper = GetIt.I.get<DatabaseHelper>();
+  List<QueueModel?> _backupFiles = [];
 
   List<File> get files => _files;
   bool _isUploading = false;
+
+  List<QueueModel?> get backupFiles => _backupFiles;
+
+  set backupFiles(List<QueueModel?> value) {
+    _backupFiles = value;
+    notifyListeners();
+  }
 
   bool get ziping => _ziping;
 
@@ -38,7 +48,6 @@ class DashBoardVm extends BaseVm {
     _ziping = value;
     notifyListeners();
   }
-
 
   bool get fileExist => _fileExist;
 
@@ -60,7 +69,6 @@ class DashBoardVm extends BaseVm {
     _isUploading = value;
     notifyListeners();
   }
-
 
   set files(List<File> value) {
     _files = value;
@@ -101,10 +109,9 @@ class DashBoardVm extends BaseVm {
 
       if (result.name == 'none') {
         connectionLost = true;
-      } else if(result.name == 'wifi') {
+      } else if (result.name == 'wifi') {
         connectionLost = false;
-      }
-      else if(result.name == 'mobile') {
+      } else if (result.name == 'mobile') {
         connectionLost = false;
       }
     });
@@ -126,7 +133,12 @@ class DashBoardVm extends BaseVm {
             "community/${FirebaseAuth.instance.currentUser!.email}/")) {
           final GetUrlResult result =
               await Amplify.Storage.getUrl(key: items[i].key);
-          pics.add({"url": result.url, "key": items[i].key,'date':items[i].lastModified,'size':items[i].size});
+          pics.add({
+            "url": result.url,
+            "key": items[i].key,
+            'date': items[i].lastModified,
+            'size': items[i].size
+          });
           notifyListeners();
         }
       }
@@ -135,11 +147,9 @@ class DashBoardVm extends BaseVm {
     }
   }
 
-
   Future<void> downloadFile(
     var files,
   ) async {
-
     queue.clear();
     for (var data in files) {
       String key =
@@ -181,17 +191,15 @@ class DashBoardVm extends BaseVm {
               });
         } on StorageException catch (e) {
           print('Error downloading file: $e');
-        }
-        catch (e){
+        } catch (e) {
           print('Error downloading file: $e');
-
         }
       } else {
-        queue[i]!.progress ="Exist already";
+        queue[i]!.progress = "Exist already";
         queue[i]!.id = i;
         print("PROGRESS: ${queue[i]!.progress}");
-        GetIt.I.get<AppModel>().progress ="";
-          completed = i + 1;
+        GetIt.I.get<AppModel>().progress = "";
+        completed = i + 1;
         notifyListeners();
         print("File Already Exist");
       }
@@ -207,7 +215,9 @@ class DashBoardVm extends BaseVm {
       queue.add(QueueModel(
           id: null,
           name: key,
+          path: element.path,
           date: date,
+          isSelected: '0',
           size: element.lengthSync().toString(),
           status: "pending",
           progress: "pending"));
@@ -219,7 +229,7 @@ class DashBoardVm extends BaseVm {
         await Amplify.Storage.uploadFile(
             local: file[i],
             key: "community/${FirebaseAuth.instance.currentUser!.email}/" + key,
-            onProgress: (progress) {
+            onProgress: (progress) async {
               queue[i]!.progress =
                   (progress.getFractionCompleted() * 100).round().toString();
               queue[i]!.id = i;
@@ -228,13 +238,29 @@ class DashBoardVm extends BaseVm {
                   (progress.getFractionCompleted() * 100).round().toString();
               if ((progress.getFractionCompleted() * 100).round() == 100) {
                 completed = i + 1;
+
               }
+
               notifyListeners();
             });
+        int? count = await dbHelper.checkValue(queue[i]!.path) ;
+        if(count !=null && count>0){
+          print("This file already exist");
+        }
+        else {
+          dbHelper.insertFileToDb(queue[i]!);
+        }
       } on StorageException catch (e) {
         print(e.message);
-      } catch (e) {}
+      } catch (e) {
+        print(e.toString());
+      }
     }
+  }
+
+  getBackUpFiles() async {
+    backupFiles.clear();
+    backupFiles = await dbHelper.getAllBackupFilesFromDb();
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:glass_mor/ui/dashboard/backup_files.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_screen.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_vm.dart';
 import 'package:glass_mor/ui/dashboard/files_list.dart';
@@ -23,6 +24,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(
               create: (context) => DashBoardVm(), child: DashBoardScreen()));
+    case BackupFilesScreen.routeName:
+      return MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+              create: (context) => DashBoardVm(), child: BackupFilesScreen()));
     case QuesScreen.routeName:
       return MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(

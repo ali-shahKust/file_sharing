@@ -44,6 +44,7 @@ dependencies:
   intl:
   image:
   permission_handler: any
+  sqflite: any
   glassmorphism:
   firebase_messaging: ^11.2.11
   flutter_spinkit:

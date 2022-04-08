@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:glass_mor/ui/dashboard/backup_files.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_vm.dart';
 import 'package:glass_mor/ui/dashboard/files_list.dart';
 import 'package:glass_mor/ui/dashboard/queues_screen.dart';
@@ -50,28 +51,49 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   padding: const EdgeInsets.only(bottom: 38.0),
                   child: Align(
                     alignment: Alignment.bottomCenter,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        InkWell(
-                          onTap: () {
-                            vm.pickFile(context: context);
-                          },
-                          child: iUtills.glassContainer(
-                              context: context,
-                              width: getScreenWidth(context) / 2.5,
-                              height: getScreenHeight(context) * 0.1833,
-                              child: Center(
-                                  child: PrimaryText(
-                                'Send File',
-                                color: Colors.white,
-                                fontSize: 18,
-                              ))),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                vm.pickFile(context: context);
+                              },
+                              child: iUtills.glassContainer(
+                                  context: context,
+                                  width: getScreenWidth(context) / 2.5,
+                                  height: getScreenHeight(context) * 0.1833,
+                                  child: Center(
+                                      child: PrimaryText(
+                                    'Send File',
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ))),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, PicturesScreen.routeName);
+                              },
+                              child: iUtills.glassContainer(
+                                  context: context,
+                                  width: getScreenWidth(context) / 2.5,
+                                  height: getScreenHeight(context) * 0.1833,
+                                  child: Center(
+                                      child: PrimaryText(
+                                    'Receive File',
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ))),
+                            ),
+
+                          ],
                         ),
                         InkWell(
                           onTap: () {
-                            Navigator.pushNamed(
-                                context, PicturesScreen.routeName);
+                            Navigator.pushNamed(context, BackupFilesScreen.routeName);
                           },
                           child: iUtills.glassContainer(
                               context: context,
@@ -79,10 +101,10 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                               height: getScreenHeight(context) * 0.1833,
                               child: Center(
                                   child: PrimaryText(
-                                'Receive File',
-                                color: Colors.white,
-                                fontSize: 18,
-                              ))),
+                                    'Backup files',
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ))),
                         ),
                       ],
                     ),

@@ -21,7 +21,8 @@ class _PicturesScreenState extends State<PicturesScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<DashBoardVm>(builder: (context, vm, _) {
-  
+      vm.getBackUpFiles();
+
       return  Scaffold(
         bottomNavigationBar: BottomAppBar(
           child: ElevatedButton(

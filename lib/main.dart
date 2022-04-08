@@ -3,17 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:glass_mor/data/app_model.dart';
-import 'package:glass_mor/data/base/base_vm.dart';
+import 'package:glass_mor/data/local_db/database_helper.dart';
 import 'package:glass_mor/data/repo/dashboard/dashboard_repo.dart';
 import 'package:glass_mor/data/repo/dashboard/dashboard_repo_imp.dart';
 import 'package:glass_mor/data/repo/main/main_repo.dart';
 import 'package:glass_mor/data/repo/main/main_repo_imp.dart';
 import 'package:glass_mor/data/route/route_setting.dart';
 import 'package:glass_mor/data/services/auth_services.dart';
-import 'package:glass_mor/ui/main_page/main_vm.dart';
 import 'package:glass_mor/ui/splash/splash.dart';
-import 'package:glass_mor/ui/splash/splash_vm.dart';
-import 'package:glass_mor/utills/custom_theme.dart';
+
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -23,6 +21,7 @@ void main() async {
   GetIt.I.registerSingleton<AppModel>(AppModel());
   GetIt.I.registerSingleton<DashBoardRepo>(DashBoardRepoImp());
   GetIt.I.registerSingleton<MainRepo>(MainRepoImp());
+  GetIt.I.registerSingleton<DatabaseHelper>(DatabaseHelper());
   GetIt.I.registerSingleton<AuthService>(AuthService());
   await GetIt.I.allReady();
 

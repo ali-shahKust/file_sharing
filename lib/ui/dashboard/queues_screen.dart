@@ -24,7 +24,10 @@ class QuesScreen extends StatefulWidget {
 
 class _QuesScreenState extends State<QuesScreen> {
   var queue = GetIt.I.get<AppModel>().queue;
-
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Consumer<DashBoardVm>(builder: (context, vm, _) {
