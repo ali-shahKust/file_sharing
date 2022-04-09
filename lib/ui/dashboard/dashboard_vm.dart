@@ -11,9 +11,6 @@ import 'package:get_it/get_it.dart';
 import 'package:glass_mor/data/base/base_vm.dart';
 import 'package:glass_mor/data/local_db/database_helper.dart';
 import 'package:glass_mor/ui/dashboard/queues_screen.dart';
-import 'package:image/image.dart' as image;
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../data/app_model.dart';
 import '../../data/queue_model.dart';
@@ -28,6 +25,7 @@ class DashBoardVm extends BaseVm {
   StreamSubscription? subscription;
   var dbHelper = GetIt.I.get<DatabaseHelper>();
   List<QueueModel?> _backupFiles = [];
+  bool _backFileSelected = false;
 
   List<File> get files => _files;
   bool _isUploading = false;
@@ -36,6 +34,13 @@ class DashBoardVm extends BaseVm {
 
   set backupFiles(List<QueueModel?> value) {
     _backupFiles = value;
+    notifyListeners();
+  }
+
+  bool get backFileSelected => _backFileSelected;
+
+  set backFileSelected(bool value) {
+    _backFileSelected = value;
     notifyListeners();
   }
 
@@ -83,6 +88,16 @@ class DashBoardVm extends BaseVm {
 
   DashBoardVm() {
     checkConnection();
+  }
+
+  selectItem(index) {
+    backupFiles[index]!.isSelected = "1";
+    notifyListeners();
+  }
+
+  unSelectItem(index) {
+    backupFiles[index]!.isSelected = "0";
+    notifyListeners();
   }
 
   pickFile({context}) async {
@@ -153,7 +168,7 @@ class DashBoardVm extends BaseVm {
     queue.clear();
     for (var data in files) {
       String key =
-          data['key'].replaceAll("community/syed.ali.shah3938@gmail.com/", "");
+          data['key'].replaceAll("backups/syed.ali.shah3938@gmail.com/", "");
       String date = data['date'].toString();
 
       queue.add(QueueModel(
@@ -168,9 +183,8 @@ class DashBoardVm extends BaseVm {
     for (int i = 0; i < files.length; i++) {
       final filepath = documentsDir +
           "/Backupfiles" +
-          '/${files[i]['key'].replaceAll("community/syed.ali.shah3938@gmail.com/", "")}';
+          '/${files[i]['key'].replaceAll("backups/syed.ali.shah3938@gmail.com/", "")}';
       final file = File(filepath);
-      print("MY FILE PATH ${file.path}");
       bool fileExists = await file.exists();
       if (!fileExists) {
         try {
@@ -181,7 +195,6 @@ class DashBoardVm extends BaseVm {
                 queue[i]!.progress =
                     (progress.getFractionCompleted() * 100).round().toString();
                 queue[i]!.id = i;
-                print("PROGRESS: ${queue[i]!.progress}");
                 GetIt.I.get<AppModel>().progress =
                     (progress.getFractionCompleted() * 100).round().toString();
                 if ((progress.getFractionCompleted() * 100).round() == 100) {
@@ -228,7 +241,7 @@ class DashBoardVm extends BaseVm {
       try {
         await Amplify.Storage.uploadFile(
             local: file[i],
-            key: "community/${FirebaseAuth.instance.currentUser!.email}/" + key,
+            key: "backups/${FirebaseAuth.instance.currentUser!.email}/" + key,
             onProgress: (progress) async {
               queue[i]!.progress =
                   (progress.getFractionCompleted() * 100).round().toString();
@@ -238,16 +251,17 @@ class DashBoardVm extends BaseVm {
                   (progress.getFractionCompleted() * 100).round().toString();
               if ((progress.getFractionCompleted() * 100).round() == 100) {
                 completed = i + 1;
-
+                queue[i]!.key =
+                    "backups/${FirebaseAuth.instance.currentUser!.email}/" +
+                        key;
               }
 
               notifyListeners();
             });
-        int? count = await dbHelper.checkValue(queue[i]!.path) ;
-        if(count !=null && count>0){
+        int? count = await dbHelper.checkValue(queue[i]!.path);
+        if (count != null && count > 0) {
           print("This file already exist");
-        }
-        else {
+        } else {
           dbHelper.insertFileToDb(queue[i]!);
         }
       } on StorageException catch (e) {

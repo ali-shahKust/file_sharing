@@ -49,14 +49,16 @@ class AuthService {
       accessToken: googleSignInAuthentication.accessToken,
       idToken: googleSignInAuthentication.idToken,
     );
-    await auth.signInWithCredential(credential);
-    print("Token ${credential.token}");
-    _user = auth.currentUser;
-     await _user!.getIdToken().then((value) async {
-      await sendTokenToNative(value).then((value) async {
-        result = value;
+    await auth.signInWithCredential(credential).then((value) async {
+      print("Token ${credential.token}");
+      _user = auth.currentUser;
+      await _user!.getIdToken().then((value) async {
+        await sendTokenToNative(value).then((value) async {
+          result = value;
+        });
       });
     });
+
     return result;
   }
 
