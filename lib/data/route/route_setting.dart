@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:glass_mor/ui/dashboard/backup_files.dart';
+import 'package:glass_mor/data/app_model.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_screen.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_vm.dart';
-import 'package:glass_mor/ui/dashboard/files_list.dart';
+import 'package:glass_mor/ui/local_backup/backup_vm.dart';
 import 'package:glass_mor/ui/main_page/main_screen.dart';
 import 'package:glass_mor/ui/main_page/main_vm.dart';
+import 'package:glass_mor/ui/online_backup/files_list.dart';
+import 'package:glass_mor/ui/online_backup/online_backup_vm.dart';
 import 'package:provider/provider.dart';
 
-import '../../ui/dashboard/queues_screen.dart';
+import '../../widget/queues_screen.dart';
+import '../../ui/local_backup/backup_files.dart';
 import '../../ui/splash/splash.dart';
 import '../../ui/splash/splash_vm.dart';
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -27,15 +30,15 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case BackupFilesScreen.routeName:
       return MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(
-              create: (context) => DashBoardVm(), child: BackupFilesScreen()));
+              create: (context) => BackUpVm(), child: BackupFilesScreen()));
     case QuesScreen.routeName:
       return MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(
-              create: (context) => DashBoardVm(), child: QuesScreen(files: [],)));
+              create: (context) => AppModel(), child: QuesScreen()));
     case PicturesScreen.routeName:
       return MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(
-              create: (context) => DashBoardVm(), child: PicturesScreen()));
+              create: (context) => OnlineBackUpVm(), child: PicturesScreen()));
 
     default:
       return errorRoute();

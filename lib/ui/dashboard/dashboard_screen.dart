@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:glass_mor/ui/dashboard/backup_files.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_vm.dart';
-import 'package:glass_mor/ui/dashboard/files_list.dart';
-import 'package:glass_mor/ui/dashboard/queues_screen.dart';
-import 'package:glass_mor/utills/custom_theme.dart';
+import 'package:glass_mor/widget/queues_screen.dart';
+import 'package:glass_mor/ui/local_backup/backup_files.dart';
+import 'package:glass_mor/ui/online_backup/files_list.dart';
 import 'package:glass_mor/utills/i_utills.dart';
 import 'package:glass_mor/widget/primary_text.dart';
 import 'package:provider/provider.dart';

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_vm.dart';
-import 'package:glass_mor/ui/dashboard/queues_screen.dart';
+import 'package:glass_mor/widget/queues_screen.dart';
+import 'package:glass_mor/ui/online_backup/online_backup_vm.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
@@ -14,14 +15,15 @@ class PicturesScreen extends StatefulWidget {
 class _PicturesScreenState extends State<PicturesScreen> {
   @override
   void initState() {
-    getPics();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      Provider.of<OnlineBackUpVm>(context, listen: false).listItems();
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<DashBoardVm>(builder: (context, vm, _) {
-      vm.getBackUpFiles();
+    return Consumer<OnlineBackUpVm>(builder: (context, vm, _) {
 
       return  Scaffold(
         bottomNavigationBar: BottomAppBar(
@@ -62,9 +64,5 @@ class _PicturesScreenState extends State<PicturesScreen> {
       );
     });
   }
-  
-  getPics()async {
-    await Future.delayed(Duration(seconds: 1));
-   Provider.of<DashBoardVm>(context,listen: false).listItems();
-  }
+
 }

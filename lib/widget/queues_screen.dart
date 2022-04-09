@@ -8,15 +8,14 @@ import 'package:glass_mor/utills/i_utills.dart';
 import 'package:provider/provider.dart';
 import 'package:glass_mor/data/extension.dart';
 
-import '../../data/app_model.dart';
-import 'dashboard_vm.dart';
+import '../data/app_model.dart';
+import '../ui/dashboard/dashboard_vm.dart';
 
 class QuesScreen extends StatefulWidget {
   static const routeName = 'queue_screen';
 
-  List<File> files;
 
-  QuesScreen({Key? key, required this.files}) : super(key: key);
+  QuesScreen({Key? key,}) : super(key: key);
 
   @override
   State<QuesScreen> createState() => _QuesScreenState();
@@ -30,7 +29,7 @@ class _QuesScreenState extends State<QuesScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    return Consumer<DashBoardVm>(builder: (context, vm, _) {
+    return Consumer<AppModel>(builder: (context, vm, _) {
       return SafeArea(
         child: Scaffold(
           body: vm.connectionLost
@@ -98,38 +97,5 @@ class _QuesScreenState extends State<QuesScreen> {
     });
   }
 
-// uploadFile(context, List<File> file) async {
-//   queue.clear();
-//   completed = 0;
-//   file.forEach((element) {
-//     String key = element.path.split('/').last;
-//
-//     queue.add(QueueModel(
-//         id: null,
-//         name: key,
-//         date: element.lastModified().toString(),
-//         size: element.lengthSync().toString(),
-//         status: "pending",
-//         progress: "pending"));
-//   });
-//   for (int i = 0; i < file.length; i++) {
-//     String key = file[i].path.split('/').last;
-//
-//     await Amplify.Storage.uploadFile(
-//         local: file[i],
-//         key: "community/" + key,
-//         onProgress: (progress) {
-//           queue[i]!.progress =
-//               (progress.getFractionCompleted() * 100).round().toString();
-//           setState(() {});
-//
-//           print("PROGRESS: ${queue[i]!.progress}");
-//           if( (progress.getFractionCompleted() * 100).round() == 100){
-//             completed=i+1;
-//             setState(() {});
-//
-//           }
-//         });
-//   }
-// }
+
 }
