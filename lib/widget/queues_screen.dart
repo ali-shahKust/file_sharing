@@ -8,7 +8,7 @@ import 'package:glass_mor/utills/i_utills.dart';
 import 'package:provider/provider.dart';
 import 'package:glass_mor/data/extension.dart';
 
-import '../data/app_model.dart';
+import '../data/models/app_model.dart';
 import '../ui/dashboard/dashboard_vm.dart';
 
 class QuesScreen extends StatefulWidget {

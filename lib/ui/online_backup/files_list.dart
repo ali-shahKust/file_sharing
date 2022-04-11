@@ -24,7 +24,6 @@ class _PicturesScreenState extends State<PicturesScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<OnlineBackUpVm>(builder: (context, vm, _) {
-
       return  Scaffold(
         bottomNavigationBar: BottomAppBar(
           child: ElevatedButton(

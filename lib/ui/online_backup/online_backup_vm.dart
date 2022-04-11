@@ -6,8 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:glass_mor/data/base/base_vm.dart';
 
-import '../../data/app_model.dart';
-import '../../data/queue_model.dart';
+import '../../data/models/app_model.dart';
+import '../../data/models/queue_model.dart';
 import '../dashboard/dashboard_vm.dart';
 
 class OnlineBackUpVm extends BaseVm {

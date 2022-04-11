@@ -10,10 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:glass_mor/data/base/base_vm.dart';
 import 'package:glass_mor/data/local_db/database_helper.dart';
+import 'package:glass_mor/file_manager/views/FileManager/filemanager_home.dart';
 import 'package:glass_mor/widget/queues_screen.dart';
 
-import '../../data/app_model.dart';
-import '../../data/queue_model.dart';
+import '../../data/models/app_model.dart';
+import '../../data/models/queue_model.dart';
 
 int completed = 0;
 
@@ -38,16 +39,20 @@ class DashBoardVm extends BaseVm {
   }
 
   pickFile({context}) async {
-    var mfile = await FilePicker.platform.pickFiles(allowMultiple: true);
-    if (mfile != null && mfile.files.isNotEmpty) {
-      files.clear();
-      files = mfile.paths.map((path) => File(path!)).toList();
+   await Navigator.pushNamed(context, FileManagerHome.routeName).then((value) {
 
-      uploadFile(context, files);
-      Navigator.pushNamed(context, QuesScreen.routeName);
-      // Navigator.push(context, MaterialPageRoute(builder: (context)=>QuesScreen(files: files,),fullscreenDialog: true));
-
-    }
+    });
+    // var mfile = await FilePicker.platform.pickFiles(allowMultiple: true);
+    //
+    // if (mfile != null && mfile.files.isNotEmpty) {
+    //   files.clear();
+    //   files = mfile.paths.map((path) => File(path!)).toList();
+    //
+    //   uploadFile(context, files);
+    //   Navigator.pushNamed(context, QuesScreen.routeName);
+    //   // Navigator.push(context, MaterialPageRoute(builder: (context)=>QuesScreen(files: files,),fullscreenDialog: true));
+    //
+    // }
   }
 
   bool shouldShow = false;

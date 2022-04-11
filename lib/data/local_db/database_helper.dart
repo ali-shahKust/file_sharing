@@ -1,4 +1,4 @@
-import 'package:glass_mor/data/queue_model.dart';
+import 'package:glass_mor/data/models/queue_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
 

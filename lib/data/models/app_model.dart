@@ -1,20 +1,25 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:glass_mor/data/queue_model.dart';
+import 'package:glass_mor/data/models/queue_model.dart';
+import 'package:path_provider/path_provider.dart';
 
-import 'base/base_vm.dart';
+import '../../main.dart';
+import '../base/base_vm.dart';
 
 class AppModel extends BaseVm  {
 
   AppModel(){
     checkConnection();
+    filesList();
   }
   bool _isLoading = false;
   bool _connectionLost = false;
 
   bool get isLoading => _isLoading;
    List<QueueModel?> _queue=[];
+  List<Directory> paths = [];
 
   List<QueueModel?> get queue => _queue;
   String _progress='0.0';
@@ -46,6 +51,16 @@ class AppModel extends BaseVm  {
 
   void notifyAppListeners() {
     notifyListeners();
+  }
+  filesList()async {
+    paths.clear();
+    await getExternalStorageDirectories().then((value) {
+      value!.forEach((element) {
+        paths.add(element);
+      });
+    });
+    print("FIles : ${paths.length}");
+
   }
   checkConnection() async {
     subscription = Connectivity()

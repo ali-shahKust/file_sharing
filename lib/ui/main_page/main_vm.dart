@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:glass_mor/data/app_model.dart';
+import 'package:glass_mor/data/models/app_model.dart';
 import 'package:glass_mor/data/base/base_vm.dart';
 import 'package:glass_mor/data/repo/main/main_repo.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_screen.dart';

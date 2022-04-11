@@ -2,7 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:glass_mor/data/base/base_vm.dart';
 
 import '../../data/local_db/database_helper.dart';
-import '../../data/queue_model.dart';
+import '../../data/models/queue_model.dart';
 
 class BackUpVm extends BaseVm {
   List<QueueModel?> _backupFiles = [];
