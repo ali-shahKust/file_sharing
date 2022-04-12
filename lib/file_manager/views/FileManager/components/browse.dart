@@ -28,11 +28,6 @@ class Browse extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20.0,vertical: 20),
           children: <Widget>[
             SizedBox(height: SizeConfig.screenHeight!*0.04),
-             Row(
-               children: [
-
-               ],
-             ),
             _CategoriesSection(),
             // CustomDivider(),
             SizedBox(height: SizeConfig.screenHeight!*0.03),

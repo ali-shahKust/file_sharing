@@ -26,6 +26,9 @@ class _ImagesState extends State<Images> with SingleTickerProviderStateMixin {
    // int _selectedIndex = 0;
   // @override
   void initState() {
+    // WidgetsBinding.instance!.addPostFrameCallback((_) {
+    //   Provider.of<CategoryProvider>(context, listen: false).getImages();
+    // });
     super.initState();
   }
 

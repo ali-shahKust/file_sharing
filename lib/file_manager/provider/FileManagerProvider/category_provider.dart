@@ -716,7 +716,7 @@ class CategoryProvider extends ChangeNotifier {
         imageList.add(fm);
       }
       print('data in image list is ${imageList.length}');
-      notifyListeners();
+      setLoading(false);
     });
     // isolates.spawn<String>(
     //   getAllFilesWithIsolate,
