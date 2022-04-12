@@ -25,7 +25,10 @@ class DownloadScreen extends StatefulWidget {
 class _DownloadScreenState extends State<DownloadScreen> {
   @override
   void initState() {
-    getArguments();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      Provider.of<DownloadVm>(context, listen: false).downloadFile(widget.files);
+      print("MY arguments are :${widget.files.length}");
+    });
     super.initState();
   }
 
@@ -112,11 +115,5 @@ class _DownloadScreenState extends State<DownloadScreen> {
       );
     });
   }
-  getArguments()async {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
-        Provider.of<DownloadVm>(context, listen: false).downloadFile(widget.files);
-        print("MY arguments are :${widget.files.length}");
-      });
 
-  }
 }
