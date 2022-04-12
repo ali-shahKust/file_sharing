@@ -26,6 +26,7 @@ class _BackupFilesScreenState extends State<BackupFilesScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<BackUpVm>(builder: (context, vm, _) {
+      vm.getBackUpFiles();
       return Scaffold(
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(64, 75, 96, .9),

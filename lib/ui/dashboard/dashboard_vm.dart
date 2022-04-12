@@ -26,6 +26,15 @@ class DashBoardVm extends BaseVm {
   var queue = GetIt.I.get<AppModel>().queue;
 
   List<File> get files => _files;
+  bool _connectionLost = false;
+
+  bool get connectionLost => _connectionLost;
+
+  set connectionLost(bool value) {
+    _connectionLost = value;
+    notifyListeners();
+  }
+
 
   set files(List<File> value) {
     _files = value;
@@ -37,30 +46,37 @@ class DashBoardVm extends BaseVm {
   set pics(List value) {
     _pics = value;
   }
+  checkConnection() async {
+    subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) {
+      // Got a new connectivity status!
+      print("Connection name ${result.name}");
 
-  pickFile({context}) async {
-   await Navigator.pushNamed(context, FileManagerHome.routeName).then((value) {
-
+      if (result.name == 'none') {
+        connectionLost = true;
+      } else if (result.name == 'wifi') {
+        connectionLost = false;
+      } else if (result.name == 'mobile') {
+        connectionLost = false;
+      }
     });
-    // var mfile = await FilePicker.platform.pickFiles(allowMultiple: true);
-    //
-    // if (mfile != null && mfile.files.isNotEmpty) {
-    //   files.clear();
-    //   files = mfile.paths.map((path) => File(path!)).toList();
-    //
-    //   uploadFile(context, files);
-    //   Navigator.pushNamed(context, QuesScreen.routeName);
-    //   // Navigator.push(context, MaterialPageRoute(builder: (context)=>QuesScreen(files: files,),fullscreenDialog: true));
-    //
-    // }
+  }
+  pickFile({context}) async {
+
+    var mfile = await FilePicker.platform.pickFiles(allowMultiple: true);
+
+    if (mfile != null && mfile.files.isNotEmpty) {
+      files.clear();
+      files = mfile.paths.map((path) => File(path!)).toList();
+
+      uploadFile(context, files);
+      Navigator.pushNamed(context, QuesScreen.routeName);
+      // Navigator.push(context, MaterialPageRoute(builder: (context)=>QuesScreen(files: files,),fullscreenDialog: true));
+
+    }
   }
 
-  bool shouldShow = false;
-
-  // static Future<File?> createZipFile(BuildContext context, files) async {
-  //   await Future.delayed(Duration(seconds: 1));
-  //   return zipFile(files);
-  // }
 
   uploadFile(context, List<File> file) async {
     queue.clear();
@@ -90,7 +106,6 @@ class DashBoardVm extends BaseVm {
                   (progress.getFractionCompleted() * 100).round().toString();
               queue[i]!.id = i;
               print("PROGRESS: ${queue[i]!.progress}");
-              GetIt.I.get<AppModel>().progress =
                   (progress.getFractionCompleted() * 100).round().toString();
               if ((progress.getFractionCompleted() * 100).round() == 100) {
                 completed = i + 1;

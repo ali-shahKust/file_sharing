@@ -47,57 +47,6 @@ class OnlineBackUpVm extends BaseVm {
   Future<void> downloadFile(
       var files,
       ) async {
-    queue.clear();
-    for (var data in files) {
-      String key =
-      data['key'].replaceAll("backups/syed.ali.shah3938@gmail.com/", "");
-      String date = data['date'].toString();
 
-      queue.add(QueueModel(
-          id: null,
-          name: key,
-          date: date,
-          size: data['size'].toString(),
-          status: "pending",
-          progress: "pending"));
-    }
-    final documentsDir = "/storage/emulated/0";
-    for (int i = 0; i < files.length; i++) {
-      final filepath = documentsDir +
-          "/Backupfiles" +
-          '/${files[i]['key'].replaceAll("backups/syed.ali.shah3938@gmail.com/", "")}';
-      final file = File(filepath);
-      bool fileExists = await file.exists();
-      if (!fileExists) {
-        try {
-          await Amplify.Storage.downloadFile(
-              key: files[i]['key'],
-              local: file,
-              onProgress: (progress) {
-                queue[i]!.progress =
-                    (progress.getFractionCompleted() * 100).round().toString();
-                queue[i]!.id = i;
-                GetIt.I.get<AppModel>().progress =
-                    (progress.getFractionCompleted() * 100).round().toString();
-                if ((progress.getFractionCompleted() * 100).round() == 100) {
-                  completed = i + 1;
-                }
-                notifyListeners();
-              });
-        } on StorageException catch (e) {
-          print('Error downloading file: $e');
-        } catch (e) {
-          print('Error downloading file: $e');
-        }
-      } else {
-        queue[i]!.progress = "Exist already";
-        queue[i]!.id = i;
-        print("PROGRESS: ${queue[i]!.progress}");
-        GetIt.I.get<AppModel>().progress = "";
-        completed = i + 1;
-        notifyListeners();
-        print("File Already Exist");
-      }
-    }
   }
 }

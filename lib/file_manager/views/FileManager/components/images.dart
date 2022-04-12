@@ -35,8 +35,8 @@ class _ImagesState extends State<Images> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
    SizeConfig().init(context);
-    return Consumer(
-      builder: (BuildContext context, CategoryProvider provider, Widget? child) {
+    return Consumer<CategoryProvider>(
+      builder: (context,  provider, _) {
         print('all files list length is ${provider.imageList.length}');
         if (provider.loading) {
           return Scaffold(body: CustomLoader());

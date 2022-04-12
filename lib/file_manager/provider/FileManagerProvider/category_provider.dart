@@ -623,11 +623,11 @@ class CategoryProvider extends ChangeNotifier {
   }
 
   getDeviceFileManager() {
-    // getVideos();
+    getVideos();
     getImages();
-    // getAudios();
-    // getTextFile();
-    // getAllApps();
+    getAudios();
+    getTextFile();
+    //getAllApps();
   }
 
   // getDownloads() async {
@@ -653,84 +653,84 @@ class CategoryProvider extends ChangeNotifier {
   //   setLoading(false);
   // }
 
-  // getImages() async {
-  //   // String type = fileTypeList[1].toLowerCase();
-  //   setLoading(true);
-  //   imageList.clear();
-  //   String isolateName = AppConstants.fileTypeList[1];
-  //   isolates.spawn<String>(
-  //     getAllFilesWithIsolate,
-  //     name: isolateName,
-  //     onReceive: (val) {
-  //       print(val);
-  //       isolates.kill(isolateName);
-  //     },
-  //     onInitialized: () => isolates.send('hey', to: isolateName),
-  //   );
-  //   ReceivePort _port = ReceivePort();
-  //   IsolateNameServer.registerPortWithName(_port.sendPort, '${isolateName}_2');
-  //   _port.listen((files) {
-  //     print('RECEIVED SERVER PORT');
-  //
-  //     files.forEach((file) async {
-  //       // var base64Image;
-  //       String mimeType = mime(file.path) ?? '';
-  //       if (mimeType.split('/')[0] == AppConstants.fileTypeList[1]) {
-  //         // final imageBytes = await file.readAsBytes();
-  //         // // print('Here are the image bytes: $imageBytes');
-  //         // String base64ImageLocal = base64Encode(imageBytes);
-  //
-  //         // base64Image = base64ImageLocal;
-  //         //imgBytes: base64ImageLocal
-  //         // images.add(file);
-  //         FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
-  //         imageList.add(fm);
-  //       }
-  //       notifyListeners();
-  //     });
-  //     setLoading(false);
-  //     _port.close();
-  //     IsolateNameServer.removePortNameMapping('${isolateName}_2');
-  //   });
-  // }
   getImages() async {
-    print('I am in getImages function...');
     // String type = fileTypeList[1].toLowerCase();
     setLoading(true);
     imageList.clear();
-    // String isolateName = AppConstants.fileTypeList[1];
-    List<FileSystemEntity> files = await FileManagerUtilities.getAllFiles(showHidden: false);
-    files.forEach((file) async {
-      print('File list in image function...${file.path}');
-      // var base64Image;
-      String mimeType = mime(file.path) ?? '';
-      if (mimeType.split('/')[0] == AppConstants.fileTypeList[1]) {
-        // final imageBytes = await file.readAsBytes();
-        // // print('Here are the image bytes: $imageBytes');
-        // String base64ImageLocal = base64Encode(imageBytes);
+    String isolateName = AppConstants.fileTypeList[1];
+    isolates.spawn<String>(
+      getAllFilesWithIsolate,
+      name: isolateName,
+      onReceive: (val) {
+        print(val);
+        isolates.kill(isolateName);
+      },
+      onInitialized: () => isolates.send('hey', to: isolateName),
+    );
+    ReceivePort _port = ReceivePort();
+    IsolateNameServer.registerPortWithName(_port.sendPort, '${isolateName}_2');
+    _port.listen((files) {
+      print('RECEIVED SERVER PORT');
 
-        // base64Image = base64ImageLocal;
-        //imgBytes: base64ImageLocal
-        // images.add(file);
-        FileMangerModel fm = FileMangerModel(file: File(file.path), isSelected: false);
-        imageList.add(fm);
-      }
-      print('data in image list is ${imageList.length}');
+      files.forEach((file) async {
+        // var base64Image;
+        String mimeType = mime(file.path) ?? '';
+        if (mimeType.split('/')[0] == AppConstants.fileTypeList[1]) {
+          // final imageBytes = await file.readAsBytes();
+          // // print('Here are the image bytes: $imageBytes');
+          // String base64ImageLocal = base64Encode(imageBytes);
+
+          // base64Image = base64ImageLocal;
+          //imgBytes: base64ImageLocal
+          // images.add(file);
+          FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
+          imageList.add(fm);
+        }
+        notifyListeners();
+      });
       setLoading(false);
+      _port.close();
+      IsolateNameServer.removePortNameMapping('${isolateName}_2');
     });
-    // isolates.spawn<String>(
-    //   getAllFilesWithIsolate,
-    //   name: isolateName,
-    //   onReceive: (val) {
-    //     print(val);
-    //     isolates.kill(isolateName);
-    //   },
-    //   onInitialized: () => isolates.send('hey', to: isolateName),
-    // );
-    // ReceivePort _port = ReceivePort();
-    // IsolateNameServer.registerPortWithName(_port.sendPort, '${isolateName}_2');
-
   }
+  // getImages() async {
+  //   print('I am in getImages function...');
+  //   // String type = fileTypeList[1].toLowerCase();
+  //   setLoading(true);
+  //   imageList.clear();
+  //   // String isolateName = AppConstants.fileTypeList[1];
+  //   List<FileSystemEntity> files = await FileManagerUtilities.getAllFiles(showHidden: false);
+  //   files.forEach((file) async {
+  //     print('File list in image function...${file.path}');
+  //     // var base64Image;
+  //     String mimeType = mime(file.path) ?? '';
+  //     if (mimeType.split('/')[0] == AppConstants.fileTypeList[1]) {
+  //       // final imageBytes = await file.readAsBytes();
+  //       // // print('Here are the image bytes: $imageBytes');
+  //       // String base64ImageLocal = base64Encode(imageBytes);
+  //
+  //       // base64Image = base64ImageLocal;
+  //       //imgBytes: base64ImageLocal
+  //       // images.add(file);
+  //       FileMangerModel fm = FileMangerModel(file: File(file.path), isSelected: false);
+  //       imageList.add(fm);
+  //     }
+  //     print('data in image list is ${imageList.length}');
+  //     setLoading(false);
+  //   });
+  //   // isolates.spawn<String>(
+  //   //   getAllFilesWithIsolate,
+  //   //   name: isolateName,
+  //   //   onReceive: (val) {
+  //   //     print(val);
+  //   //     isolates.kill(isolateName);
+  //   //   },
+  //   //   onInitialized: () => isolates.send('hey', to: isolateName),
+  //   // );
+  //   // ReceivePort _port = ReceivePort();
+  //   // IsolateNameServer.registerPortWithName(_port.sendPort, '${isolateName}_2');
+  //
+  // }
 
   Future<List<FileMangerModel>> getVideos() async {
     // print('type in the function is $type');

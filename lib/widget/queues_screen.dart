@@ -22,15 +22,15 @@ class QuesScreen extends StatefulWidget {
 }
 
 class _QuesScreenState extends State<QuesScreen> {
-  var queue = GetIt.I.get<AppModel>().queue;
   @override
   void initState() {
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    return Consumer<AppModel>(builder: (context, vm, _) {
-      return SafeArea(
+    return Consumer<DashBoardVm>(builder: (context, vm, _) {
+
+    return SafeArea(
         child: Scaffold(
           body: vm.connectionLost
               ? const Center(
@@ -39,7 +39,7 @@ class _QuesScreenState extends State<QuesScreen> {
               : Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    completed == GetIt.I.get<AppModel>().queue.length
+                    completed == vm.queue.length
                         ? Container()
                         : const SpinKitCircle(
                             color: CustomTheme.primaryColor,
@@ -68,21 +68,21 @@ class _QuesScreenState extends State<QuesScreen> {
                       width: getScreenWidth(context),
                       height: getScreenHeight(context) * 0.55,
                       child: ListView.builder(
-                          itemCount: GetIt.I.get<AppModel>().queue.length,
+                          itemCount: vm.queue.length,
                           itemBuilder: (context, index) {
                             double sizeInMb =
-                                int.parse(queue[index]!.size) / (1024 * 1024);
+                                int.parse(vm.queue[index]!.size) / (1024 * 1024);
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ListTile(
                                 title: Text(
-                                    GetIt.I.get<AppModel>().queue[index]!.name),
-                                trailing: queue[index]!.progress =="Exist already"?Text("Exist Already"):Text(queue[index]!.progress + "%"),
+                                    vm.queue[index]!.name),
+                                trailing: Text(vm.queue[index]!.progress + "%"),
                                 subtitle: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(sizeInMb.toStringAsFixed(3) + " MB "),
-                                    Text(DateTime.parse(queue[index]!.date)
+                                    Text(DateTime.parse(vm.queue[index]!.date)
                                         .toddMMMMyyyy()),
                                   ],
                                 ),

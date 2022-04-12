@@ -4,6 +4,8 @@ import 'package:glass_mor/file_manager/provider/FileManagerProvider/core_provide
 import 'package:glass_mor/file_manager/views/FileManager/filemanager_home.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_screen.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_vm.dart';
+import 'package:glass_mor/ui/download/download_screen.dart';
+import 'package:glass_mor/ui/download/download_vm.dart';
 import 'package:glass_mor/ui/local_backup/backup_vm.dart';
 import 'package:glass_mor/ui/main_page/main_screen.dart';
 import 'package:glass_mor/ui/main_page/main_vm.dart';
@@ -37,7 +39,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case QuesScreen.routeName:
       return MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(
-              create: (context) => AppModel(), child: QuesScreen()));
+              create: (context) => DashBoardVm(), child: QuesScreen()));
+    case DownloadScreen.routeName:
+      return MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+              create: (context) => DownloadVm(), child: DownloadScreen(files: settings.arguments as  List)));
     case PicturesScreen.routeName:
       return MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_vm.dart';
+import 'package:glass_mor/ui/download/download_screen.dart';
 import 'package:glass_mor/widget/queues_screen.dart';
 import 'package:glass_mor/ui/online_backup/online_backup_vm.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -30,9 +31,8 @@ class _PicturesScreenState extends State<PicturesScreen> {
             onPressed: () async{
               bool granted = await Permission.manageExternalStorage.isGranted;
               if(granted){
-                vm.downloadFile(vm.pics);
-
-                  Navigator.pushNamed(context, QuesScreen.routeName);
+                print("Files ${vm.pics.length}");
+                  await Navigator.pushNamed(context, DownloadScreen.routeName,arguments: vm.pics );
               }
               else {
                 await Permission.manageExternalStorage.request();
