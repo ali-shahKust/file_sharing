@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:glass_mor/file_manager/provider/FileManagerProvider/core_provider.dart';
-import 'package:glass_mor/file_manager/views/FileManager/filemanager_home.dart';
+import 'package:glass_mor/file_manager/views/file_manager_views/filemanager_home.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_screen.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_vm.dart';
 import 'package:glass_mor/ui/download/download_screen.dart';

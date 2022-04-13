@@ -1,12 +1,12 @@
 
-
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_icons_nullsafty/flutter_icons_nullsafty.dart';
 import 'package:glass_mor/file_manager/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
 import 'package:glass_mor/file_manager/provider/FileManagerProvider/category_provider.dart';
 import 'package:provider/provider.dart';
 
-class FilePicker extends StatelessWidget {
+class FilePicker extends StatefulWidget {
   final String title;
 
   FilePicker({
@@ -14,27 +14,22 @@ class FilePicker extends StatelessWidget {
     required this.title,
   }) ;
 
-//   final String title;
-//
-//   FilePicker({
-//     Key key,
-//     this.title,
-//   }) : super(key: key);
-//
-//   @override
-//   _FilePickerState createState() => _FilePickerState();
-// }
-//
-// class _FilePickerState extends State<FilePicker> {
-//   @override
-//   void initState() {
-//     super.initState();
-//     // SchedulerBinding.instance.addPostFrameCallback((_) {
-//     //       Provider.of<CategoryProvider>(context, listen: false)
-//     //           .getAudios();
-//     // });
-//   }
+  @override
+  State<FilePicker> createState() => _FilePickerState();
+}
 
+class _FilePickerState extends State<FilePicker> {
+  void initState() {
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      // Provider.of<CoreProvider>(context, listen: false).checkSpace();
+      Provider.of<CategoryProvider>(context, listen: false).getTextFile();
+      // SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+
+
+    });
+    super.initState();
+  }
+//   final String title;
   @override
   Widget build(BuildContext context) {
     return Consumer(
@@ -65,7 +60,7 @@ class FilePicker extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        '${provider.filesList.length}  $title ',
+                        '${provider.filesList.length}  ${widget.title} ',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 20,

@@ -1,17 +1,16 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:glass_mor/file_manager/configurations/size_config.dart';
 import 'package:glass_mor/file_manager/constants/app_constants.dart';
 import 'package:glass_mor/file_manager/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
-import 'package:glass_mor/file_manager/views/FileManager/components/audio_picker.dart';
-import 'package:glass_mor/file_manager/views/FileManager/components/files_picker.dart';
-import 'package:glass_mor/file_manager/views/FileManager/components/images.dart';
-import 'package:glass_mor/file_manager/views/FileManager/components/videos_picker.dart';
+import 'package:glass_mor/file_manager/provider/FileManagerProvider/category_provider.dart';
+import 'package:glass_mor/file_manager/views/file_manager_views/components/videos_picker.dart';
+// import 'package:glass_mor/file_manager/views/FileManager/components/videos_picker.dart';
 
 import 'package:provider/provider.dart';
+
+import 'audio_picker.dart';
+import 'files_picker.dart';
+import 'images.dart';
 
 class Browse extends StatelessWidget {
   refresh(BuildContext context) async {
@@ -25,12 +24,15 @@ class Browse extends StatelessWidget {
       body: RefreshIndicator(
         onRefresh: () => refresh(context),
         child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 20.0,vertical: 20),
+          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
           children: <Widget>[
-            SizedBox(height: SizeConfig.screenHeight!*0.04),
+            SizedBox(height: SizeConfig.screenHeight! * 0.04),
+            Row(
+              children: [],
+            ),
             _CategoriesSection(),
             // CustomDivider(),
-            SizedBox(height: SizeConfig.screenHeight!*0.03),
+            SizedBox(height: SizeConfig.screenHeight! * 0.03),
 
             // _SectionTitle('Recent Files'),
             // _RecentFiles(),
@@ -115,7 +117,7 @@ class _CategoriesSection extends StatelessWidget {
         Map category = AppConstants.categories[index];
 
         return ListTile(
-          onTap: () async{
+          onTap: () async {
             // if (index == AppConstants.categories.length - 1) {
             //   // Check if the user has whatsapp installed
             //   if (Directory(FileUtils.waPath).existsSync()) {
@@ -128,43 +130,59 @@ class _CategoriesSection extends StatelessWidget {
             //     GeneralUtilities.showToast('Please Install WhatsApp to use this feature');
             //   }
             // } else
-              if (index == 0) {
+            if (index == 0) {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Images(title: '${category['title']}')));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Images(
+                            title: '${category['title']}',
+                            imageList: Provider.of<CategoryProvider>(context, listen: false).imageList,
+                          )));
               // Navigate.pushPage(
               //     context, Downloads(title: '${category['title']}'));
+            } else if (index == 1) {
+              // SchedulerBinding.instance!.addPostFrameCallback((_) {
+              //   // Provider.of<CoreProvider>(context, listen: false).checkSpace();
+              // if(Provider.of<CategoryProvider>(context, listen: false).videosList.isEmpty){
+              //   EasyLoading.show(status: 'loading...');
+              //   print('I am in if condition...');
+              //
+              //   await   Provider.of<CategoryProvider>(context, listen: false).getVideos().whenComplete(() {
+              //     EasyLoading.dismiss();
+              //     Navigator.push(context, MaterialPageRoute(builder: (context) => VideosPicker(title: '',)));
+              //   });
+              // }
+              // else{
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => VideosPicker(
+                            title: '',
+                            videoList: Provider.of<CategoryProvider>(context, listen: false).videosList,
+                          )));
+              // }
+
+              //   // SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+              //
+              //
+              // });
+              // EasyLoading.show(status: 'Loading....');
+
+            } else if (index == 2) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AudioPicker(
+                            title: '',
+                          )));
+            } else if (index == 3) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => FilePicker(
+                            title: '',
+                          )));
             }
-              else if(index==1)  {
-
-                // SchedulerBinding.instance!.addPostFrameCallback((_) {
-                //   // Provider.of<CoreProvider>(context, listen: false).checkSpace();
-                // if(Provider.of<CategoryProvider>(context, listen: false).videosList.isEmpty){
-                //   EasyLoading.show(status: 'loading...');
-                //   print('I am in if condition...');
-                //
-                //   await   Provider.of<CategoryProvider>(context, listen: false).getVideos().whenComplete(() {
-                //     EasyLoading.dismiss();
-                //     Navigator.push(context, MaterialPageRoute(builder: (context) => VideosPicker(title: '',)));
-                //   });
-                // }
-                // else{
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => VideosPicker(title: '',)));
-                // }
-
-                //   // SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-                //
-                //
-                // });
-                // EasyLoading.show(status: 'Loading....');
-
-
-              }
-              else if (index == 2) {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => AudioPicker(title: '',)));
-              }
-              else if (index == 3) {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => FilePicker(title: '',)));
-              }
             // } else {
             //   Navigator.push(
             //       context,

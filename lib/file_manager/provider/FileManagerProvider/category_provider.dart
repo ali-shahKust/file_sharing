@@ -550,10 +550,10 @@ class CategoryProvider extends ChangeNotifier {
   List<FileSystemEntity> downloads = <FileSystemEntity>[];
   List<FileMangerModel> videoTempList = [];
   List<String> downloadTabs = <String>[];
-  List<FileMangerModel> imageList = <FileMangerModel>[];
-  List<FileMangerModel> videosList = <FileMangerModel>[];
-  List<FileMangerModel> audiosList = <FileMangerModel>[];
-  List<FileMangerModel> filesList = <FileMangerModel>[];
+  List<FileMangerModel> imageList = [];
+  List<FileMangerModel> videosList = [];
+  List<FileMangerModel> audiosList = [];
+  List<FileMangerModel> filesList =[];
 
   // List<FileMangerModel> appsList = <FileMangerModel>[];
   // List<DeviceAppModel> appList = <DeviceAppModel>[];
@@ -623,35 +623,13 @@ class CategoryProvider extends ChangeNotifier {
   }
 
   getDeviceFileManager() {
-    getVideos();
     getImages();
+    getVideos();
     getAudios();
     getTextFile();
-    //getAllApps();
+  //   // getAllApps();
   }
 
-  // getDownloads() async {
-  //   setLoading(true);
-  //   downloadTabs.clear();
-  //   downloads.clear();
-  //   downloadTabs.add('All');
-  //   List<Directory> storages = await FileUtils.getStorageList();
-  //   storages.forEach((dir) {
-  //     if (Directory(dir.path + 'Download').existsSync()) {
-  //       List<FileSystemEntity> files = Directory(dir.path + 'Download').listSync();
-  //       print(files);
-  //       files.forEach((file) {
-  //         if (FileSystemEntity.isFileSync(file.path)) {
-  //           downloads.add(file);
-  //           downloadTabs.add(file.path.split('/')[file.path.split('/').length - 2]);
-  //           downloadTabs = downloadTabs.toSet().toList();
-  //           notifyListeners();
-  //         }
-  //       });
-  //     }
-  //   });
-  //   setLoading(false);
-  // }
 
   getImages() async {
     // String type = fileTypeList[1].toLowerCase();
@@ -701,7 +679,7 @@ class CategoryProvider extends ChangeNotifier {
   //   // String isolateName = AppConstants.fileTypeList[1];
   //   List<FileSystemEntity> files = await FileManagerUtilities.getAllFiles(showHidden: false);
   //   files.forEach((file) async {
-  //     print('File list in image function...${file.path}');
+  //     // print('File list in image function...${file.path}');
   //     // var base64Image;
   //     String mimeType = mime(file.path) ?? '';
   //     if (mimeType.split('/')[0] == AppConstants.fileTypeList[1]) {
@@ -715,9 +693,14 @@ class CategoryProvider extends ChangeNotifier {
   //       FileMangerModel fm = FileMangerModel(file: File(file.path), isSelected: false);
   //       imageList.add(fm);
   //     }
-  //     print('data in image list is ${imageList.length}');
+  //
+  //     //
   //     setLoading(false);
   //   });
+  //   print('data in image list is ${imageList.length}');
+  //   // for(int i=0;i<5;i++){
+  //   //     print('path of first five images in list are::${imageList[i].file.path}');
+  //   //   }
   //   // isolates.spawn<String>(
   //   //   getAllFilesWithIsolate,
   //   //   name: isolateName,
@@ -736,7 +719,7 @@ class CategoryProvider extends ChangeNotifier {
     // print('type in the function is $type');
     // setVideoLoading(true);
     videosList.clear();
-    selectedVideoConversionList.clear();
+    // selectedVideoConversionList.clear();
     String isolateName = 'videosThumbnail';
     isolates.spawn<String>(
       getThumbnailsWithIsolate,
@@ -779,6 +762,7 @@ class CategoryProvider extends ChangeNotifier {
 
         // notifyListeners();
       });
+      print('video list length in provider is ${videosList.length}');
 
       // currentFiles = images;
 

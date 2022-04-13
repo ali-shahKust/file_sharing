@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:glass_mor/data/base/base_vm.dart';
 import 'package:glass_mor/data/local_db/database_helper.dart';
-import 'package:glass_mor/file_manager/views/FileManager/filemanager_home.dart';
 import 'package:glass_mor/widget/queues_screen.dart';
 
 import '../../data/models/app_model.dart';

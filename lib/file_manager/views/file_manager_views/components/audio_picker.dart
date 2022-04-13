@@ -1,8 +1,10 @@
-
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_icons_nullsafty/flutter_icons_nullsafty.dart';
 import 'package:glass_mor/file_manager/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
 import 'package:glass_mor/file_manager/provider/FileManagerProvider/category_provider.dart';
+
 import 'package:provider/provider.dart';
 
 class AudioPicker extends StatefulWidget {
@@ -18,8 +20,14 @@ class AudioPicker extends StatefulWidget {
 }
 
 class _AudioPickerState extends State<AudioPicker> {
-  @override
   void initState() {
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      // Provider.of<CoreProvider>(context, listen: false).checkSpace();
+      Provider.of<CategoryProvider>(context, listen: false).getAudios();
+      // SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+
+
+    });
     super.initState();
   }
 

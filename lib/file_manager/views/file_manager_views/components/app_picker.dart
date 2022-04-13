@@ -300,7 +300,7 @@
 // //   //   List<StorageInfo> storageInfo = await PathProviderEx.getStorageInfo();
 // //   //   var root = storageInfo[0]
 // //   //       .rootDir; //storageInfo[1] for SD card, geting the root directory
-// //   //   var fm = FileManager(root: Directory(root)); //
+// //   //   var fm = file_manager_views(root: Directory(root)); //
 // //   //   files = await fm.filesTree(
 // //   //       excludedPaths: ["/storage/emulated/0/Android"],
 // //   //       sortedBy: FileManagerSorting.Date,

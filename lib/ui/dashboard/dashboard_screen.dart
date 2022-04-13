@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:glass_mor/file_manager/views/FileManager/filemanager_home.dart';
+import 'package:glass_mor/file_manager/views/file_manager_views/filemanager_home.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_vm.dart';
 import 'package:glass_mor/widget/queues_screen.dart';
 import 'package:glass_mor/ui/local_backup/backup_files.dart';

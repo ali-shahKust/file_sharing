@@ -1,31 +1,48 @@
 import 'dart:io';
-import 'dart:typed_data';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:glass_mor/file_manager/configurations/size_config.dart';
+import 'package:glass_mor/file_manager/constants/app_colors.dart';
 import 'package:glass_mor/file_manager/models/file_model.dart';
 import 'package:glass_mor/file_manager/provider/FileManagerProvider/category_provider.dart';
+import 'package:glass_mor/widget/restore_button.dart';
 
 import 'package:mime_type/mime_type.dart';
 
 import 'package:provider/provider.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
-class VideosPicker extends StatelessWidget {
+class VideosPicker extends StatefulWidget {
   final String title;
+  final List<FileMangerModel> videoList;
 
   VideosPicker({
     required this.title,
+    required this.videoList,
   });
 
+  @override
+  State<VideosPicker> createState() => _VideosPickerState();
+}
+
+class _VideosPickerState extends State<VideosPicker> {
+
+  void initState() {
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      // Provider.of<CoreProvider>(context, listen: false).checkSpace();
+      Provider.of<CategoryProvider>(context, listen: false).getVideos();
+      // SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+
+
+    });
+    super.initState();
+  }
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Consumer(
       builder: (BuildContext context, CategoryProvider provider, Widget? child) {
-        print('loader value from provider is ${provider.videoLoader}');
+        print('length of video list from provider is ${provider.videosList.length}');
         // if (provider.videoLoader) {
         //   return Scaffold(
         //     body: Center(
@@ -44,148 +61,97 @@ class VideosPicker extends StatelessWidget {
             child: Stack(
               //
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Padding(
-                    //   padding: EdgeInsets.symmetric(
-                    //     horizontal: SizeConfig.screenWidth! * 0.01,
-                    //     vertical: SizeConfig.screenHeight! * 0.008,
-                    //   ),
-                    //   child: Text(
-                    //     '${provider.videosList.length}  $title ',
-                    //     style: TextStyle(
-                    //       color: Colors.black,
-                    //       fontSize: SizeConfig.screenHeight! * 0.03,
-                    //       fontWeight: FontWeight.bold,
-                    //     ),
-                    //   ),
-                    // ),
-                    // SizedBox(
-                    //   height: 10.0,
-                    // ),
-                    Visibility(
-                      visible: provider.videosList.isNotEmpty,
-                      // replacement: Center(child: Text('No Files Found')),
-                      // replacement: Center(child: EasyLoading.show(status: 'Loading...')),
-                      child: Expanded(
-                          child:
-                              // Provider.of<CategoryProvider>(context, listen: false).videoLoader == false
-                              //     ?
-                              PagewiseGridViewExample()
-                          // : GridView.builder(
-                          //     addAutomaticKeepAlives: false,
-                          //     addRepaintBoundaries: false,
-                          //     reverse: false,
-                          //     cacheExtent: 15,
-                          //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          //       crossAxisCount: 4,
-                          //       mainAxisSpacing: 0.0,
-                          //       crossAxisSpacing: 0.0,
-                          //     ),
-                          //     itemCount: provider.videosList.length,
-                          //     itemBuilder: (BuildContext context, int index) {
-                          //       // File file = File(provider.videosList[index].file.path);
-                          //       // String path = file.path;
-                          //
-                          //       FileMangerModel fmm = provider.videosList[index];
-                          //       // if(provider.videosList[provider.videosList.length-1].thumbNail!=null){
-                          //       return _MediaTile(
-                          //         imgmodel: fmm,
-                          //         provider: provider,
-                          //         index: index,
-                          //         // screenHeight: screenHeight,
-                          //         // screenWidht: screenWidth,
-                          //       );
-                          //
-                          //       //     // }
-                          //       //     // else{
-                          //       //     //   return gridPlaceHolder();
-                          //       //     // }
-                          //       //
-                          //     }
-                          //     //   //   GridView.count(
-                          //     //   // crossAxisSpacing: 3.0,
-                          //     //   // mainAxisSpacing: 3.0,
-                          //     //   // crossAxisCount: 3,
-                          //     //   //
-                          //     //   // children: Constants.map(
-                          //     //   //   provider.videosList,
-                          //     //   //   (index, item) {
-                          //     //   //     File file = File(item[index].fileList[index].path);
-                          //     //   //     print('file in the view from model is ....$file');
-                          //     //   //     String path = file.path;
-                          //     //   //     String mimeType = mime(path) ?? '';
-                          //     //   //     return _MediaTile(file: file, mimeType: mimeType);
-                          //     //   //   },
-                          //     //   // ),
-                          //     //   // ),
-                          //     //   //   ),
-                          //     //   // ],
-                          //     ),
-
-                          // GridView.builder(
-                          //   reverse: false,
-                          //   cacheExtent: 15,
-                          //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          //     crossAxisCount: 3,
-                          //     mainAxisSpacing: 7.0,
-                          //     crossAxisSpacing: 7.0,
-                          //   ),
-                          //   itemCount:  provider.currentFiles.length ?? 0,
-                          //   itemBuilder: (BuildContext context, int index) {
-                          //     // ImageModel imageModel = ImageModel.fromJson(list[index]);
-                          //     return Container(
-                          //       child: Stack(
-                          //         alignment: Alignment.bottomCenter,
-                          //         children: <Widget>[
-                          //           FadeInImage(
-                          //             image: FileImage(
-                          //               File(fileProvider.photosListData[index].path),
-                          //             ),
-                          //             placeholder: MemoryImage(kTransparentImage),
-                          //             fit: BoxFit.cover,
-                          //             width: double.infinity,
-                          //             height: double.infinity,
-                          //           ),
-                          //           // Container(
-                          //           //   color: Colors.black.withOpacity(0.7),
-                          //           //   height: 30,
-                          //           //   width: double.infinity,
-                          //           //   child: Center(
-                          //           //     child: Text(
-                          //           //       fileProvider.photosListData[index].name ?? '',
-                          //           //       maxLines: 1,
-                          //           //       overflow: TextOverflow.ellipsis,
-                          //           //       style: TextStyle(
-                          //           //           color: Colors.white,
-                          //           //           fontSize: 16,
-                          //           //           fontFamily: 'Regular'
-                          //           //       ),
-                          //           //     ),
-                          //           //   ),
-                          //           // )
-                          //         ],
-                          //       ),
+                Visibility(
+                  visible: provider.videosList.isNotEmpty,
+                  // replacement: Center(child: Text('No Files Found')),
+                  // replacement: Center(child: EasyLoading.show(status: 'Loading...')),
+                  child: PagewiseGridViewExample(),
+                ),
+                Visibility(
+                  visible: provider.selectedFiles.length > 0 ? true : false,
+                  child: Positioned(
+                    bottom: 12,
+                    left: 50,
+                    right: 50,
+                    child: RestoreButton(
+                      text: 'Restore Files  ( ${provider.selectedFiles.length} )',
+                      width: SizeConfig.screenWidth! * 0.58,
+                      onTap: () async {
+                        //  pd.show(max: 100, msg: 'File Uploading...');
+                        if (provider.selectedFiles.length > 0) {
+                          print('Button pressed.');
+                          //   if (provider.selectedFiles.length == 1) {
+                          //     ProgressDialog pDialoge = ProgressDialog(context: context);
+                          //     pDialoge.show(
+                          //       max: 100,
+                          //       msg: 'Getting File Ready',
+                          //       // backgroundColor: kWhiteColor.withOpacity(0.5),
+                          //       // elevation: 2.0,
                           //     );
-                          //   },
-                          // ),
-
-                          // TabBarView(
-                          //   children: Constants.map<Widget>(
-                          //     provider.imageTabs,
-                          //     (index, label) {
-                          //       List l = provider.currentFiles;
-                          //        print('total images are...${l.length}');
+                          //     File file = File(provider.selectedFiles.first.path);
+                          //     String path = file.path;
+                          //     // String name = provider.selectedFiles[0].path.split('/').last;
+                          //     print('path of the file is $path');
+                          //     print('file is of the file is $file');
+                          //     uploadFile(context,
+                          //         currentContext: globals.globalContext,
+                          //         path: path,
+                          //         file1: file,
+                          //         sizeDem: 0,
+                          //         isReshare: false,
+                          //         pDialoge: pDialoge);
+                          //     provider.selectedFiles.clear();
+                          //     provider.clearAllSelectedLists();
+                          //   } else {
+                          //     print('i am going to zip the file...');
+                          //     ProgressDialog pDialoge = ProgressDialog(context: context);
+                          //     pDialoge.show(
+                          //       max: 100,
+                          //       msg: 'Getting File Ready',
+                          //       // backgroundColor: kWhiteColor.withOpacity(0.5),
+                          //       // elevation: 2.0,
+                          //     );
+                          //     var pathDown =
+                          //     await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
                           //
-                          //     },
-                          //   ),
-                          // ),
-
+                          //     // print(gernate(5));
+                          //     //   print(new DateTime.now().millisecondsSinceEpoch);
+                          //     // print(generateRandomString(5));
+                          //     int fileName = DateTime.now().millisecondsSinceEpoch;
+                          //     // String zipPath = appDocDirectory.path + "/" + '$fileName.zip';
+                          //     String zipPath = pathDown + "/" + '$fileName.zip';
+                          //     print('path in the device is....$zipPath');
+                          //     var encoder = ZipFileEncoder();
+                          //     encoder.create(zipPath);
                           //
-                          ),
+                          //     provider.selectedFiles.forEach((element) {
+                          //       print('all the files in the list are...${element.path.split('/').last.toString()}');
+                          //       encoder.addFile(File(element.path));
+                          //     });
+                          //     print('zip path is...${encoder.zip_path}');
+                          //     File zipFile = File(encoder.zip_path);
+                          //     encoder.close();
+                          //     uploadFile(context,
+                          //         currentContext: globals.globalContext,
+                          //         path: zipPath,
+                          //         file1: zipFile,
+                          //         sizeDem: 1,
+                          //         isReshare: false,
+                          //         pDialoge: pDialoge);
+                          //
+                          //     provider.selectedFiles.clear();
+                          //     provider.clearAllSelectedLists();
+                          //   }
+                          // } else {
+                          //   print('No file Selected');
+                          //   // EasyLoading.show(status: )
+                          //   // Toast('No file Selected', context);
+                        }
+                      },
+                      btnColor: AppColors.kBlueColor,
+                      padding: SizeConfig.screenHeight! * 0.02,
                     ),
-                  ],
+                  ),
                 ),
 
                 // Positioned(
@@ -220,17 +186,19 @@ class PagewiseGridViewExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('I am in pagewise build function...');
     return PagewiseGridView.count(
         pageSize: PAGE_SIZE,
-        crossAxisCount: 4,
+        crossAxisCount: 3,
         mainAxisSpacing: 0.0,
         crossAxisSpacing: 0.0,
         childAspectRatio: 1,
-        padding: const EdgeInsets.all(0.0),
+        padding: EdgeInsets.all(0.0),
         itemBuilder: this._itemBuilder,
         loadingBuilder: (context) {
+          print('I am in loading builder...');
           // Provider.of<CategoryProvider>(context, listen: false).setVideoLoading();
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: CircularProgressIndicator());
           // return Container(height:300, width:double.infinity,child: gridPlaceHolder());
         },
         pageFuture: (pageIndex) {
@@ -247,7 +215,46 @@ class PagewiseGridViewExample extends StatelessWidget {
       provider: provider,
       index: _,
     );
-
+    return Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey[600]!),
+        ),
+        child:
+            Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Expanded(
+            child: Container(
+              height: 150,
+              width: 200,
+              //   decoration: BoxDecoration(
+              //       color: Colors.grey[200],
+              //       image: DecorationImage(
+              //           image: Image.file(entry.thumbNail!),
+              //           fit: BoxFit.fill)),
+              // ),
+              child: Image.memory(
+                entry.thumbNail,
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+          SizedBox(height: 8.0),
+          Expanded(
+            child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                child: SizedBox(
+                    height: 30.0,
+                    child: SingleChildScrollView(child: Text(entry.file.path, style: TextStyle(fontSize: 12.0))))),
+          ),
+          SizedBox(height: 8.0),
+          // Padding(
+          //   padding: EdgeInsets.symmetric(horizontal: 8.0),
+          //   child: Text(
+          //     entry.,
+          //     style: TextStyle(fontWeight: FontWeight.bold),
+          //   ),
+          // ),
+          SizedBox(height: 8.0)
+        ]));
   }
 }
 
@@ -402,28 +409,66 @@ class _MediaTile extends StatelessWidget {
                 )),
           ),
           Positioned(
-            top: SizeConfig.screenHeight! * (-0.032),
+            // top: SizeConfig.screenHeight! * (-0.032),
             // left:50,
-            // bottom: 0,
+            bottom:  SizeConfig.screenHeight! * (-0.032),
             right: 0,
             child: Padding(
-              padding: EdgeInsets.all(SizeConfig.screenHeight! * 0.005),
-              child: provider.videosList[index].isSelected
-                  ? Container(
-                      height: SizeConfig.screenHeight! * 0.1,
-                      width: SizeConfig.screenWidth! * 0.07,
-                      decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
-                      child: Icon(
-                        Icons.check,
-                        size: SizeConfig.screenHeight! * 0.02,
-                        color: Colors.white,
-                      ),
-                    )
-                  : SizedBox(
-                      height: 2.0,
-                    ),
+                padding: EdgeInsets.all(5.0),
+                child: provider.videosList[index].isSelected
+                    ? Container(
+                  height: SizeConfig.screenHeight! * 0.1,
+                  width: SizeConfig.screenWidth! * 0.07,
+                  // decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.kBlueColor),
+                  child: Icon(
+                    Icons.check_box_outlined,
+                    size: SizeConfig.screenHeight! * 0.03,
+                    color: Colors.grey,
+                    // Icons.check,
+                    // size: SizeConfig.screenHeight! * 0.02,
+                    // color: Colors.white,
+                  ),
+                )
+                    : Container(
+                  height: SizeConfig.screenHeight! * 0.1,
+                  width: SizeConfig.screenWidth! * 0.07,
+
+                  // decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.kBlueColor),
+                  child: Icon(
+                    Icons.check_box_outline_blank,
+                    size: SizeConfig.screenHeight! * 0.03,
+                    color: Colors.grey,
+                  ),
+                )
+              // SizedBox(
+              //         height: 2.0,
+              //       ),
             ),
           ),
+          // Positioned(
+          //   top: SizeConfig.screenHeight! * (-0.032),
+          //   // left:50,
+          //   // bottom: 0,
+          //   right: 0,
+          //   child: Padding(
+          //     padding: EdgeInsets.all(SizeConfig.screenHeight! * 0.005),
+          //     child: provider.videosList[index].isSelected
+          //         ? Container(
+          //             height: SizeConfig.screenHeight! * 0.1,
+          //             width: SizeConfig.screenWidth! * 0.07,
+          //             decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
+          //             child: Icon(
+          //               Icons.check,
+          //               size: SizeConfig.screenHeight! * 0.02,
+          //               color: Colors.white,
+          //             ),
+          //           )
+          //         : SizedBox(
+          //             height: 2.0,
+          //           ),
+          //   ),
+          // ),
+
         ],
       ),
     );
