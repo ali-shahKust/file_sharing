@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:glass_mor/data/models/app_model.dart';
 import 'package:glass_mor/file_manager/provider/FileManagerProvider/core_provider.dart';
 import 'package:glass_mor/file_manager/views/FileManager/filemanager_home.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_screen.dart';
@@ -39,7 +40,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case QuesScreen.routeName:
       return MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(
-              create: (context) => DashBoardVm(), child: QuesScreen()));
+              create: (context) => DashBoardVm(), child: QuesScreen(files: settings.arguments as  List<File>)));
     case DownloadScreen.routeName:
       return MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(

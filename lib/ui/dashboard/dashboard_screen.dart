@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:glass_mor/file_manager/views/FileManager/filemanager_home.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_vm.dart';
 import 'package:glass_mor/widget/queues_screen.dart';
 import 'package:glass_mor/ui/local_backup/backup_files.dart';
@@ -57,7 +58,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                           children: [
                             InkWell(
                               onTap: () {
-                                vm.pickFile(context: context);
+                                Navigator.pushNamed(context, FileManagerHome.routeName);
+                               // vm.pickFile(context: context);
                               },
                               child: iUtills.glassContainer(
                                   context: context,

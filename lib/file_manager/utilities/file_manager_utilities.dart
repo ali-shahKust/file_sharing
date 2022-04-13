@@ -106,7 +106,7 @@ class FileManagerUtilities {
     Directory d = Directory(path);
     List<FileSystemEntity> l = d.listSync();
     for (FileSystemEntity file in l) {
-      print('file list in getAllFileInPath function...${file.path}');
+     // print('file list in getAllFileInPath function...${file.path}');
       if (FileSystemEntity.isFileSync(file.path)) {
         if (!showHidden) {
           if (!basename(file.path).startsWith('.')) {

@@ -30,11 +30,10 @@ void main() async {
   GetIt.I.registerSingleton<AuthService>(AuthService());
   await GetIt.I.allReady();
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();

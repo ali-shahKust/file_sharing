@@ -19,11 +19,11 @@ import '../../data/models/queue_model.dart';
 int completed = 0;
 
 class DashBoardVm extends BaseVm {
+  var queue = GetIt.I.get<AppModel>().queue;
+
   List<File> _files = [];
-  List _pics = [];
   StreamSubscription? subscription;
   var dbHelper = GetIt.I.get<DatabaseHelper>();
-  var queue = GetIt.I.get<AppModel>().queue;
 
   List<File> get files => _files;
   bool _connectionLost = false;
@@ -41,11 +41,7 @@ class DashBoardVm extends BaseVm {
     notifyListeners();
   }
 
-  List get pics => _pics;
 
-  set pics(List value) {
-    _pics = value;
-  }
   checkConnection() async {
     subscription = Connectivity()
         .onConnectivityChanged
@@ -70,16 +66,17 @@ class DashBoardVm extends BaseVm {
       files.clear();
       files = mfile.paths.map((path) => File(path!)).toList();
 
-      uploadFile(context, files);
-      Navigator.pushNamed(context, QuesScreen.routeName);
+      // uploadFile(context, files);
+      Navigator.pushNamed(context, QuesScreen.routeName,arguments: files);
       // Navigator.push(context, MaterialPageRoute(builder: (context)=>QuesScreen(files: files,),fullscreenDialog: true));
 
     }
   }
 
 
-  uploadFile(context, List<File> file) async {
+  uploadFile(List<File> file) async {
     queue.clear();
+    completed = 0;
     for (var element in file) {
       String key = element.path.split('/').last;
       String date = element.statSync().modified.toString();
@@ -104,8 +101,10 @@ class DashBoardVm extends BaseVm {
             onProgress: (progress) async {
               queue[i]!.progress =
                   (progress.getFractionCompleted() * 100).round().toString();
+              notifyListeners();
+              print("XXPROGRESS: ${queue[i]!.progress}");
+
               queue[i]!.id = i;
-              print("PROGRESS: ${queue[i]!.progress}");
                   (progress.getFractionCompleted() * 100).round().toString();
               if ((progress.getFractionCompleted() * 100).round() == 100) {
                 completed = i + 1;
@@ -114,7 +113,6 @@ class DashBoardVm extends BaseVm {
                         key;
               }
 
-              notifyListeners();
             });
         int? count = await dbHelper.checkValue(queue[i]!.path);
         if (count != null && count > 0) {
@@ -122,6 +120,8 @@ class DashBoardVm extends BaseVm {
         } else {
           dbHelper.insertFileToDb(queue[i]!);
         }
+        notifyListeners();
+
       } on StorageException catch (e) {
         print(e.message);
       } catch (e) {
