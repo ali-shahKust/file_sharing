@@ -550,10 +550,14 @@ class CategoryProvider extends ChangeNotifier {
   List<FileSystemEntity> downloads = <FileSystemEntity>[];
   List<FileMangerModel> videoTempList = [];
   List<String> downloadTabs = <String>[];
-  List<FileMangerModel> imageList = [];
+  List<FileMangerModel> _imageList = [];
   List<FileMangerModel> videosList = [];
   List<FileMangerModel> audiosList = [];
   List<FileMangerModel> filesList =[];
+
+
+   get imageList=>_imageList;
+
 
   // List<FileMangerModel> appsList = <FileMangerModel>[];
   // List<DeviceAppModel> appList = <DeviceAppModel>[];
@@ -634,7 +638,8 @@ class CategoryProvider extends ChangeNotifier {
   getImages() async {
     // String type = fileTypeList[1].toLowerCase();
     setLoading(true);
-    imageList.clear();
+     _imageList
+.clear();
     String isolateName = AppConstants.fileTypeList[1];
     isolates.spawn<String>(
       getAllFilesWithIsolate,
@@ -662,7 +667,9 @@ class CategoryProvider extends ChangeNotifier {
           //imgBytes: base64ImageLocal
           // images.add(file);
           FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
-          imageList.add(fm);
+           _imageList.add(fm);
+          print('image list in function is ${ _imageList
+.length}');
         }
         notifyListeners();
       });
@@ -1006,9 +1013,9 @@ class CategoryProvider extends ChangeNotifier {
   // }
 
   void unSelectImages() {
-    for (int i = 0; i < imageList.length; i++) {
-      print('value of isSelected variable is ...${imageList[i].isSelected}');
-      imageList[i].isSelected = false;
+    for (int i = 0; i < _imageList.length; i++) {
+      print('value of isSelected variable is ...${_imageList[i].isSelected}');
+      _imageList[i].isSelected = false;
     }
   }
 

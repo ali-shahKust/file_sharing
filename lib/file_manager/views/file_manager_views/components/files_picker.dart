@@ -19,16 +19,16 @@ class FilePicker extends StatefulWidget {
 }
 
 class _FilePickerState extends State<FilePicker> {
-  void initState() {
-    SchedulerBinding.instance!.addPostFrameCallback((_) {
-      // Provider.of<CoreProvider>(context, listen: false).checkSpace();
-      Provider.of<CategoryProvider>(context, listen: false).getTextFile();
-      // SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-
-
-    });
-    super.initState();
-  }
+  // void initState() {
+  //   SchedulerBinding.instance!.addPostFrameCallback((_) {
+  //     // Provider.of<CoreProvider>(context, listen: false).checkSpace();
+  //     Provider.of<CategoryProvider>(context, listen: false).getTextFile();
+  //     // SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+  //
+  //
+  //   });
+  //   super.initState();
+  // }
 //   final String title;
   @override
   Widget build(BuildContext context) {

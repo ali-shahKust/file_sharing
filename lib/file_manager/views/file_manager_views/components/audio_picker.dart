@@ -20,16 +20,16 @@ class AudioPicker extends StatefulWidget {
 }
 
 class _AudioPickerState extends State<AudioPicker> {
-  void initState() {
-    SchedulerBinding.instance!.addPostFrameCallback((_) {
-      // Provider.of<CoreProvider>(context, listen: false).checkSpace();
-      Provider.of<CategoryProvider>(context, listen: false).getAudios();
-      // SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-
-
-    });
-    super.initState();
-  }
+  // void initState() {
+  //   SchedulerBinding.instance!.addPostFrameCallback((_) {
+  //     // Provider.of<CoreProvider>(context, listen: false).checkSpace();
+  //     Provider.of<CategoryProvider>(context, listen: false).getAudios();
+  //     // SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+  //
+  //
+  //   });
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -1,12 +1,19 @@
+import 'dart:io';
+
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:glass_mor/file_manager/views/file_manager_views/filemanager_home.dart';
 import 'package:glass_mor/ui/dashboard/dashboard_vm.dart';
+import 'package:glass_mor/widget/InfoDialoge.dart';
 import 'package:glass_mor/widget/queues_screen.dart';
 import 'package:glass_mor/ui/local_backup/backup_files.dart';
-import 'package:glass_mor/ui/online_backup/files_list.dart';
+
 import 'package:glass_mor/utills/i_utills.dart';
 import 'package:glass_mor/widget/primary_text.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+
+import '../online_backup/files_list.dart';
 
 class DashBoardScreen extends StatefulWidget {
   static const routeName = 'dash_board';
@@ -16,8 +23,18 @@ class DashBoardScreen extends StatefulWidget {
 }
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
+  var osVersion;
+  BuildContext ?parentContext;
+  void checkVersion() async {
+    if (Platform.isAndroid) {
+      var androidInfo = await DeviceInfoPlugin().androidInfo;
+      // var release = androidInfo.version.release;
+      osVersion = androidInfo.version.release;
+    }
+  }
   @override
   Widget build(BuildContext context) {
+    parentContext = context;
     return Consumer<DashBoardVm>(
       builder: (context, vm, _) => Scaffold(
         drawer: Drawer(
@@ -57,9 +74,82 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             InkWell(
-                              onTap: () {
-                                Navigator.pushNamed(context, FileManagerHome.routeName);
-                               // vm.pickFile(context: context);
+                              onTap: () async{
+                                print('I am button tap....');
+                                PermissionStatus status = osVersion == '11'
+                                    ? await Permission.manageExternalStorage.status
+                                    : await Permission.storage.status;
+                                print('storage permission status is ${status.index}');
+                                if (!status.isGranted) {
+                                  // InfoDialoge();
+                                  showDialog(
+                                      barrierDismissible: true,
+                                      context: parentContext!,
+                                      builder: (context) {
+                                        return InfoDialoge(
+                                          headingText: 'Storage Permission Needed',
+                                          subHeadingText:
+                                          'This App require storage permission to share and receive files',
+                                          btnText: 'Ok',
+                                          onBtnTap: () async {
+                                            Navigator.pop(context);
+                                            if (osVersion == '11') {
+                                              status = await Permission.manageExternalStorage.status;
+                                            } else {
+                                              status = await Permission.storage.status;
+                                            }
+                                            // PermissionStatus status = osVersion == '11'? await Permission.manageExternalStorage.status:Permission.storage.status;
+                                            print('manage external storage permission status is ...$status');
+                                            if (status.isGranted) {
+                                              // Dialogs.showToast('Permission granted...');
+                                              // vm.pickFile(context: context);
+                                              Navigator.pushNamed(context, FileManagerHome.routeName);
+
+                                            } else if (status.isDenied) {
+                                              PermissionStatus status = osVersion == '11'
+                                                  ? await Permission.manageExternalStorage.request()
+                                                  : await Permission.storage.request();
+                                              print(
+                                                  'manage external storage permission status in denied condition is ...$status');
+                                              // Dialogs.showToast('Please Grant Storage Permissions');
+                                              // PermissionStatus status = await Permission.manageExternalStorage.request();
+                                            } else if (status.isRestricted) {
+                                              // AppSettings.openAppSettings();
+                                              print('Restricted permission call');
+                                              PermissionStatus status = osVersion == '11'
+                                                  ? await Permission.manageExternalStorage.request()
+                                                  : await Permission.storage.request();
+                                              print(
+                                                  'manage external storage permission status in restricted condition is ...$status');
+                                              // Dialogs.showToast('Please Grant Storage Permissions');
+                                              // PermissionStatus status = await Permission.manageExternalStorage.request();
+                                            } else {
+                                              print('else condition permission call');
+                                              PermissionStatus status = osVersion == '11'
+                                                  ? await Permission.manageExternalStorage.request()
+                                                  : await Permission.storage.request();
+
+                                              print(
+                                                  'manage external storage permission status in denied condition is ...$status');
+                                              // Dialogs.showToast('Please Grant Storage Permissions');
+                                            }
+                                            // print('I am in no permission granted with status $status');
+                                            // ShareFilesUtils.requestPermission(context, NewFileManager());
+                                          },
+                                        );
+                                      });
+                                } else {
+                                  print('I am in  permission granted with status $status');
+                                  print('going to home with permission status $status');
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) => FileManagerHome()));
+                                  // Navigator.pushNamed(context, FileManagerHome.routeName);
+                                  // vm.pickFile(context: context);
+                                }
+                                // Navigator.pushNamed(
+                                //     context, PicturesScreen.routeName);
+
+                                // vm.pickFile(context: context);
                               },
                               child: iUtills.glassContainer(
                                   context: context,
@@ -73,9 +163,13 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                   ))),
                             ),
                             InkWell(
-                              onTap: () {
+                              onTap: () async{
                                 Navigator.pushNamed(
-                                    context, PicturesScreen.routeName);
+                                        context, PicturesScreen.routeName);
+                                // Navigator.pushNamed(
+                                //     context, PicturesScreen.routeName);
+
+                                // vm.pickFile(context: context);
                               },
                               child: iUtills.glassContainer(
                                   context: context,

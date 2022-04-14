@@ -29,26 +29,23 @@ class Images extends StatefulWidget {
 class _ImagesState extends State<Images> with SingleTickerProviderStateMixin {
   // TabController? _tabController;
   // int _selectedIndex = 0;
-  @override
-  void initState() {
-    SchedulerBinding.instance!.addPostFrameCallback((_) {
-      // Provider.of<CoreProvider>(context, listen: false).checkSpace();
-      Provider.of<CategoryProvider>(context, listen: false).getImages();
-      // SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-
-
-    });
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   SchedulerBinding.instance!.addPostFrameCallback((_) {
+  //     // Provider.of<CoreProvider>(context, listen: false).checkSpace();
+  //     Provider.of<CategoryProvider>(context, listen: false).getImages();
+  //     // SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+  //
+  //
+  //   });
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Consumer(builder: (BuildContext context, CategoryProvider provider, Widget? child) {
-      print('all files list length is ${provider.imageList.length}');
-      if (provider.loading) {
-        return Scaffold(body: CustomLoader());
-      }
+    print('all files list length is ${Provider.of<CategoryProvider>(context,listen: false).imageList.length}');
+
       return Consumer(
         builder: (BuildContext context, CategoryProvider provider, Widget? child) {
           print('all files list length is ${provider.imageList.length}');
@@ -133,7 +130,10 @@ class _ImagesState extends State<Images> with SingleTickerProviderStateMixin {
                           onTap: () async {
                             //  pd.show(max: 100, msg: 'File Uploading...');
                             if (provider.selectedFiles.length > 0) {
-                              Navigator.pushNamed(context, QuesScreen.routeName,arguments: provider.selectedFiles);
+                              Navigator.pushNamed(context, QuesScreen.routeName,arguments: provider.selectedFiles).whenComplete(() {
+                                print('whencomplete call...');
+                                provider.selectedFiles.clear();
+                              });
 
                             }
                           },
@@ -181,7 +181,7 @@ class _ImagesState extends State<Images> with SingleTickerProviderStateMixin {
               );
         },
       );
-    });
+
   }
 }
 
