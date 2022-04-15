@@ -2,34 +2,24 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:quick_backup/custom_widgets/queues_screen.dart';
-import 'package:quick_backup/data/models/app_model.dart';
 import 'package:quick_backup/views/device_file_manager/category/audio_view.dart';
-import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 import 'package:quick_backup/views/device_file_manager/category/files_view.dart';
 import 'package:quick_backup/views/device_file_manager/category/images_view.dart';
 import 'package:quick_backup/views/device_file_manager/category/videos_view.dart';
-import 'package:quick_backup/views/device_file_manager/file_manager_home/core_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/filemanager_home.dart';
-import 'package:provider/provider.dart';
 import 'package:quick_backup/views/dashboard/dashboard_screen.dart';
-import 'package:quick_backup/views/dashboard/dashboard_vm.dart';
 import 'package:quick_backup/views/download/download_screen.dart';
-import 'package:quick_backup/views/download/download_vm.dart';
 import 'package:quick_backup/views/local_backup/backup_files.dart';
-import 'package:quick_backup/views/local_backup/backup_vm.dart';
-import 'package:quick_backup/views/main_page/main_screen.dart';
-import 'package:quick_backup/views/main_page/main_vm.dart';
+import 'package:quick_backup/views/login_page/login_screen.dart';
 import 'package:quick_backup/views/online_backup/files_list.dart';
-import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 import 'package:quick_backup/views/splash/splash.dart';
-import 'package:quick_backup/views/splash/splash_vm.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     case SplashScreen.routeName:
       return MaterialPageRoute(builder: (context) => SplashScreen());
-    case MainScreen.routeName:
-      return MaterialPageRoute(builder: (context) => MainScreen());
+    case LoginScreen.routeName:
+      return MaterialPageRoute(builder: (context) => LoginScreen());
     case DashBoardScreen.routeName:
       return MaterialPageRoute(builder: (context) => DashBoardScreen());
     case BackupFilesScreen.routeName:

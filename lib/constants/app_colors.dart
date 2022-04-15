@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 class AppColors {
 
+  static Color kPrimaryColor = const Color(0xFF7266F8);
+  static Color kScaffoldBackgroundColor = const Color(0xFFFFFFFF);
+  static Color kShadedWhiteColor = const Color(0xFFF8F8FE);
   static Color kBadgeGreenColor = const Color(0xFF8DC772);
   static const kBlackColor = Colors.black;
   static const kWhiteColor = Color.fromRGBO(255, 255, 255, 1);
@@ -18,7 +21,6 @@ class AppColors {
   static const kBorderColor = Color.fromRGBO(83, 109, 254, 1);
   static const kUserProfileTextColor = Color.fromRGBO(92, 96, 99, 1);
   static const kBackgroundColor = Color(0xFFF1EFF1);
-  static const kPrimaryColor = Color(0xFF035AA6);
   static const kSecondaryColor = Color(0xFFFFA41B);
   static const kTextColor = Color(0xFF000839);
   static const kTextLightColor = Color(0xFF747474);
