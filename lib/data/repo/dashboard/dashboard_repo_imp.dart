@@ -1,4 +1,4 @@
-import 'package:glass_mor/data/repo/dashboard/dashboard_repo.dart';
+import 'package:quick_backup/data/repo/dashboard/dashboard_repo.dart';
 
 class DashBoardRepoImp extends DashBoardRepo{
   @override

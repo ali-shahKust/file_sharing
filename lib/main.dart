@@ -4,27 +4,33 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
-import 'package:glass_mor/data/models/app_model.dart';
-import 'package:glass_mor/data/local_db/database_helper.dart';
-import 'package:glass_mor/data/repo/dashboard/dashboard_repo.dart';
-import 'package:glass_mor/data/repo/dashboard/dashboard_repo_imp.dart';
-import 'package:glass_mor/data/repo/main/main_repo.dart';
-import 'package:glass_mor/data/repo/main/main_repo_imp.dart';
-import 'package:glass_mor/data/route/route_setting.dart';
-import 'package:glass_mor/data/services/auth_services.dart';
-import 'package:glass_mor/ui/splash/splash.dart';
-import 'package:path_provider/path_provider.dart';
-
+import 'package:quick_backup/data/models/app_model.dart';
+import 'package:quick_backup/data/local_db/database_helper.dart';
+import 'package:quick_backup/data/repo/dashboard/dashboard_repo.dart';
+import 'package:quick_backup/data/repo/dashboard/dashboard_repo_imp.dart';
+import 'package:quick_backup/data/repo/main/main_repo.dart';
+import 'package:quick_backup/data/repo/main/main_repo_imp.dart';
+import 'package:quick_backup/data/route/route_setting.dart';
+import 'package:quick_backup/data/services/auth_services.dart';
+import 'package:quick_backup/views/dashboard/dashboard_vm.dart';
+import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
+import 'package:quick_backup/views/device_file_manager/file_manager_home/core_vm.dart';
+import 'package:quick_backup/views/download/download_vm.dart';
+import 'package:quick_backup/views/local_backup/backup_vm.dart';
+import 'package:quick_backup/views/main_page/main_vm.dart';
+import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
+import 'package:quick_backup/views/splash/splash.dart';
 import 'package:provider/provider.dart';
+import 'package:quick_backup/views/splash/splash_vm.dart';
+import 'data/models/app_model.dart';
 
-import 'file_manager/provider/FileManagerProvider/category_provider.dart';
-import 'file_manager/provider/FileManagerProvider/core_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
   GetIt.I.registerSingleton<AppModel>(AppModel());
   GetIt.I.registerSingleton<DashBoardRepo>(DashBoardRepoImp());
+  GetIt.I.registerSingleton<CategoryVm>(CategoryVm());
   GetIt.I.registerSingleton<MainRepo>(MainRepoImp());
   GetIt.I.registerSingleton<DatabaseHelper>(DatabaseHelper());
   GetIt.I.registerSingleton<AuthService>(AuthService());
@@ -34,7 +40,6 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -48,20 +53,20 @@ class _MyAppState extends State<MyApp> {
     ]);
     return MultiProvider(
         providers: [
-          // ChangeNotifierProvider(create: (_) => AppProvider()),
-          ChangeNotifierProvider(create: (_) => CoreProvider()),
-          ChangeNotifierProvider(create: (_) => CategoryProvider()),
+          ChangeNotifierProvider(create: (_) => CoreVm()),
+          ChangeNotifierProvider(create: (_) => SplashVm()),
+          ChangeNotifierProvider(create: (_) => MainVm()),
+          ChangeNotifierProvider(create: (_) => CategoryVm()),
           ChangeNotifierProvider(create: (_) => AppModel()),
-          // ChangeNotifierProvider(create: (_) => CategoryProvider()),
-          // ChangeNotifierProvider(create: (_) => UtilityProvider()),
-          // ChangeNotifierProvider(create: (_) => TranferHistoryProvider()),
+          ChangeNotifierProvider(create: (_) => OnlineBackUpVm()),
+          ChangeNotifierProvider(create: (_) => DownloadVm()),
+          ChangeNotifierProvider(create: (_) => DashBoardVm()),
+          ChangeNotifierProvider(create: (_) => BackUpVm()),
         ],
-        child: Consumer<AppModel>(builder: (context, model, _) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            initialRoute: SplashScreen.routeName,
-            onGenerateRoute: (settings) => generateRoute(settings),
-          );
-        }));
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          initialRoute: SplashScreen.routeName,
+          onGenerateRoute: (settings) => generateRoute(settings),
+        ));
   }
 }

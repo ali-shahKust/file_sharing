@@ -1,4 +1,4 @@
-import 'package:glass_mor/data/services/auth_services.dart';
+import 'package:quick_backup/data/services/auth_services.dart';
 
 abstract class BaseRepo {
   AuthService authRepo = AuthService();

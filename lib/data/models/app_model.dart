@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:glass_mor/data/models/queue_model.dart';
+import 'package:quick_backup/data/models/queue_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../main.dart';
