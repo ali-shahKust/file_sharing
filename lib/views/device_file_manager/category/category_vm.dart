@@ -96,6 +96,63 @@ class CategoryVm extends BaseVm {
     //   // getAllApps();
   }
 
+
+  getAllFilesData() async {
+    // String type = fileTypeList[1].toLowerCase();
+    print('get all filedata call....');
+    setLoading(true);
+    _imageList.clear();
+    videosList.clear();
+    audiosList.clear();
+    filesList.clear();
+
+    String isolateName ='allFiles';
+    isolates.spawn<String>(
+      getAllFilesWithIsolate,
+      name: isolateName,
+      onReceive: (val) {
+        print(val);
+        isolates.kill(isolateName);
+      },
+      onInitialized: () => isolates.send('hey', to: isolateName),
+    );
+    ReceivePort _port = ReceivePort();
+    IsolateNameServer.registerPortWithName(_port.sendPort, '${isolateName}_7');
+    _port.listen((files) {
+      print('RECEIVED SERVER PORT');
+
+      files.forEach((file) async {
+        // var base64Image;
+        String mimeType = mime(file.path) ?? '';
+        if (mimeType.split('/')[0] == AppConstants.fileTypeList[1]) {
+          FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
+          _imageList.add(fm);
+          print('image list in function is ${_imageList.length}');
+        }
+        else if (mimeType.split('/')[0] == AppConstants.fileTypeList[2]) {
+          FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
+          videosList.add(fm);
+          print('image list in function is ${_imageList.length}');
+        }
+        else if (mimeType.split('/')[0] == AppConstants.fileTypeList[3]) {
+          FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
+          audiosList.add(fm);
+          print('image list in function is ${_imageList.length}');
+        }
+       else if (mimeType.split('/')[0] == AppConstants.fileTypeList[4]) {
+          FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
+          filesList.add(fm);
+          print('image list in function is ${_imageList.length}');
+        }
+      });
+      setLoading(false);
+      notifyListeners();
+
+      _port.close();
+      IsolateNameServer.removePortNameMapping('${isolateName}_7');
+    });
+  }
+
   getImages() async {
     // String type = fileTypeList[1].toLowerCase();
     setLoading(true);
@@ -284,7 +341,7 @@ class CategoryVm extends BaseVm {
     // print('Files $files');
     final messenger = HandledIsolate.initialize(context);
     try {
-      final SendPort send = IsolateNameServer.lookupPortByName('${isolateName}_2')!;
+      final SendPort send = IsolateNameServer.lookupPortByName('${isolateName}_7')!;
       send.send(files);
     } catch (e) {
       print(e);

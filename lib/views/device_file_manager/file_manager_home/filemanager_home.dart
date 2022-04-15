@@ -19,9 +19,6 @@ class FileManagerHome extends StatefulWidget {
 }
 
 class _FileManagerHomeState extends State<FileManagerHome> {
-  // late PageController _pageController;
-  // int _page = 0;
-
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -34,43 +31,26 @@ class _FileManagerHomeState extends State<FileManagerHome> {
             children: [],
           ),
           _CategoriesSection(),
-          // CustomDivider(),
           SizedBox(height: SizeConfig.screenHeight! * 0.03),
-
-          // _SectionTitle('Recent Files'),
-          // _RecentFiles(),
         ],
       ),
       // Browse(),
     );
   }
 
-  // void navigationTapped(int page) {
-  //   _pageController.jumpToPage(page);
-  // }
-
   @override
   void initState() {
     super.initState();
-    // _pageController = PageController(initialPage: 0);
     SchedulerBinding.instance!.addPostFrameCallback((_) {
       // Provider.of<CoreProvider>(context, listen: false).checkSpace();
       Provider.of<CategoryVm>(context, listen: false).getDeviceFileManager();
-      // SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     });
   }
 
   @override
   void dispose() {
     super.dispose();
-    // _pageController.dispose();
   }
-
-// void onPageChanged(int page) {
-//   setState(() {
-//     this._page = page;
-//   });
-// }
 }
 
 class _CategoriesSection extends StatelessWidget {
@@ -85,18 +65,6 @@ class _CategoriesSection extends StatelessWidget {
 
         return ListTile(
           onTap: () async {
-            // if (index == AppConstants.categories.length - 1) {
-            //   // Check if the user has whatsapp installed
-            //   if (Directory(FileUtils.waPath).existsSync()) {
-            //     Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //           builder: (context) => WhatsappStatus(title: '${category['title']}'),
-            //         ));
-            //   } else {
-            //     GeneralUtilities.showToast('Please Install WhatsApp to use this feature');
-            //   }
-            // } else
             if (index == 0) {
               print(
                   'image list in function is testing ${Provider.of<CategoryVm>(context, listen: false).imageList.length}');
