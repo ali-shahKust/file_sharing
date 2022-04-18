@@ -28,6 +28,7 @@ class DashBoardScreen extends StatefulWidget {
 class _DashBoardScreenState extends State<DashBoardScreen> {
   BuildContext? parentContext;
   final _advancedDrawerController = AdvancedDrawerController();
+  final _controller = AdvancedDrawerController();
 
   @override
   Widget build(BuildContext context) {
