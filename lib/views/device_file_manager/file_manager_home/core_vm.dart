@@ -51,7 +51,7 @@ class CoreVm extends ChangeNotifier {
   /// an external plugin and also [isolate_handler] plugin doesnt allow me
   /// to pass complex data (in this case List<FileSystemEntity>). so basically
   /// i used the [isolate_handler] to do get the file and use [IsolateNameServer]
-  /// to send it back to the main Thread
+  /// to send it back to the login Thread
   getRecentFiles() async {
     String isolateName = 'recent';
     isolates.spawn<String>(

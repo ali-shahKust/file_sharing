@@ -8,8 +8,8 @@ import 'package:quick_backup/data/models/app_model.dart';
 import 'package:quick_backup/data/local_db/database_helper.dart';
 import 'package:quick_backup/data/repo/dashboard/dashboard_repo.dart';
 import 'package:quick_backup/data/repo/dashboard/dashboard_repo_imp.dart';
-import 'package:quick_backup/data/repo/main/main_repo.dart';
-import 'package:quick_backup/data/repo/main/main_repo_imp.dart';
+import 'package:quick_backup/data/repo/login/login_repo.dart';
+import 'package:quick_backup/data/repo/login/login_repo_imp.dart';
 import 'package:quick_backup/data/route/route_setting.dart';
 import 'package:quick_backup/data/services/auth_services.dart';
 import 'package:quick_backup/views/dashboard/dashboard_vm.dart';
@@ -17,7 +17,7 @@ import 'package:quick_backup/views/device_file_manager/category/category_vm.dart
 import 'package:quick_backup/views/device_file_manager/file_manager_home/core_vm.dart';
 import 'package:quick_backup/views/download/download_vm.dart';
 import 'package:quick_backup/views/local_backup/backup_vm.dart';
-import 'package:quick_backup/views/main_page/main_vm.dart';
+import 'package:quick_backup/views/login_page/login_vm.dart';
 import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 import 'package:quick_backup/views/splash/splash.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +31,7 @@ void main() async {
   GetIt.I.registerSingleton<AppModel>(AppModel());
   GetIt.I.registerSingleton<DashBoardRepo>(DashBoardRepoImp());
   GetIt.I.registerSingleton<CategoryVm>(CategoryVm());
-  GetIt.I.registerSingleton<MainRepo>(MainRepoImp());
+  GetIt.I.registerSingleton<LoginRepo>(LoginRepoImp());
   GetIt.I.registerSingleton<DatabaseHelper>(DatabaseHelper());
   GetIt.I.registerSingleton<AuthService>(AuthService());
   await GetIt.I.allReady();
@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
         providers: [
           ChangeNotifierProvider(create: (_) => CoreVm()),
           ChangeNotifierProvider(create: (_) => SplashVm()),
-          ChangeNotifierProvider(create: (_) => MainVm()),
+          ChangeNotifierProvider(create: (_) => LoginVm()),
           ChangeNotifierProvider(create: (_) => CategoryVm()),
           ChangeNotifierProvider(create: (_) => AppModel()),
           ChangeNotifierProvider(create: (_) => OnlineBackUpVm()),
