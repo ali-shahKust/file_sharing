@@ -4,21 +4,22 @@ import 'package:quick_backup/constants/app_colors.dart';
 import 'custom_theme.dart';
 
 class iUtills {
-  Widget upperRoundedContainer(context, width, height) {
+  Widget upperRoundedContainer(context, width, height, {Widget? child}) {
     return Container(
       width: width,
       height: height,
       decoration:  BoxDecoration(
           boxShadow: [
             BoxShadow(
-                color: Colors.grey,
-                spreadRadius: 1.5,
+                color: Colors.white,
+                spreadRadius: 1,
                 offset: Offset(0.2, 0.3),
-                blurRadius: 2.5)
+                blurRadius: 1.5)
           ],
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(48), topRight: Radius.circular(48)),
           color: AppColors.kPrimaryColor),
+      child: child,
     );
   }
 

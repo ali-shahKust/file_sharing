@@ -68,7 +68,31 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                 Align(
                     alignment: Alignment.bottomCenter,
                     child: iUtills()
-                        .upperRoundedContainer(context, width, height * 0.476))
+                        .upperRoundedContainer(context, width, height * 0.476,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 22.0, horizontal: 22),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      PrimaryText(
+                                        "Files Backup",
+                                        fontSize: 26,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
+                                      SvgPicture.asset(AppConstants.cloud_icon)
+                                    ],
+                                  ),
+                                  customTile(icon: AppConstants.quick_backup_icon,title: "Quick Backup"),
+                                  customTile(icon: AppConstants.restore_icon,title: "Restore Files"),
+                                ],
+                              ),
+                            )))
               ],
             ),
           ),
@@ -77,6 +101,22 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     );
   }
 
+  Widget customTile({icon, title}) {
+    return iUtills().roundedContainer(
+      context,
+      child: Container(
+        width: SizeConfig.screenWidth,
+        height: SizeConfig.screenHeight! * 0.125,
+        color: Colors.white,
+        child: Row(
+          children: [
+            SvgPicture.asset(icon),
+            PrimaryText(title,fontSize: 24,fontWeight: FontWeight.w600,color: Color(0xff373737),),
+          ],
+        ),
+      ),
+    );
+  }
 // @override
 // void dispose() {
 //

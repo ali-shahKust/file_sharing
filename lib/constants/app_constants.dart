@@ -12,6 +12,9 @@ class AppConstants {
   static const String login_vector = imagesPath+"login_vector.webp";
   static const String home_screen_background = imagesPath+"home_screen_background.webp";
   static const String google_g = imagesPath+"google_g.svg";
+  static const String cloud_icon = imagesPath+"cloud_icon.svg";
+  static const String quick_backup_icon = imagesPath+"quick_backup_icon.svg";
+  static const String restore_icon = imagesPath+"restore_icon.svg";
   static const String person_icon = imagesPath+"person_icon.svg";
 
   String pdfNamePrefix = 'S&B_${DateTime.now().microsecondsSinceEpoch}';
