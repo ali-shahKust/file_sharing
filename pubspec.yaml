@@ -50,6 +50,7 @@ dependencies:
   open_file: ^3.2.1
   get_it: ^7.2.0
   flutter_svg: ^1.0.3
+  flutter_advanced_drawer: ^1.3.2
 
   # AMPLIFY PACKAGES
   amplify_auth_cognito: ^0.3.2
