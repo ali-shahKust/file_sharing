@@ -17,7 +17,7 @@ class UploadButton extends StatelessWidget {
       child: Center(
         child: Container(
           decoration: BoxDecoration(
-            color: btnColor!=null?btnColor:AppColors.kBlueColor,
+            color: btnColor!=null?btnColor:AppColors.kGreyColor,
             borderRadius: BorderRadius.all(Radius.circular(20)),
             // boxShadow: [
             //   BoxShadow(color: Colors.grey[300], spreadRadius: 0.0, blurRadius: 10),

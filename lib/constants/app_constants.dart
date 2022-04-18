@@ -4,14 +4,11 @@ import 'package:flutter/material.dart';
 
 // List<File>? globalImages = [];
 
-
 class AppConstants {
-
   static const String fileNameInitialText = "scan_and_backup_";
 
   String pdfNamePrefix = 'S&B_${DateTime.now().microsecondsSinceEpoch}';
- static const kDefaultPadding = 20.0;
-
+  static const kDefaultPadding = 20.0;
 
   static List<T> map<T>(List list, Function handler) {
     List<T> result = [];
@@ -31,33 +28,43 @@ class AppConstants {
     // },
     {
       'title': 'Images',
-      'icon': Icons.image,
+      'icon': 'assets/file_manager_assets/filemanager_home_images.svg',
       'path': '',
-      'color': Colors.blue
+      'startColor':Color.fromRGBO(255, 208, 188, 1),
+      'endColor':Color.fromRGBO(254, 120, 62, 1),
     },
-    {'title': 'Videos', 'icon': Icons.filter, 'path': '', 'color': Colors.red},
+    {
+      'title': 'Videos',
+      'icon': 'assets/file_manager_assets/filemanager_home_video.svg',
+      'path': '',
+      'startColor':Color.fromRGBO(143, 254, 241, 1),
+      'endColor':Color.fromRGBO(31, 209, 191, 1),
+    },
     {
       'title': 'Audio',
-      'icon': Icons.headphones,
+      'icon': 'assets/file_manager_assets/filemanager_home_audio.svg',
       'path': '',
-      'color': Colors.teal
+      'startColor':Color.fromRGBO(254, 175, 255, 1),
+      'endColor':Color.fromRGBO(251, 98, 254, 1),
     },
     {
-      'title': 'Documents & Others',
-      'icon': Icons.file_copy,
+      'title': 'Documents',
+      'icon': 'assets/file_manager_assets/filemanager_home_document.svg',
       'path': '',
-      'color': Colors.pink
+      'startColor':Color.fromRGBO(173, 235, 254, 1),
+      'endColor':Color.fromRGBO(19, 181, 222, 1),
     },
-    // {'title': 'Apps', 'icon': Icons.android, 'path': '', 'color': Colors.green},
-    // {
-    //   'title': 'Whatsapp Statuses',
-    //   'icon': Icons.message,
-    //   'path': '',
-    //   'color': Colors.green
-    // },
+
+    {
+      'title': 'Apps',
+      'icon': 'assets/file_manager_assets/filemanager_home_app.svg',
+      'path': '',
+      'startColor':Color.fromRGBO(174, 148, 254, 1),
+      'endColor':Color.fromRGBO(55, 36, 255, 1),
+    },
   ];
 
-  static List<String>   fileTypeList = ['app', 'image', 'video', 'text', 'audio'];
+  static List<String> fileTypeList = ['app', 'image', 'video', 'text', 'audio'];
 
   static List sortList = [
     'File name (A to Z)',

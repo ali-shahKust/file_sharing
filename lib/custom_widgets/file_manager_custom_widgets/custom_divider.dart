@@ -11,7 +11,7 @@ class CustomDivider extends StatelessWidget {
           child: Container(
             height: 1,
             color: Theme.of(context).dividerColor,
-            width: size.width - 70,
+            width: size.width,
           ),
         ),
       ],

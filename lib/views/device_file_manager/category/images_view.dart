@@ -25,26 +25,25 @@ class ImagesView extends StatefulWidget {
 }
 
 class _ImagesViewState extends State<ImagesView> with SingleTickerProviderStateMixin {
-  // TabController? _tabController;
-  // int _selectedIndex = 0;
+
   @override
-  void initState() {
-    // print('image list in function is testing ${Provider.of<CategoryVm>(context, listen: false).imageList.length}');
-
-    SchedulerBinding.instance!.addPostFrameCallback((_) {
-      // Provider.of<CoreProvider>(context, listen: false).checkSpace();
-      // Provider.of<CategoryVm>(context, listen: false).getImages();
-      print('image list in function is testing ${Provider.of<CategoryVm>(context, listen: false).imageList.length}');
-
-      // SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-    });
-    super.initState();
-  }
+  // void initState() {
+  //   // print('image list in function is testing ${Provider.of<CategoryVm>(context, listen: false).imageList.length}');
+  //
+  //   SchedulerBinding.instance!.addPostFrameCallback((_) {
+  //     // Provider.of<CoreProvider>(context, listen: false).checkSpace();
+  //     // Provider.of<CategoryVm>(context, listen: false).getImages();
+  //     print('image list in function is testing ${Provider.of<CategoryVm>(context, listen: false).imageList.length}');
+  //
+  //     // SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+  //   });
+  //   super.initState();
+  // }
 
   // final provider = GetIt.I.get<CategoryVm>();
   @override
   Widget build(BuildContext context) {
-    // print('all files list length is ${provider.imageList.length}');
+    print('image list length is ${Provider.of<CategoryVm>(context, listen: false).imageList.length}');
     SizeConfig().init(context);
     // print('all files list length is ${Provider.of<CategoryVm>(context,listen: false).imageList.length}');
 
@@ -144,7 +143,7 @@ class _ImagesViewState extends State<ImagesView> with SingleTickerProviderStateM
                             });
                           }
                         },
-                        btnColor: AppColors.kBlueColor,
+                        btnColor: AppColors.kGreyColor,
                         padding: SizeConfig.screenHeight! * 0.02,
                       ),
                     ),

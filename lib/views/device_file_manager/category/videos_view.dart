@@ -140,7 +140,7 @@ class _VideosViewState extends State<VideosView> {
                           //   // Toast('No file Selected', context);
                         }
                       },
-                      btnColor: AppColors.kBlueColor,
+                      btnColor: AppColors.kGreyColor,
                       padding: SizeConfig.screenHeight! * 0.02,
                     ),
                   ),

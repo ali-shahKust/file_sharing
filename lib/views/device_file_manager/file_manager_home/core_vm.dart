@@ -2,7 +2,9 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:isolate_handler/isolate_handler.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:quick_backup/utilities/file_manager_utilities.dart';
 
 
@@ -19,30 +21,30 @@ class CoreVm extends ChangeNotifier {
   bool storageLoading = true;
   bool recentLoading = true;
 
-  // checkSpace() async {
-  //   setRecentLoading(true);
-  //   setStorageLoading(true);
-  //   recentFiles.clear();
-  //   availableStorage.clear();
-  //   List<Directory> dirList = (await getExternalStorageDirectories())!;
-  //   availableStorage.addAll(dirList);
-  //   notifyListeners();
-  //   MethodChannel platform = MethodChannel('dev.jideguru.filex/storage');
-  //   var free = await platform.invokeMethod('getStorageFreeSpace');
-  //   var total = await platform.invokeMethod('getStorageTotalSpace');
-  //   setFreeSpace(free);
-  //   setTotalSpace(total);
-  //   setUsedSpace(total - free);
-  //   if (dirList.length > 1) {
-  //     var freeSD = await platform.invokeMethod('getExternalStorageFreeSpace');
-  //     var totalSD = await platform.invokeMethod('getExternalStorageTotalSpace');
-  //     setFreeSDSpace(freeSD);
-  //     setTotalSDSpace(totalSD);
-  //     setUsedSDSpace(totalSD - freeSD);
-  //   }
-  //   setStorageLoading(false);
-  //   getRecentFiles();
-  // }
+  checkSpace() async {
+    setRecentLoading(true);
+    setStorageLoading(true);
+    recentFiles.clear();
+    availableStorage.clear();
+    List<Directory> dirList = (await getExternalStorageDirectories())!;
+    availableStorage.addAll(dirList);
+    notifyListeners();
+    MethodChannel platform = MethodChannel('flutter.native/helper');
+    var free = await platform.invokeMethod('getStorageFreeSpace');
+    var total = await platform.invokeMethod('getStorageTotalSpace');
+    setFreeSpace(free);
+    setTotalSpace(total);
+    setUsedSpace(total - free);
+    // if (dirList.length > 1) {
+    //   var freeSD = await platform.invokeMethod('getExternalStorageFreeSpace');
+    //   var totalSD = await platform.invokeMethod('getExternalStorageTotalSpace');
+    //   setFreeSDSpace(freeSD);
+    //   setTotalSDSpace(totalSD);
+    //   setUsedSDSpace(totalSD - freeSD);
+    // }
+    setStorageLoading(false);
+    getRecentFiles();
+  }
 
   /// I had to use a combination of [isolate_handler] plugin and
   /// [IsolateNameServer] because compute doesnt work as my function uses

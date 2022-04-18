@@ -90,7 +90,7 @@ class InfoDialoge extends StatelessWidget {
                   width: size.width * 0.32,
                   padding: size.height * 0.012,
                   onTap: onBtnTap,
-                  btnColor: AppColors.kBlueColor,
+                  btnColor: AppColors.kGreyColor,
                 ),
               ],
             ),
