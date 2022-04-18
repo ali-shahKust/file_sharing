@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 import 'package:quick_backup/views/dashboard/dashboard_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/filemanager_home.dart';
 import 'package:quick_backup/views/local_backup/backup_files.dart';
-import 'package:quick_backup/views/online_backup/files_list.dart';
+import 'package:quick_backup/views/online_backup/cloud_docs_screen.dart';
 
 class DashBoardScreen extends StatefulWidget {
   static const routeName = 'dash_board';
@@ -87,7 +87,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                 Align(
                     alignment: Alignment.bottomCenter,
                     child: iUtills().upperRoundedContainer(
-                        context, width, height * 0.476,
+                        context, width, height * 0.476,color: AppColors.kPrimaryColor,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 22.0, horizontal: 22),
@@ -117,7 +117,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                               ),
                               InkWell(
                                 onTap: (){
-                                  Navigator.pushNamed(context, PicturesScreen.routeName);
+                                  Navigator.pushNamed(context, CloudDocsScreen.routeName);
                                 },
                                 child: customTile(
                                     icon: AppConstants.restore_icon,

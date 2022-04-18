@@ -4,7 +4,7 @@ import 'package:quick_backup/constants/app_colors.dart';
 import 'custom_theme.dart';
 
 class iUtills {
-  Widget upperRoundedContainer(context, width, height, {Widget? child}) {
+  Widget upperRoundedContainer(context, width, height, {Widget? child,required color}) {
     return Container(
       width: width,
       height: height,
@@ -18,7 +18,7 @@ class iUtills {
           ],
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(48), topRight: Radius.circular(48)),
-          color: AppColors.kPrimaryColor),
+          color: color),
       child: child,
     );
   }

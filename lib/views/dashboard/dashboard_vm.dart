@@ -8,6 +8,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mime_type/mime_type.dart';
 import 'package:quick_backup/data/base/base_vm.dart';
 import 'package:quick_backup/data/local_db/database_helper.dart';
 import 'package:quick_backup/custom_widgets/queues_screen.dart';
@@ -77,12 +78,12 @@ class DashBoardVm extends BaseVm {
     queue.clear();
     completed = 0;
     for (var element in file) {
-      String key = element.path.split('/').last;
+      String filename = element.path.split('/').last;
       String date = element.statSync().modified.toString();
 
       queue.add(QueueModel(
           id: null,
-          name: key,
+          name: filename,
           path: element.path,
           date: date,
           isSelected: '0',
@@ -92,11 +93,14 @@ class DashBoardVm extends BaseVm {
     }
 
     for (int i = 0; i < file.length; i++) {
-      String key = file[i].path.split('/').last;
+      String filename = file[i].path.split('/').last;
+      String _folderkey = mime(filename)!.split('/').first;
+      print("MIME IS ${_folderkey}");
+      String fileKey = "backups/${FirebaseAuth.instance.currentUser!.email}/" + _folderkey +"/" + filename;
       try {
         await Amplify.Storage.uploadFile(
             local: file[i],
-            key: "backups/${FirebaseAuth.instance.currentUser!.email}/" + key,
+            key: fileKey,
             onProgress: (progress) async {
               queue[i]!.progress =
                   (progress.getFractionCompleted() * 100).round().toString();
@@ -107,9 +111,7 @@ class DashBoardVm extends BaseVm {
                   (progress.getFractionCompleted() * 100).round().toString();
               if ((progress.getFractionCompleted() * 100).round() == 100) {
                 completed = i + 1;
-                queue[i]!.key =
-                    "backups/${FirebaseAuth.instance.currentUser!.email}/" +
-                        key;
+                queue[i]!.key = fileKey;
               }
 
             });

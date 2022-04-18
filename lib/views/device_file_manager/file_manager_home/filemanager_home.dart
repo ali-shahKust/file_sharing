@@ -97,7 +97,7 @@ class _FileManagerHomeState extends State<FileManagerHome> {
   void initState() {
     super.initState();
     SchedulerBinding.instance!.addPostFrameCallback((_) {
-       Provider.of<CoreVm>(context, listen: false).checkSpace();
+       // Provider.of<CoreVm>(context, listen: false).checkSpace();
       Provider.of<CategoryVm>(context, listen: false).getDeviceFileManager();
     });
   }

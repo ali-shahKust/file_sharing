@@ -11,7 +11,8 @@ import 'package:quick_backup/views/dashboard/dashboard_screen.dart';
 import 'package:quick_backup/views/download/download_screen.dart';
 import 'package:quick_backup/views/local_backup/backup_files.dart';
 import 'package:quick_backup/views/login_page/login_screen.dart';
-import 'package:quick_backup/views/online_backup/files_list.dart';
+import 'package:quick_backup/views/online_backup/cloud_docs_screen.dart';
+import 'package:quick_backup/views/online_backup/cloud_images.dart';
 import 'package:quick_backup/views/splash/splash.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -28,8 +29,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => QuesScreen(files: settings.arguments as List<File>));
     case DownloadScreen.routeName:
       return MaterialPageRoute(builder: (context) => DownloadScreen(files: settings.arguments as List));
-    case PicturesScreen.routeName:
-      return MaterialPageRoute(builder: (context) => PicturesScreen());
+    case CloudDocsScreen.routeName:
+      return MaterialPageRoute(builder: (context) => CloudDocsScreen());
     case FileManagerHome.routeName:
       return MaterialPageRoute(builder: (context) => FileManagerHome());
     // case FileManagerHome.routeName:
@@ -42,6 +43,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => AudioViews());
     case FileViews.routeName:
       return MaterialPageRoute(builder: (context) => FileViews());
+      case CloudImages.routeName:
+      return MaterialPageRoute(builder: (context) => CloudImages());
     //   case FileManagerHome.routeName:
     //   return MaterialPageRoute(
     //       builder: (context) => MultiProvider(
