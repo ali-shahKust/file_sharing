@@ -32,6 +32,8 @@ class _CloudImagesState extends State<CloudImages> {
                       itemBuilder: (context, index) {
                         double sizeInMb =
                             int.parse(vm.images[index]!['size'].toString()) / (1024 * 1024);
+                        double sizeInKb =
+                            int.parse(vm.images[index]!['size'].toString()) / (1024);
                         return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Card(
@@ -71,7 +73,7 @@ class _CloudImagesState extends State<CloudImages> {
                                           children: <Widget>[
 
                                             Icon(Icons.adjust, color: Colors.yellowAccent),
-                                            Text(sizeInMb.toStringAsFixed(3) + " MB ", style: TextStyle(color: Colors.white))
+                                            Text(sizeInMb<1?sizeInKb.toStringAsFixed(2)+ " KB ":sizeInMb.toStringAsFixed(2) + " MB ", style: TextStyle(color: Colors.white))
                                           ],
                                         ),
                                         Row(

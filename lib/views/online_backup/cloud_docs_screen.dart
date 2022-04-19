@@ -33,6 +33,7 @@ class _CloudDocsScreenState extends State<CloudDocsScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<OnlineBackUpVm>(builder: (context, vm, _) {
+      double sizeInKb = vm.usedSpace / (1024);
       double sizeInMb = vm.usedSpace / (1024 * 1024);
       double sizeInGB = vm.usedSpace / (1024 * 1024*1024);
 
@@ -91,9 +92,23 @@ class _CloudDocsScreenState extends State<CloudDocsScreen> {
         //     child: const Text("Restore all"),
         //   ),
         // ),
-        body: SizedBox(
+        body: Container(
           width: SizeConfig.screenWidth,
           height: SizeConfig.screenHeight,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xff7266F8),
+                Color(0xff110D44),
+              ],
+                stops: [
+                  0.133,
+                  0.5
+                ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomRight
+            )
+          ),
           child: Stack(
             children: [
               Align(
@@ -111,7 +126,7 @@ class _CloudDocsScreenState extends State<CloudDocsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               PrimaryText(
-                                sizeInMb>1023?sizeInGB.toStringAsFixed(2) +" GB " : sizeInMb.toStringAsFixed(2) + " MB ",
+                                sizeInMb<1?sizeInKb.toStringAsFixed(2) +" KB " :sizeInMb>1023?sizeInGB.toStringAsFixed(2) +" GB " : sizeInMb.toStringAsFixed(2) + " MB ",
                                 fontSize: 19,
                                 fontWeight: FontWeight.w600,
                                 color: Color(0xff74D5DE),
@@ -189,7 +204,7 @@ class _CloudDocsScreenState extends State<CloudDocsScreen> {
   Widget customTile(icon, title, fileslength, {progress}) {
     return Row(
       children: [
-        SvgPicture.asset(icon,width: 22,height: 22,fit: BoxFit.fill,),
+        SvgPicture.asset(icon,width: 32,height: 32,fit: BoxFit.fill,),
         SizedBox(
           width: 20,
         ),

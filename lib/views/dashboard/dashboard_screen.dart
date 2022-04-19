@@ -8,6 +8,7 @@ import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/constants/app_constants.dart';
 import 'package:quick_backup/custom_widgets/InfoDialoge.dart';
+import 'package:quick_backup/custom_widgets/app_text_widget.dart';
 import 'package:quick_backup/custom_widgets/drawer_items_widget.dart';
 import 'package:quick_backup/custom_widgets/queues_screen.dart';
 import 'package:quick_backup/utilities/i_utills.dart';

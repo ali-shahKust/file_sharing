@@ -27,4 +27,7 @@ class AppColors {
   static Color kPrimaryColor = const Color(0xFF7266F8);
   static Color kScaffoldBackgroundColor = const Color(0xFFFFFFFF);
   static Color kShadedWhiteColor = const Color(0xFFF8F8FE);
+  static Color kAudioPinkColor= const Color(0xFFFB67FE);
+  static Color kImagePeachColor= const Color(0xFFFE834E);
+  static Color kDocGreenColor= const Color(0xFFFE834E);
 }

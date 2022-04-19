@@ -20,6 +20,8 @@ class AppConstants {
   static const String audio_icon = imagesPath+"audio_icon.svg";
   static const String document_icon = imagesPath+"document_icon.svg";
   static const String apps_icon = imagesPath+"apps_icon.svg";
+  static const String send_file = imagesPath+"send_file.svg";
+  static const String transfer_background = imagesPath+"transfer_background.webp";
 
   String pdfNamePrefix = 'S&B_${DateTime.now().microsecondsSinceEpoch}';
   static const kDefaultPadding = 20.0;
