@@ -92,7 +92,9 @@ class _QuesScreenState extends State<QuesScreen> {
                                 radius: 178.0,
                                 lineWidth: 13.0,
                                 animation: false,
-                                percent: (completed / vm.queue.length).isNaN?0.0: completed / vm.queue.length,
+                                percent: (completed / vm.queue.length).isNaN
+                                    ? 0.0
+                                    : completed / vm.queue.length,
                                 center: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -162,8 +164,9 @@ class _QuesScreenState extends State<QuesScreen> {
                             child: ListView.separated(
                               itemCount: vm.queue.length,
                               itemBuilder: (context, index) {
-                                String type =
-                                    mime(vm.queue[index]!.name)!.split("/").first;
+                                String type = mime(vm.queue[index]!.name)!
+                                    .split("/")
+                                    .first;
                                 print(
                                     "PROGRESS Report :${vm.queue[index]!.progress}");
                                 double sizeInMb =
@@ -173,6 +176,7 @@ class _QuesScreenState extends State<QuesScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 8.0, horizontal: 22),
                                   child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       SvgPicture.asset(
                                         type == "video"
@@ -194,18 +198,21 @@ class _QuesScreenState extends State<QuesScreen> {
                                         fit: BoxFit.fill,
                                       ),
                                       SizedBox(
-                                        width: 20,
+                                        width: 25,
                                       ),
                                       Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
                                           SizedBox(
-                                            width: SizeConfig.screenWidth! - 155,
+                                            width:
+                                                SizeConfig.screenWidth! - 160,
                                             child: PrimaryText(
                                               vm.queue[index]!.name,
-                                              fontSize: SizeConfig.screenHeight! *
-                                                  0.020,
+                                              overflow: TextOverflow.ellipsis,
+                                              fontSize:
+                                                  SizeConfig.screenHeight! *
+                                                      0.020,
                                               fontWeight: FontWeight.w500,
                                               color: AppColors.kBlackColor,
                                             ),
@@ -217,7 +224,8 @@ class _QuesScreenState extends State<QuesScreen> {
                                             color: Color(0xffAFAFAF),
                                           ),
                                           PrimaryText(
-                                            DateTime.parse(vm.queue[index]!.date)
+                                            DateTime.parse(
+                                                    vm.queue[index]!.date)
                                                 .toddMMMMyyyy(),
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500,
@@ -228,13 +236,19 @@ class _QuesScreenState extends State<QuesScreen> {
                                       SizedBox(
                                         width: 5,
                                       ),
-                                       CircularPercentIndicator(
+                                      CircularPercentIndicator(
                                         radius: 32.0,
                                         lineWidth: 3.0,
                                         animation: false,
-                                        percent: vm.queue[index]!.progress=="pending"?0.0:double.parse(vm.queue[index]!.progress)/100,
+                                        percent: vm.queue[index]!.progress ==
+                                                "pending"
+                                            ? 0.0
+                                            : double.parse(
+                                                    vm.queue[index]!.progress) /
+                                                100,
                                         center: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             PrimaryText(
                                               "${vm.queue[index]!.progress}%",
@@ -245,23 +259,26 @@ class _QuesScreenState extends State<QuesScreen> {
                                           ],
                                         ),
                                         backgroundColor:
-                                        Color(0xffE7E7E7).withOpacity(0.18),
-                                        circularStrokeCap: CircularStrokeCap.round,
+                                            Color(0xffE7E7E7).withOpacity(0.18),
+                                        circularStrokeCap:
+                                            CircularStrokeCap.round,
                                         progressColor: type == "video"
-                                            ? AppColors.kStorageSliderToolTipColor
+                                            ? AppColors
+                                                .kStorageSliderToolTipColor
                                             : type == "audio"
-                                            ? AppColors.kAudioPinkColor
-                                            : type == "image"
-                                            ? AppColors.kImagePeachColor
-                                            : type == "document"
-                                            ?AppColors.kDocGreenColor
-                                            : type == "apps"
-                                            ? AppColors.kPrimaryDarkBlackColor
-                                            : AppColors.kPrimaryColor,
-
+                                                ? AppColors.kAudioPinkColor
+                                                : type == "image"
+                                                    ? AppColors.kImagePeachColor
+                                                    : type == "document"
+                                                        ? AppColors
+                                                            .kDocGreenColor
+                                                        : type == "apps"
+                                                            ? AppColors
+                                                                .kPrimaryDarkBlackColor
+                                                            : AppColors
+                                                                .kPrimaryColor,
                                         rotateLinearGradient: true,
                                       ),
-
                                     ],
                                   ),
                                 );
