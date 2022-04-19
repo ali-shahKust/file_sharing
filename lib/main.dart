@@ -12,12 +12,14 @@ import 'package:quick_backup/data/repo/login/login_repo.dart';
 import 'package:quick_backup/data/repo/login/login_repo_imp.dart';
 import 'package:quick_backup/data/route/route_setting.dart';
 import 'package:quick_backup/data/services/auth_services.dart';
+import 'package:quick_backup/utilities/pref_provider.dart';
 import 'package:quick_backup/views/dashboard/dashboard_vm.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/core_vm.dart';
 import 'package:quick_backup/views/download/download_vm.dart';
 import 'package:quick_backup/views/local_backup/backup_vm.dart';
 import 'package:quick_backup/views/login_page/login_vm.dart';
+import 'package:quick_backup/views/on_boarding/on_boarding_vm.dart';
 import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 import 'package:quick_backup/views/splash/splash.dart';
 import 'package:provider/provider.dart';
@@ -62,6 +64,8 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider(create: (_) => DownloadVm()),
           ChangeNotifierProvider(create: (_) => DashBoardVm()),
           ChangeNotifierProvider(create: (_) => BackUpVm()),
+          ChangeNotifierProvider(create: (_) => OnBoardingVm()),
+          ChangeNotifierProvider(create: (_) => PreferencesProvider()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

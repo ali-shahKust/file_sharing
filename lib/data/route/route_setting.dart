@@ -11,6 +11,7 @@ import 'package:quick_backup/views/dashboard/dashboard_screen.dart';
 import 'package:quick_backup/views/download/download_screen.dart';
 import 'package:quick_backup/views/local_backup/backup_files.dart';
 import 'package:quick_backup/views/login_page/login_screen.dart';
+import 'package:quick_backup/views/on_boarding/on_boarding_screen.dart';
 import 'package:quick_backup/views/online_backup/cloud_docs_screen.dart';
 import 'package:quick_backup/views/online_backup/cloud_images.dart';
 import 'package:quick_backup/views/splash/splash.dart';
@@ -45,6 +46,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => FileViews());
       case CloudImages.routeName:
       return MaterialPageRoute(builder: (context) => CloudImages());
+      case OnBoardingScreen.routeName:
+      return MaterialPageRoute(builder: (context) => OnBoardingScreen());
     //   case FileManagerHome.routeName:
     //   return MaterialPageRoute(
     //       builder: (context) => MultiProvider(

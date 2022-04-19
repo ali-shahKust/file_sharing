@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:glassmorphism/glassmorphism.dart';
 import 'package:quick_backup/constants/app_colors.dart';
+import '../configurations/size_config.dart';
 import 'custom_theme.dart';
 
 class iUtills {
-  Widget upperRoundedContainer(context, width, height, {Widget? child,required color}) {
+  Widget upperRoundedContainer(context, width, height,
+      {Widget? child, required color}) {
     return Container(
       width: width,
       height: height,
-      decoration:  BoxDecoration(
+      decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
                 color: Colors.white,
@@ -39,6 +41,21 @@ class iUtills {
   Widget roundedContainer(context, {Widget? child}) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(22),
+      child: child,
+    );
+  }
+
+  Widget gradientButton({width, height, child}) {
+    return Container(
+      height: height,
+      width: width,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          gradient: LinearGradient(colors: [
+            Color(0xffFFA37C),
+            Color(0xffFE7940),
+            Color(0xffFF9A70),
+          ])),
       child: child,
     );
   }

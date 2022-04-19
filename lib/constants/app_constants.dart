@@ -22,6 +22,11 @@ class AppConstants {
   static const String apps_icon = imagesPath+"apps_icon.svg";
   static const String send_file = imagesPath+"send_file.svg";
   static const String transfer_background = imagesPath+"transfer_background.webp";
+  static const String splash_screen = imagesPath+"splash_screen.webp";
+  static const String on_boarding_page_one = imagesPath+"on_boarding_page_one.webp";
+  static const String on_boarding_page_two = imagesPath+"on_boarding_page_two.webp";
+  static const String on_boarding_page_three = imagesPath+"on_boarding_page_three.webp";
+  static const String next_icon = imagesPath+"next_icon.webp";
 
   String pdfNamePrefix = 'S&B_${DateTime.now().microsecondsSinceEpoch}';
   static const kDefaultPadding = 20.0;
