@@ -145,7 +145,7 @@ class _CategoriesSection extends StatelessWidget {
             leadingIcon: category['icon'],
             subtitleFileSize: '2 GB',
             leadingColorDark: category['endColor'],
-            subtitleFileLenght: '${categoryVm.filesLength[index]} Files',
+            subtitleFileLenght: ' Files',
             leadingColorLight: category['startColor'],
             onTap: () {
               if (index == 0) {
