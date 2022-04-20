@@ -9,9 +9,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mime_type/mime_type.dart';
+import 'package:provider/provider.dart';
 import 'package:quick_backup/data/base/base_vm.dart';
 import 'package:quick_backup/data/local_db/database_helper.dart';
 import 'package:quick_backup/custom_widgets/queues_screen.dart';
+import 'package:quick_backup/utilities/pref_provider.dart';
 
 import '../../data/models/app_model.dart';
 import '../../data/models/queue_model.dart';
@@ -67,14 +69,14 @@ class DashBoardVm extends BaseVm {
       files = mfile.paths.map((path) => File(path!)).toList();
 
       // uploadFile(context, files);
-      Navigator.pushNamed(context, QuesScreen.routeName,arguments: files);
+      Navigator.pushNamed(context, QuesScreen.routeName,arguments: {"files":files,"drawer":false});
       // Navigator.push(context, MaterialPageRoute(builder: (context)=>QuesScreen(files: files,),fullscreenDialog: true));
 
     }
   }
 
 
-  uploadFile(List<File> file) async {
+  uploadFile(List<File> file,context) async {
     queue.clear();
     completed = 0;
     for (var element in file) {
@@ -96,10 +98,11 @@ class DashBoardVm extends BaseVm {
       String filename = file[i].path.split('/').last;
       String _folderkey = mime(filename)!.split('/').first;
       print("MIME IS ${_folderkey}");
-      String fileKey = "backups/${FirebaseAuth.instance.currentUser!.email}/" + _folderkey +"/" + filename;
+      String fileKey = _folderkey +"/" + filename;
       try {
         await Amplify.Storage.uploadFile(
             local: file[i],
+            options: UploadFileOptions(accessLevel: StorageAccessLevel.protected),
             key: fileKey,
             onProgress: (progress) async {
               queue[i]!.progress =

@@ -27,6 +27,8 @@ class AppConstants {
   static const String on_boarding_page_two = imagesPath+"on_boarding_page_two.webp";
   static const String on_boarding_page_three = imagesPath+"on_boarding_page_three.webp";
   static const String next_icon = imagesPath+"next_icon.webp";
+  static const String username_background = imagesPath+"username_background.webp";
+  static const String exit_logo = imagesPath+"exit_logo.webp";
 
   String pdfNamePrefix = 'S&B_${DateTime.now().microsecondsSinceEpoch}';
   static const kDefaultPadding = 20.0;

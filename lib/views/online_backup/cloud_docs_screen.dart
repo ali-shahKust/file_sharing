@@ -25,7 +25,7 @@ class _CloudDocsScreenState extends State<CloudDocsScreen> {
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Provider.of<OnlineBackUpVm>(context, listen: false).listItems();
+      Provider.of<OnlineBackUpVm>(context, listen: false).listItems(context);
     });
     super.initState();
   }

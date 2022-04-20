@@ -136,7 +136,7 @@ class _VideosViewState extends State<VideosView> {
                             //  pd.show(max: 100, msg: 'File Uploading...');
                             if (provider.selectedFiles.length > 0) {
                               print('Button pressed.');
-                              Navigator.pushNamed(context, QuesScreen.routeName, arguments: provider.selectedFiles)
+                              Navigator.pushNamed(context, QuesScreen.routeName, arguments: {'files':provider.selectedFiles,"drawer":false})
                                   .whenComplete(() {
                                 print('whencomplete call...');
                                 provider.selectedFiles.clear();

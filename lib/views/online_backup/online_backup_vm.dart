@@ -6,8 +6,11 @@ import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mime_type/mime_type.dart';
+import 'package:provider/provider.dart';
 import 'package:quick_backup/data/base/base_vm.dart';
 import 'package:quick_backup/data/models/app_model.dart';
+
+import '../../utilities/pref_provider.dart';
 
 class OnlineBackUpVm extends BaseVm {
   var queue = GetIt.I.get<AppModel>().queue;
@@ -61,7 +64,7 @@ class OnlineBackUpVm extends BaseVm {
     _pics = value;
   }
 
-  Future<void> listItems() async {
+  Future<void> listItems(context) async {
     try {
       pics.clear();
       audios.clear();
@@ -70,12 +73,12 @@ class OnlineBackUpVm extends BaseVm {
       documents.clear();
       usedSpace = 0;
       final ListResult result = await Amplify.Storage.list(
-          path: "backups/${FirebaseAuth.instance.currentUser!.email}/");
+        options: ListOptions(accessLevel: StorageAccessLevel.protected),);
       final List<StorageItem> items = result.items;
 
       for (int i = 0; i < items.length; i++) {
         final GetUrlResult result =
-            await Amplify.Storage.getUrl(key: items[i].key);
+            await Amplify.Storage.getUrl(key: items[i].key, options: GetUrlOptions(accessLevel: StorageAccessLevel.protected));
         print('MY DATA ${items[i].key}');
         if (mime(items[i].key)!.split("/").first == "video") {
           videos.add({
@@ -135,7 +138,4 @@ class OnlineBackUpVm extends BaseVm {
     var i = (log(bytes) / log(1024)).floor();
     return ((bytes / pow(1024, i)).toStringAsFixed(decimals)) + ' ' + suffixes[i];
   }
-  Future<void> downloadFile(
-    var files,
-  ) async {}
 }

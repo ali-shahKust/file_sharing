@@ -4,16 +4,16 @@ class PreferencesProvider extends BaseVm {
   bool _userAuthStatus = false;
   String _userEmail = "";
   String _userName = "";
-  String _userAvatar = "";
+  String _userCognito = "";
   bool _isOnBoardingViewed = false;
 
   get userAuthStatus => _userAuthStatus;
 
   get userEmail => _userEmail;
 
-  get userName => _userName;
+  String get userName => _userName;
 
-  get userAvatar => _userAvatar;
+  get userCognito => _userCognito;
 
   get isOnBoardingViewed => _isOnBoardingViewed;
 
@@ -32,8 +32,8 @@ class PreferencesProvider extends BaseVm {
     notifyListeners();
   }
 
-  setUserAvatarInProvider(String userAvatar) {
-    _userAvatar = userAvatar;
+  setCognitoIdInProvider(String userAvatar) {
+    _userCognito = userAvatar;
     notifyListeners();
   }
 
