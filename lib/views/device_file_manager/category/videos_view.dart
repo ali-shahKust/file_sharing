@@ -5,21 +5,22 @@ import 'package:mime_type/mime_type.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_colors.dart';
-import 'package:quick_backup/custom_widgets/custom_upload_button.dart';
+import 'package:quick_backup/constants/app_strings.dart';
+import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/data/models/file_model.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
+import '../../../custom_widgets/queues_screen.dart';
+
 class VideosView extends StatefulWidget {
   static const routeName = 'videos';
-
 
   @override
   State<VideosView> createState() => _VideosViewState();
 }
 
 class _VideosViewState extends State<VideosView> {
-
   // void initState() {
   //   SchedulerBinding.instance!.addPostFrameCallback((_) {
   //     // Provider.of<CoreProvider>(context, listen: false).checkSpace();
@@ -46,126 +47,131 @@ class _VideosViewState extends State<VideosView> {
         //   );
         // }
         return Scaffold(
-          backgroundColor: Colors.white,
-          body: Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: SizeConfig.screenHeight! * 0.02, horizontal: SizeConfig.screenWidth! * 0.01),
-            child: Stack(
-              //
-              children: [
-                Visibility(
-                  visible: provider.videosList.isNotEmpty,
-                  // replacement: Center(child: Text('No Files Found')),
-                  // replacement: Center(child: EasyLoading.show(status: 'Loading...')),
-                  child: PagewiseGridViewExample(),
-                ),
-                Visibility(
-                  visible: provider.selectedFiles.length > 0 ? true : false,
-                  child: Positioned(
-                    bottom: 12,
-                    left: 50,
-                    right: 50,
-                    child: UploadButton(
-                      text: 'Upload Files  ( ${provider.selectedFiles.length} )',
-                      width: SizeConfig.screenWidth! * 0.58,
-                      onTap: () async {
-                        //  pd.show(max: 100, msg: 'File Uploading...');
-                        if (provider.selectedFiles.length > 0) {
-                          print('Button pressed.');
-                          //   if (provider.selectedFiles.length == 1) {
-                          //     ProgressDialog pDialoge = ProgressDialog(context: context);
-                          //     pDialoge.show(
-                          //       max: 100,
-                          //       msg: 'Getting File Ready',
-                          //       // backgroundColor: kWhiteColor.withOpacity(0.5),
-                          //       // elevation: 2.0,
-                          //     );
-                          //     File file = File(provider.selectedFiles.first.path);
-                          //     String path = file.path;
-                          //     // String name = provider.selectedFiles[0].path.split('/').last;
-                          //     print('path of the file is $path');
-                          //     print('file is of the file is $file');
-                          //     uploadFile(context,
-                          //         currentContext: globals.globalContext,
-                          //         path: path,
-                          //         file1: file,
-                          //         sizeDem: 0,
-                          //         isReshare: false,
-                          //         pDialoge: pDialoge);
-                          //     provider.selectedFiles.clear();
-                          //     provider.clearAllSelectedLists();
-                          //   } else {
-                          //     print('i am going to zip the file...');
-                          //     ProgressDialog pDialoge = ProgressDialog(context: context);
-                          //     pDialoge.show(
-                          //       max: 100,
-                          //       msg: 'Getting File Ready',
-                          //       // backgroundColor: kWhiteColor.withOpacity(0.5),
-                          //       // elevation: 2.0,
-                          //     );
-                          //     var pathDown =
-                          //     await ExtStorage.getExternalStoragePublicDirectory(ExtStorage.DIRECTORY_DOWNLOADS);
-                          //
-                          //     // print(gernate(5));
-                          //     //   print(new DateTime.now().millisecondsSinceEpoch);
-                          //     // print(generateRandomString(5));
-                          //     int fileName = DateTime.now().millisecondsSinceEpoch;
-                          //     // String zipPath = appDocDirectory.path + "/" + '$fileName.zip';
-                          //     String zipPath = pathDown + "/" + '$fileName.zip';
-                          //     print('path in the device is....$zipPath');
-                          //     var encoder = ZipFileEncoder();
-                          //     encoder.create(zipPath);
-                          //
-                          //     provider.selectedFiles.forEach((element) {
-                          //       print('all the files in the list are...${element.path.split('/').last.toString()}');
-                          //       encoder.addFile(File(element.path));
-                          //     });
-                          //     print('zip path is...${encoder.zip_path}');
-                          //     File zipFile = File(encoder.zip_path);
-                          //     encoder.close();
-                          //     uploadFile(context,
-                          //         currentContext: globals.globalContext,
-                          //         path: zipPath,
-                          //         file1: zipFile,
-                          //         sizeDem: 1,
-                          //         isReshare: false,
-                          //         pDialoge: pDialoge);
-                          //
-                          //     provider.selectedFiles.clear();
-                          //     provider.clearAllSelectedLists();
-                          //   }
-                          // } else {
-                          //   print('No file Selected');
-                          //   // EasyLoading.show(status: )
-                          //   // Toast('No file Selected', context);
-                        }
-                      },
-                      btnColor: AppColors.kGreyColor,
-                      padding: SizeConfig.screenHeight! * 0.02,
-                    ),
+          // backgroundColor: Colors.white,
+          backgroundColor: AppColors.kPrimaryPurpleColor,
+          appBar: AppBar(
+            elevation: 0.0,
+            backgroundColor: AppColors.kPrimaryPurpleColor,
+            title: Text('Videos'),
+            centerTitle: true,
+            leading: GestureDetector(
+              child: Icon(
+                Icons.arrow_back_ios,
+                color: AppColors.kWhiteColor,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+          body: Column(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: AppColors.kPrimaryPurpleColor,
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/container_background.svg'),
+                      )
+                    // Image.asset('assets/container_background.svg'),
+                  ),
+                  // height: SizeConfig.screenHeight! * 0.15,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${provider.selectedFiles.length} Selected',
+                        style: TextStyle(fontSize: SizeConfig.screenHeight! * 0.024, color: AppColors.kWhiteColor),
+                      ),
+                      SizedBox(
+                        width: SizeConfig.screenWidth! * 0.3,
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          provider.selectAllInList(provider.videosList);
+                        },
+                        icon: Icon(
+                          provider.selectedFiles.length > 0
+                              ? Icons.check_box_outlined
+                              : Icons.check_box_outline_blank,
+                          color: AppColors.kWhiteColor,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+              ),
 
-                // Positioned(
-                //   bottom: 5,
-                //   left:50,
-                //   right: 50,
-                //   child: RaisedButton(
-                //     color: Colors.blue,
-                //     child: Text(
-                //       "Selected Files ${provider.selectedFiles.length}",
-                //       style: TextStyle(color: Colors.white,fontSize: 18),
-                //     ),
-                //     onPressed: () {
-                //       for (int i = 0; i < provider.selectedFiles.length; i++) {
-                //         print(
-                //             'files in the selected list are.....${provider.selectedFiles[i]}');
-                //       }
-                //     },
-                //   ),
-                // ),
-              ],
-            ),
+
+              Container(
+                height: SizeConfig.screenHeight! * 0.82,
+                decoration: BoxDecoration(
+                    color: AppColors.kWhiteColor,
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+                child: Stack(
+                  //
+                  children: [
+                    Visibility(
+                      visible: provider.videosList.isNotEmpty,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            left: SizeConfig.screenHeight! * 0.02,
+                            right: SizeConfig.screenHeight! * 0.02,
+                            top: SizeConfig.screenHeight! * 0.04),
+                        child: PagewiseGridViewExample(),
+                      ),
+                    ),
+                    Visibility(
+                      visible: provider.selectedFiles.length > 0 ? true : false,
+                      child: Positioned(
+                        bottom: SizeConfig.screenHeight! * 0.012,
+                        left: SizeConfig.screenWidth! * 0.005,
+                        right: SizeConfig.screenWidth! * 0.005,
+                        child: BackupButton(
+                          text: '${AppStrings.backup}',
+                          width: SizeConfig.screenWidth! * 0.58,
+                          onTap: () async {
+                            //  pd.show(max: 100, msg: 'File Uploading...');
+                            if (provider.selectedFiles.length > 0) {
+                              print('Button pressed.');
+                              Navigator.pushNamed(context, QuesScreen.routeName, arguments: provider.selectedFiles)
+                                  .whenComplete(() {
+                                print('whencomplete call...');
+                                provider.selectedFiles.clear();
+                              });
+                              // Toast('No file Selected', context);
+                            }
+                          },
+                          btnColor: AppColors.kGreyColor,
+                          padding: SizeConfig.screenHeight! * 0.02,
+                        ),
+                      ),
+                    ),
+
+                    // Positioned(
+                    //   bottom: 5,
+                    //   left:50,
+                    //   right: 50,
+                    //   child: RaisedButton(
+                    //     color: Colors.blue,
+                    //     child: Text(
+                    //       "Selected Files ${provider.selectedFiles.length}",
+                    //       style: TextStyle(color: Colors.white,fontSize: 18),
+                    //     ),
+                    //     onPressed: () {
+                    //       for (int i = 0; i < provider.selectedFiles.length; i++) {
+                    //         print(
+                    //             'files in the selected list are.....${provider.selectedFiles[i]}');
+                    //       }
+                    //     },
+                    //   ),
+                    // ),
+                  ],
+                ),
+              ),
+            ],
           ),
         );
       },
@@ -182,15 +188,15 @@ class PagewiseGridViewExample extends StatelessWidget {
     return PagewiseGridView.count(
         pageSize: PAGE_SIZE,
         crossAxisCount: 3,
-        mainAxisSpacing: 0.0,
-        crossAxisSpacing: 0.0,
+        mainAxisSpacing: 4.0,
+        crossAxisSpacing: 7.0,
         childAspectRatio: 1,
         padding: EdgeInsets.all(0.0),
         itemBuilder: this._itemBuilder,
         loadingBuilder: (context) {
           print('I am in loading builder...');
           // Provider.of<CategoryVm>(context, listen: false).setVideoLoading();
-          return Center(child: CircularProgressIndicator());
+          return Center(child: CircularProgressIndicator(color: AppColors.kPrimaryPurpleColor,));
           // return Container(height:300, width:double.infinity,child: gridPlaceHolder());
         },
         pageFuture: (pageIndex) {
@@ -264,16 +270,15 @@ Future<List<FileMangerModel>> getThumbnails(int start, int end, context) async {
       // for(int i=0;i<Provider.of<CategoryVm>(context, listen: false).videosList.length;i++)
       //   {
       try {
-        print(
-            'Creating Thumbnail for: ${Provider.of<CategoryVm>(context, listen: false).videosList[i].file.path}');
+        print('Creating Thumbnail for: ${Provider.of<CategoryVm>(context, listen: false).videosList[i].file.path}');
 
         final uint8list = await VideoThumbnail.thumbnailData(
           video: Provider.of<CategoryVm>(context, listen: false).videosList[i].file.path,
 
           imageFormat: ImageFormat.JPEG,
-           maxWidth: 200,
+          maxWidth: 200,
           // // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
-           quality: 25,
+          quality: 50,
         );
 
         // print('thumbnail is $uint8list');
@@ -375,17 +380,20 @@ class _MediaTile extends StatelessWidget {
         children: [
           Container(
             padding: EdgeInsets.all(SizeConfig.screenHeight! * 0.003),
-            // decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.all(Radius.circular(8))),
+            decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.all(Radius.circular(8))),
             // height: screenHeight * 0.15  ,
             // width: screenWidht * 0.47,
-            child: Image.memory(
+            child:ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+              child: Image.memory(
                 imgmodel.thumbNail,
                 scale: 1.0,
                 width: SizeConfig.screenHeight! * 0.3,
                 fit: BoxFit.fitWidth,
-                 cacheWidth: 100,
-                 cacheHeight: 110,
+                cacheWidth: 100,
+                cacheHeight: 110,
               ),
+            ),
           ),
           Positioned(
             top: 0,
@@ -401,42 +409,86 @@ class _MediaTile extends StatelessWidget {
                 )),
           ),
           Positioned(
-            // top: SizeConfig.screenHeight! * (-0.032),
-            // left:50,
-            bottom:  SizeConfig.screenHeight! * (-0.032),
+            top: SizeConfig.screenHeight! * (-0.034),
             right: 0,
             child: Padding(
-                padding: EdgeInsets.all(5.0),
-                child: provider.videosList[index].isSelected
-                    ? Container(
-                  height: SizeConfig.screenHeight! * 0.1,
-                  width: SizeConfig.screenWidth! * 0.07,
-                  // decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.kBlueColor),
-                  child: Icon(
-                    Icons.check_box_outlined,
-                    size: SizeConfig.screenHeight! * 0.03,
-                    color: Colors.grey,
-                    // Icons.check,
-                    // size: SizeConfig.screenHeight! * 0.02,
-                    // color: Colors.white,
-                  ),
-                )
-                    : Container(
-                  height: SizeConfig.screenHeight! * 0.1,
-                  width: SizeConfig.screenWidth! * 0.07,
-
-                  // decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.kBlueColor),
-                  child: Icon(
-                    Icons.check_box_outline_blank,
-                    size: SizeConfig.screenHeight! * 0.03,
-                    color: Colors.grey,
-                  ),
-                )
-              // SizedBox(
-              //         height: 2.0,
-              //       ),
+              padding: EdgeInsets.all(5.0),
+              child: provider.videosList[index].isSelected
+                  ? Container(
+                height: SizeConfig.screenHeight! * 0.1,
+                width: SizeConfig.screenWidth! * 0.07,
+                decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.kPrimaryPurpleColor),
+                child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Icon(
+                      Icons.check,
+                      size: SizeConfig.screenHeight! * 0.02,
+                      color: Colors.white,
+                    )),
+              )
+              //     : Container(
+              //   height: SizeConfig.screenHeight! * 0.1,
+              //   width: SizeConfig.screenWidth! * 0.07,
+              //
+              //   // decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.kBlueColor),
+              //   child: Icon(
+              //     Icons.check_box_outline_blank,
+              //     size: SizeConfig.screenHeight! * 0.03,
+              //     color: Colors.grey,
+              //   ),
+              // )
+                  : SizedBox(
+                height: 2.0,
+              ),
             ),
           ),
+
+
+
+
+
+
+
+
+
+
+          // Positioned(
+          //   // top: SizeConfig.screenHeight! * (-0.032),
+          //   // left:50,
+          //   bottom: SizeConfig.screenHeight! * (-0.032),
+          //   right: 0,
+          //   child: Padding(
+          //       padding: EdgeInsets.all(5.0),
+          //       child: provider.videosList[index].isSelected
+          //           ? Container(
+          //               height: SizeConfig.screenHeight! * 0.1,
+          //               width: SizeConfig.screenWidth! * 0.07,
+          //               // decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.kBlueColor),
+          //               child: Icon(
+          //                 Icons.check_box_outlined,
+          //                 size: SizeConfig.screenHeight! * 0.03,
+          //                 color: Colors.grey,
+          //                 // Icons.check,
+          //                 // size: SizeConfig.screenHeight! * 0.02,
+          //                 // color: Colors.white,
+          //               ),
+          //             )
+          //           : Container(
+          //               height: SizeConfig.screenHeight! * 0.1,
+          //               width: SizeConfig.screenWidth! * 0.07,
+          //
+          //               // decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.kBlueColor),
+          //               child: Icon(
+          //                 Icons.check_box_outline_blank,
+          //                 size: SizeConfig.screenHeight! * 0.03,
+          //                 color: Colors.grey,
+          //               ),
+          //             )
+          //       // SizedBox(
+          //       //         height: 2.0,
+          //       //       ),
+          //       ),
+          // ),
           // Positioned(
           //   top: SizeConfig.screenHeight! * (-0.032),
           //   // left:50,
@@ -460,7 +512,6 @@ class _MediaTile extends StatelessWidget {
           //           ),
           //   ),
           // ),
-
         ],
       ),
     );

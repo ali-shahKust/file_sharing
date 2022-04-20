@@ -23,8 +23,20 @@ class AppColors {
   static const kBlueColor = Color(0xFF40BAD5);
   static const kPrimaryPurpleColor = Color.fromRGBO(114, 102, 248, 1);
   static const kDarkPurpleColor = Color.fromRGBO(94, 80, 255, 1);
-  static const kStorageSliderToolTipColor = Color.fromRGBO(65, 255, 185, 1);
   static Color kPrimaryColor = const Color(0xFF7266F8);
   static Color kScaffoldBackgroundColor = const Color(0xFFFFFFFF);
   static Color kShadedWhiteColor = const Color(0xFFF8F8FE);
+  static Color kSliderGradientFirstColor =  Color.fromRGBO(59, 192, 227, 1);
+  static Color kSliderGradientSecondColor =  Color.fromRGBO(73, 185, 215, 1);
+  static Color kSliderGradientThirdColor = Color.fromRGBO(252, 106, 119, 1);
+  static Color kSliderGradientFourthColor =  Color.fromRGBO(188, 96, 227, 1);
+  static Color kButtonGradientFirstColor =  Color.fromRGBO(255, 163, 124, 1);
+  static Color kButtonGradientSecondColor = Color.fromRGBO(254, 121, 64, 1);
+  static Color kButtonGradientThirdColor =  Color.fromRGBO(255, 154, 112, 1);
+  static Color kListTileLightGreyColor =  Color.fromRGBO(242, 241, 255, 1);
+
 }
+
+//rgba(255, 163, 124, 1)
+// rgba(254, 121, 64, 1)
+// rgba(255, 154, 112, 1)

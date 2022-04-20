@@ -14,6 +14,7 @@ import 'package:quick_backup/data/route/route_setting.dart';
 import 'package:quick_backup/data/services/auth_services.dart';
 import 'package:quick_backup/views/dashboard/dashboard_vm.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
+import 'package:quick_backup/views/device_file_manager/documents/document_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/core_vm.dart';
 import 'package:quick_backup/views/download/download_vm.dart';
 import 'package:quick_backup/views/local_backup/backup_vm.dart';
@@ -54,6 +55,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => CoreVm()),
+          ChangeNotifierProvider(create: (_) => DocumentVm()),
           ChangeNotifierProvider(create: (_) => SplashVm()),
           ChangeNotifierProvider(create: (_) => LoginVm()),
           ChangeNotifierProvider(create: (_) => CategoryVm()),

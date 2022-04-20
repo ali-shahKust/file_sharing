@@ -6,15 +6,17 @@ import 'package:provider/provider.dart';
 import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/constants/app_constants.dart';
+import 'package:quick_backup/constants/app_style.dart';
 import 'package:quick_backup/custom_widgets/custom_list_tile.dart';
 import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
 import 'package:quick_backup/utilities/custom_theme.dart';
 import 'package:quick_backup/views/device_file_manager/category/audio_view.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:quick_backup/views/device_file_manager/category/files_view.dart';
 import 'package:quick_backup/views/device_file_manager/category/images_view.dart';
 import 'package:quick_backup/views/device_file_manager/category/videos_view.dart';
+import 'package:quick_backup/views/device_file_manager/documents/document_view.dart';
+import 'package:quick_backup/views/device_file_manager/documents/document_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/core_vm.dart';
 
 class FileManagerHome extends StatefulWidget {
@@ -97,8 +99,10 @@ class _FileManagerHomeState extends State<FileManagerHome> {
   void initState() {
     super.initState();
     SchedulerBinding.instance!.addPostFrameCallback((_) {
-       Provider.of<CoreVm>(context, listen: false).checkSpace();
+      Provider.of<CoreVm>(context, listen: false).checkSpace();
       Provider.of<CategoryVm>(context, listen: false).getDeviceFileManager();
+      Provider.of<CategoryVm>(context, listen: false).fetchAllListLength();
+      // Provider.of<DocumentVm>(context, listen: false).getTextFile();
     });
   }
 
@@ -108,11 +112,14 @@ class _FileManagerHomeState extends State<FileManagerHome> {
   }
 }
 
+//                        _title("${((provider.freeSpace)/1000000000).round()} GB used  ${((provider.totalSpace)/1000000000).round()}  GB"),
 class _CategoriesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print('total space from the provider is${Provider.of<CoreVm>(context,listen: false).totalSpace}');
-    print('used status from the provider is${Provider.of<CoreVm>(context,listen: false).usedSpace}');
+    print('total space from the provider is${Provider.of<CoreVm>(context, listen: false).totalSpace}');
+    print('used status from the provider is${Provider.of<CoreVm>(context, listen: false).usedSpace}');
+    final categoryVm = Provider.of<CategoryVm>(context, listen: false);
+    print('length of video in build function is ${categoryVm.videosList.length}');
     return Container(
       decoration: BoxDecoration(
           color: AppColors.kWhiteColor,
@@ -125,13 +132,20 @@ class _CategoriesSection extends StatelessWidget {
         itemCount: AppConstants.categories.length,
         itemBuilder: (BuildContext context, int index) {
           Map category = AppConstants.categories[index];
+          // List<int> filesLength = [
+          //   categoryVm.imageList.length,
+          //   categoryVm.videosList.length,
+          //   categoryVm.audiosList.length,
+          //   categoryVm.filesList.length,
+          //   categoryVm.filesList.length,
+          // ];
 
           return CustomListTile(
             title: category['title'],
             leadingIcon: category['icon'],
             subtitleFileSize: '2 GB',
             leadingColorDark: category['endColor'],
-            subtitleFileLenght: '176 Files',
+            subtitleFileLenght: '${categoryVm.filesLength[index]} Files',
             leadingColorLight: category['startColor'],
             onTap: () {
               if (index == 0) {
@@ -144,7 +158,7 @@ class _CategoriesSection extends StatelessWidget {
               } else if (index == 2) {
                 Navigator.pushNamed(context, AudioViews.routeName);
               } else if (index == 3) {
-                Navigator.pushNamed(context, FileViews.routeName);
+                Navigator.pushNamed(context, DocumentViews.routeName);
               }
             },
           );
@@ -158,63 +172,140 @@ class _CategoriesSection extends StatelessWidget {
 }
 
 class HeaderContainer extends StatelessWidget {
-  const HeaderContainer({Key? key}) : super(key: key);
+  HeaderContainer({Key? key}) : super(key: key);
+  int _totalSpace = 0;
 
+  // ((coreProvider.totalSpace)/1000000000).round();
+  int _usedSpace = 0;
+
+  // ((coreProvider.freeSpace)/1000000000).round();
+  // print('total avaliable space $_totalSpace');
+  // print('free space is $_usedSpace');
+  int _percentageUse = 0;
+
+  // ((_usedSpace/_totalSpace)*100).round();
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: SizeConfig.screenHeight! * 0.14,
-      width: SizeConfig.screenWidth! * 0.85,
-      padding:
-          EdgeInsets.symmetric(horizontal: SizeConfig.screenHeight! * 0.03, vertical: SizeConfig.screenHeight! * 0.04),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25),
-        color: AppColors.kWhiteColor,
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Consumer(builder: (BuildContext context, CoreVm provider, Widget? child) {
+      if (provider.storageLoading) {
+        return Container(
+          height: MediaQuery.of(context).size.height / 5,
+          child: Image.asset("assets/gifs/loader.gif",
+              height: MediaQuery.of(context).size.height * 0.4, width: MediaQuery.of(context).size.width * 0.4),
+        );
+      } else {
+        _totalSpace = ((provider.totalSpace) / 1000000000).round();
+        _usedSpace = ((provider.freeSpace) / 1000000000).round();
+        _percentageUse = ((_usedSpace / _totalSpace) * 100).round();
+        return Container(
+          height: SizeConfig.screenHeight! * 0.14,
+          width: SizeConfig.screenWidth! * 0.85,
+          padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.screenHeight! * 0.03, vertical: SizeConfig.screenHeight! * 0.04),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            color: AppColors.kWhiteColor,
+          ),
+          child: Column(
             children: [
-              Text(
-                'Used: 186 GB',
-                style: TextStyle(color: AppColors.kBlackColor),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Used: ${((provider.freeSpace) / 1000000000).round()}  GB',
+                    style: AppStyle.kStorageTextStyle,
+                  ),
+                  Text(
+                    'Total: ${((provider.totalSpace) / 1000000000).round()} GB',
+                    style: AppStyle.kStorageTextStyle,
+                  )
+                ],
               ),
-              Text(
-                'Total: 256 GB',
-                style: TextStyle(color: AppColors.kBlackColor),
-              )
+              SizedBox(
+                height: SizeConfig.screenHeight! * 0.02,
+              ),
+              LinearPercentIndicator(
+                width: SizeConfig.screenWidth! * 0.7,
+                lineHeight: SizeConfig.screenHeight! * 0.015,
+                percent: _percentageUse / 100,
+                // progressColor: Colors.orange,
+                linearGradient: LinearGradient(
+                  colors: [
+                    AppColors.kSliderGradientFirstColor,
+                    AppColors.kSliderGradientSecondColor,
+                    AppColors.kSliderGradientThirdColor,
+                    AppColors.kSliderGradientFourthColor
+                  ],
+                  // begin: Alignment.topLeft,
+                  // end: Alignment.bottomRight,
+                ),
+                // linearGradientBackgroundColor: LinearGradient(
+                //   colors: [
+                //     Color.fromRGBO(252, 106, 119, 1),
+                //     Color.fromRGBO(188, 96, 227, 1),
+                //   ],
+                //   // begin: Alignment.topLeft,
+                //   // end: Alignment.bottomRight,
+                // ),
+              ),
             ],
           ),
-          SizedBox(
-            height: SizeConfig.screenHeight! * 0.02,
-          ),
-          LinearPercentIndicator(
-            width: SizeConfig.screenWidth! * 0.7,
-            lineHeight: SizeConfig.screenHeight! * 0.015,
-            percent: 0.7,
-            // progressColor: Colors.orange,
-            linearGradient: LinearGradient(
-              colors: [
-                Color.fromRGBO(59, 192, 227, 1),
-                Color.fromRGBO(73, 185, 215, 1),
-                Color.fromRGBO(252, 106, 119, 1),
-                Color.fromRGBO(188, 96, 227, 1),
-              ],
-              // begin: Alignment.topLeft,
-              // end: Alignment.bottomRight,
-            ),
-            linearGradientBackgroundColor: LinearGradient(
-              colors: [
-                Colors.red,
-                Colors.orangeAccent,
-              ],
-              // begin: Alignment.topLeft,
-              // end: Alignment.bottomRight,
-            ),
-          ),
-        ],
-      ),
-    );
+        );
+      }
+    });
+    // return Container(
+    //   height: SizeConfig.screenHeight! * 0.14,
+    //   width: SizeConfig.screenWidth! * 0.85,
+    //   padding:
+    //       EdgeInsets.symmetric(horizontal: SizeConfig.screenHeight! * 0.03, vertical: SizeConfig.screenHeight! * 0.04),
+    //   decoration: BoxDecoration(
+    //     borderRadius: BorderRadius.circular(25),
+    //     color: AppColors.kWhiteColor,
+    //   ),
+    //   child: Column(
+    //     children: [
+    //       Row(
+    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //         children: [
+    //           Text(
+    //             'Used: ${((provider.freeSpace)/1000000000).round()}',
+    //             style: TextStyle(color: AppColors.kBlackColor),
+    //           ),
+    //           Text(
+    //             'Total: 256 GB',
+    //             style: TextStyle(color: AppColors.kBlackColor),
+    //           )
+    //         ],
+    //       ),
+    //       SizedBox(
+    //         height: SizeConfig.screenHeight! * 0.02,
+    //       ),
+    //       LinearPercentIndicator(
+    //         width: SizeConfig.screenWidth! * 0.7,
+    //         lineHeight: SizeConfig.screenHeight! * 0.015,
+    //         percent: 0.7,
+    //         // progressColor: Colors.orange,
+    //         linearGradient: LinearGradient(
+    //           colors: [
+    //             Color.fromRGBO(59, 192, 227, 1),
+    //             Color.fromRGBO(73, 185, 215, 1),
+    //             Color.fromRGBO(252, 106, 119, 1),
+    //             Color.fromRGBO(188, 96, 227, 1),
+    //           ],
+    //           // begin: Alignment.topLeft,
+    //           // end: Alignment.bottomRight,
+    //         ),
+    //         linearGradientBackgroundColor: LinearGradient(
+    //           colors: [
+    //             Colors.red,
+    //             Colors.orangeAccent,
+    //           ],
+    //           // begin: Alignment.topLeft,
+    //           // end: Alignment.bottomRight,
+    //         ),
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 }

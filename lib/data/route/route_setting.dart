@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:quick_backup/custom_widgets/queues_screen.dart';
 import 'package:quick_backup/views/device_file_manager/category/audio_view.dart';
-import 'package:quick_backup/views/device_file_manager/category/files_view.dart';
 import 'package:quick_backup/views/device_file_manager/category/images_view.dart';
 import 'package:quick_backup/views/device_file_manager/category/videos_view.dart';
+import 'package:quick_backup/views/device_file_manager/documents/document_view.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/filemanager_home.dart';
 import 'package:quick_backup/views/dashboard/dashboard_screen.dart';
 import 'package:quick_backup/views/download/download_screen.dart';
@@ -40,8 +40,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => VideosView());
     case AudioViews.routeName:
       return MaterialPageRoute(builder: (context) => AudioViews());
-    case FileViews.routeName:
-      return MaterialPageRoute(builder: (context) => FileViews());
+    case DocumentViews.routeName:
+      return MaterialPageRoute(builder: (context) => DocumentViews());
     //   case FileManagerHome.routeName:
     //   return MaterialPageRoute(
     //       builder: (context) => MultiProvider(
