@@ -59,7 +59,9 @@ class AuthService {
       });
     });
 
-    return result;
+    await Future.delayed(Duration.zero);
+
+    return await result!;
   }
 
   static Future<void> configureAmplify() async {

@@ -18,9 +18,9 @@ import 'package:quick_backup/views/dashboard/dashboard_vm.dart';
 
 class QuesScreen extends StatefulWidget {
   static const routeName = 'queue_screen';
-  List<File> files;
+  Map map;
 
-  QuesScreen({required this.files});
+  QuesScreen({required this.map});
 
   @override
   State<QuesScreen> createState() => _QuesScreenState();
@@ -30,8 +30,9 @@ class _QuesScreenState extends State<QuesScreen> {
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Provider.of<DashBoardVm>(context, listen: false).uploadFile(widget.files);
-      print("MY arguments are :${widget.files.length}");
+      if(widget.map['files']!=null && !widget.map['drawer']){
+        Provider.of<DashBoardVm>(context, listen: false).uploadFile(widget.map['files'],context);
+      }
     });
     super.initState();
   }
@@ -66,7 +67,7 @@ class _QuesScreenState extends State<QuesScreen> {
                                 children: [
                                   IconButton(
                                       onPressed: () {
-                                        Navigator.pop(context);
+                                        iUtills().exitPopUp(context);
                                       },
                                       icon: Icon(
                                         Icons.arrow_back_ios,
@@ -188,7 +189,7 @@ class _QuesScreenState extends State<QuesScreen> {
                                                     : type == "document"
                                                         ? AppConstants
                                                             .document_icon
-                                                        : type == "apps"
+                                                        : type == "application"
                                                             ? AppConstants
                                                                 .apps_icon
                                                             : AppConstants

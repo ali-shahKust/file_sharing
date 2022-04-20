@@ -25,6 +25,7 @@ import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 import 'package:quick_backup/views/splash/splash.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_backup/views/splash/splash_vm.dart';
+import 'package:quick_backup/views/user_name_setting/user_name_setting_vm.dart';
 import 'data/models/app_model.dart';
 
 void main() async {
@@ -68,6 +69,7 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider(create: (_) => BackUpVm()),
           ChangeNotifierProvider(create: (_) => OnBoardingVm()),
           ChangeNotifierProvider(create: (_) => PreferencesProvider()),
+          ChangeNotifierProvider(create: (_) => UserNameSettingVm()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

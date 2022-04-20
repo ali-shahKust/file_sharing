@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/custom_widgets/app_text_widget.dart';
+import 'package:quick_backup/custom_widgets/queues_screen.dart';
+import 'package:quick_backup/views/login_page/login_screen.dart';
+import 'package:quick_backup/views/user_name_setting/update_username.dart';
 
 import '../constants/app_constants.dart';
 import '../utilities/i_utills.dart';
+import '../utilities/pref_utills.dart';
 
 class DrawerWidgetItems extends StatelessWidget {
   const DrawerWidgetItems({Key? key}) : super(key: key);
@@ -20,8 +24,26 @@ class DrawerWidgetItems extends StatelessWidget {
             customTile(Icons.star, "Rate App"),
             customTile(Icons.share, "Share App"),
             customTile(Icons.shield, "Privacy Policy"),
-            customTile(Icons.edit, "Update Profile"),
-            customTile(Icons.login, "Logout"),
+            InkWell(
+                onTap: (){
+                  Navigator.pushNamed(context, QuesScreen.routeName,arguments: {"drawer":true});
+                },
+                child: customTile(Icons.shield, "Queue")),
+            InkWell(
+                onTap: (){
+                  Navigator.pushNamed(context, UpdateUserNameScreen.routeName);
+                },
+                child: customTile(Icons.edit, "Update Profile")),
+            InkWell(
+                onTap: (){
+                  PreferenceUtilities.clearAllPrefs();
+                  Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      LoginScreen.routeName,
+                          (route) => false);
+                }
+                ,
+                child: customTile(Icons.login, "Logout")),
           ],
         ),
       ),
@@ -30,7 +52,7 @@ class DrawerWidgetItems extends StatelessWidget {
 
   Widget customTile(icon, title) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 25.0,horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 18.0,horizontal: 10),
       child: Row(
         children: [
           Icon(icon, color: Colors.white,),

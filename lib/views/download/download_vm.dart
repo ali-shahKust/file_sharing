@@ -5,8 +5,10 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 import 'package:quick_backup/data/base/base_vm.dart';
 import 'package:quick_backup/data/models/queue_model.dart';
+import 'package:quick_backup/utilities/pref_provider.dart';
 
 import '../../data/models/app_model.dart';
 import '../dashboard/dashboard_vm.dart';
@@ -44,12 +46,12 @@ class DownloadVm extends BaseVm {
   }
 
   Future<void> downloadFile(
-      var files,
+      var files,context
       ) async {
     queue.clear();
     for (var data in files) {
       String key =
-      data['key'].replaceAll("backups/syed.ali.shah3938@gmail.com/", "");
+      data['key'].replaceAll("${Provider.of<PreferencesProvider>(context,listen: false).userCognito}/", "");
       String date = data['date'].toString();
 
       queue.add(QueueModel(
@@ -64,12 +66,13 @@ class DownloadVm extends BaseVm {
     for (int i = 0; i < files.length; i++) {
       final filepath = documentsDir +
           "/Backupfiles" +
-          '/${files[i]['key'].replaceAll("backups/syed.ali.shah3938@gmail.com/", "")}';
+          '/${files[i]['key'].replaceAll("${Provider.of<PreferencesProvider>(context,listen: false).userCognito}/", "")}';
       final file = File(filepath);
       bool fileExists = await file.exists();
       if (!fileExists) {
         try {
           await Amplify.Storage.downloadFile(
+              options: DownloadFileOptions(accessLevel: StorageAccessLevel.protected),
               key: files[i]['key'],
               local: file,
               onProgress: (progress) {

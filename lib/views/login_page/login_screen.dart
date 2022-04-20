@@ -7,7 +7,11 @@ import 'package:quick_backup/constants/app_constants.dart';
 import 'package:quick_backup/custom_widgets/app_text_widget.dart';
 import 'package:quick_backup/utilities/i_utills.dart';
 import 'package:provider/provider.dart';
+import 'package:quick_backup/utilities/pref_provider.dart';
+import 'package:quick_backup/utilities/pref_utills.dart';
 import 'package:quick_backup/views/login_page/login_vm.dart';
+
+import '../splash/splash_vm.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = 'main_screen';
@@ -17,6 +21,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  @override
+  void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      PreferenceUtilities.getUserUserDetailsFromPrefsToProvider(context);
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Consumer<LoginVm>(builder: (context, vm, _) {

@@ -15,6 +15,8 @@ import 'package:quick_backup/views/on_boarding/on_boarding_screen.dart';
 import 'package:quick_backup/views/online_backup/cloud_docs_screen.dart';
 import 'package:quick_backup/views/online_backup/cloud_images.dart';
 import 'package:quick_backup/views/splash/splash.dart';
+import 'package:quick_backup/views/user_name_setting/update_username.dart';
+import 'package:quick_backup/views/user_name_setting/user_name_settings_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -27,7 +29,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case BackupFilesScreen.routeName:
       return MaterialPageRoute(builder: (context) => BackupFilesScreen());
     case QuesScreen.routeName:
-      return MaterialPageRoute(builder: (context) => QuesScreen(files: settings.arguments as List<File>));
+      return MaterialPageRoute(builder: (context) => QuesScreen(map: settings.arguments as Map,));
     case DownloadScreen.routeName:
       return MaterialPageRoute(builder: (context) => DownloadScreen(files: settings.arguments as List));
     case CloudDocsScreen.routeName:
@@ -48,6 +50,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => OnBoardingScreen());
     case DocumentViews.routeName:
       return MaterialPageRoute(builder: (context) => DocumentViews());
+    case UserNameSettingScreen.routeName:
+      return MaterialPageRoute(builder: (context) => UserNameSettingScreen());
+    case UpdateUserNameScreen.routeName:
+      return MaterialPageRoute(builder: (context) => UpdateUserNameScreen());
     //   case FileManagerHome.routeName:
     //   return MaterialPageRoute(
     //       builder: (context) => MultiProvider(

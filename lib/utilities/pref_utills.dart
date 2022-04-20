@@ -59,22 +59,22 @@ class PreferenceUtilities {
     Provider.of<PreferencesProvider>(context, listen: false).setUserNameInProvider(userName);
   }
 
-  // GET AND SET FOR AVATAR
-  static Future<void> getUserAvatarFromPrefsToProvider(BuildContext context) async {
+  // GET AND SET FOR User Cognito
+  static Future<void> getUserCognitoFromPrefsToProvider(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    if (prefs.getString('user_avatar') != null) {
-      String? userAvatar = prefs.getString('user_avatar');
-      setUserAvatarToPrefs(userAvatar!, context);
+    if (prefs.getString('cognito_id') != null) {
+      String? userCognito = prefs.getString('cognito_id');
+      setUserCognitoToPrefs(userCognito!, context);
     } else {
-      setUserAvatarToPrefs("", context);
+      setUserCognitoToPrefs("", context);
     }
   }
 
-  static Future<void> setUserAvatarToPrefs(String userAvatar, BuildContext context) async {
+  static Future<void> setUserCognitoToPrefs(String cognitoId, BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('user_avatar', userAvatar);
-    Provider.of<PreferencesProvider>(context, listen: false).setUserAvatarInProvider(userAvatar);
+    prefs.setString('cognito_id', cognitoId);
+    Provider.of<PreferencesProvider>(context, listen: false).setCognitoIdInProvider(cognitoId);
   }
 
 
@@ -98,23 +98,21 @@ class PreferenceUtilities {
       setUserNameToPrefs("", context);
     }
 
-    if (prefs.getString('user_avatar') != null) {
-      String? userAvatar = prefs.getString('user_avatar');
-      setUserAvatarToPrefs(userAvatar!, context);
+    if (prefs.getString('cognito_id') != null) {
+      String? userCognito= prefs.getString('cognito_id');
+      setUserCognitoToPrefs(userCognito!, context);
     } else {
-      setUserAvatarToPrefs("", context);
+      setUserCognitoToPrefs("", context);
     }
   }
 
 
-  static Future<void> setUserDetailsToPrefs(String userName, String userEmail, String userAvatar, BuildContext context) async {
+  static Future<void> setUserDetailsToPrefs(String userName, String cognitoId, BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('user_name', userName);
-    prefs.setString('user_email', userEmail);
-    prefs.setString('user_avatar', userAvatar);
+    prefs.setString('cognito_id', cognitoId);
     Provider.of<PreferencesProvider>(context, listen: false).setUserNameInProvider(userName);
-    Provider.of<PreferencesProvider>(context, listen: false).setUserEmailInProvider(userEmail);
-    Provider.of<PreferencesProvider>(context, listen: false).setUserAvatarInProvider(userAvatar);
+    Provider.of<PreferencesProvider>(context, listen: false).setCognitoIdInProvider(cognitoId);
   }
 
 
@@ -136,5 +134,10 @@ class PreferenceUtilities {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('is_onboarding_viewed', isOnBoardingViewed);
     Provider.of<PreferencesProvider>(context, listen: false).setIsOnBoardingViewedInProvider(isOnBoardingViewed);
+  }
+
+  static Future<void> clearAllPrefs()async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.clear();
   }
 }

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:get_it/get_it.dart';
 import 'package:quick_backup/data/extension.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_backup/views/download/download_vm.dart';
 import '../../utilities/custom_theme.dart';
 import '../../utilities/i_utills.dart';
 import '../dashboard/dashboard_vm.dart';
-import '../online_backup/online_backup_vm.dart';
 
 class DownloadScreen extends StatefulWidget {
   static const routeName = 'download_screen';
@@ -24,7 +22,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Provider.of<DownloadVm>(context, listen: false).downloadFile(widget.files);
+      Provider.of<DownloadVm>(context, listen: false).downloadFile(widget.files,context);
       print("MY arguments are :${widget.files.length}");
     });
     super.initState();
