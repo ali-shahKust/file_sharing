@@ -15,7 +15,6 @@ import 'package:quick_backup/views/device_file_manager/category/category_vm.dart
 class AudioViews extends StatefulWidget {
   static const routeName = 'audios';
 
-
   @override
   _AudioViewsState createState() => _AudioViewsState();
 }
@@ -36,9 +35,7 @@ class _AudioViewsState extends State<AudioViews> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Consumer<CategoryVm>(
-      builder: ( context,  provider, _) {
-        final screenHeight = MediaQuery.of(context).size.height;
-        final screenWidth = MediaQuery.of(context).size.width;
+      builder: (context, provider, _) {
         return Scaffold(
           backgroundColor: AppColors.kPrimaryPurpleColor,
           appBar: AppBar(
@@ -56,228 +53,176 @@ class _AudioViewsState extends State<AudioViews> {
               },
             ),
           ),
-          body: provider.loading? Container(
-            // width: MediaQuery.of(context).size.width /2 ,
-            // height: MediaQuery.of(context).size.height / 2,
-            child: Image.asset("assets/gifs/loader.gif",
-                height: MediaQuery.of(context).size.height * 0.4,
-                width: MediaQuery.of(context).size.width * 0.4),
-          ):
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 2,
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: AppColors.kPrimaryPurpleColor,
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/container_background.svg'),
-                      )
-                    // Image.asset('assets/container_background.svg'),
-                  ),
-                  // height: SizeConfig.screenHeight! * 0.15,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${provider.selectedFiles.length} Selected',
-                        style: TextStyle(fontSize: SizeConfig.screenHeight! * 0.024, color: AppColors.kWhiteColor),
-                      ),
-                      SizedBox(
-                        width: SizeConfig.screenWidth! * 0.3,
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          provider.selectAllInList(provider.audiosList);
-                        },
-                        icon: Icon(
-                          provider.selectedFiles.length > 0
-                              ? Icons.check_box_outlined
-                              : Icons.check_box_outline_blank,
-                          color: AppColors.kWhiteColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: Text(
-              //     '${provider.audiosList.length} ${widget.title} ',
-              //     style: TextStyle(
-              //       color: Colors.black,
-              //       fontSize: 20,
-              //       fontWeight: FontWeight.bold,
-              //     ),
-              //   ),
-              // ),
-              // SizedBox(
-              //   height: 10.0,
-              // ),
-              Visibility(
-                visible: provider.audiosList.isNotEmpty,
-                replacement: Center(child: Text('No Files Found')),
-                child: Expanded(
-                  flex: 17,
-                  child: Container(
-                    // height: SizeConfig.screenHeight! * 0.82,
-                    decoration: BoxDecoration(
-                        color: AppColors.kWhiteColor,
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-                    child: Stack(
-                      children: [
-                        ListView.builder(
-                          padding: EdgeInsets.all(SizeConfig.screenHeight!*0.02),
-                          itemCount: provider.audiosList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Container(
-                              height:SizeConfig.screenHeight!*0.15,
-                              color: AppColors.kWhiteColor,
-                              child: Stack(
-                                children: [
-                                  Center(
-                                    child: SizedBox(
-                                      height:SizeConfig.screenHeight!*0.11,
-                                      child: Card(
+          body: provider.loading
+              ? Container(
 
-                                        color: AppColors.kListTileLightGreyColor,
-                                        shape: RoundedRectangleBorder(
-                                          // side: BorderSide(color: Colors.white70, width: 1),
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                        // margin: EdgeInsets.only(top: 10),
-                                        elevation: 0.0,
-                                        child: ListTile(
-                                          minVerticalPadding: SizeConfig.screenHeight!*0.035,
-                                          leading:
-                                         CircleAvatar(
-                                           backgroundColor: AppColors.kPrimaryPurpleColor,
-                                           child: SvgPicture.asset('assets/images/audio_icon.svg',height: SizeConfig.screenHeight!*0.03,),
-                                         ),
-                                          title: Text(
-                                              '${provider.audiosList[index].file.path.split('/').last}'),
-                                          subtitle: Text(
-                                            FileManagerUtilities.formatBytes(provider.audiosList[index].file.lengthSync(), 3),
-                                              ),
-                                          // trailing: provider.audiosList[index].isSelected
-                                          //     ? Container(
-                                          //   height: screenHeight * 0.1,
-                                          //   width: screenWidth * 0.07,
-                                          //   decoration: BoxDecoration(
-                                          //       shape: BoxShape.circle,
-                                          //       color: Colors.blue),
-                                          //   child: Padding(
-                                          //       padding: const EdgeInsets.all(5.0),
-                                          //       child: Icon(
-                                          //         Icons.check,
-                                          //         size: screenHeight * 0.02,
-                                          //         color: Colors.white,
-                                          //       )),
-                                          // )
-                                          //     : SizedBox(
-                                          //   height: 2.0,
-                                          // ),
-                                          // trailing: Container(
-                                          //   height: 30,
-                                          //   width: 30,
-                                          //   decoration: BoxDecoration(
-                                          //       shape: BoxShape.circle,
-                                          //       color: provider.audiosList[index].isSelected
-                                          //           ? Colors.blue
-                                          //           : Colors.black38),
-                                          //   child: Padding(
-                                          //     padding: const EdgeInsets.all(5.0),
-                                          //     child: provider.audiosList[index].isSelected
-                                          //         ? Icon(
-                                          //             Icons.check,
-                                          //             size: 20.0,
-                                          //             color: Colors.white,
-                                          //           )
-                                          //         : Icon(
-                                          //             Icons.check_box_outline_blank,
-                                          //             size: 20.0,
-                                          //             color: Colors.white,
-                                          //           ),
-                                          //   ),
-                                          // ),
-                                          // subtitle: Text('${app.packageName}'),
-                                          onTap: (){
-
-                                            provider.changeIsSelected(index,provider.audiosList);
-                                            if (provider.audiosList[index].isSelected) {
-                                              provider.addToSelectedList = provider.audiosList[index].file;
-                                            } else {
-                                              provider.removeFromSelectedList = provider.audiosList[index].file;
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  provider.audiosList[index].isSelected
-                                      ? Positioned(
-                                    top: SizeConfig.screenHeight!*-0.02,
-                                        right: 0,
-                                        child: Container(
-                                    height: screenHeight * 0.1,
-                                    width: screenWidth * 0.07,
-                                    decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: AppColors.kPrimaryPurpleColor),
-                                    child: Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: Icon(
-                                            Icons.check,
-                                            size: screenHeight * 0.02,
-                                            color: Colors.white,
-                                          )),
-                                  ),
-                                      )
-                                      : SizedBox(
-                                    height: 2.0,
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                          // separatorBuilder: (BuildContext context, int index) {
-                          //   return CustomDivider();
-                          // },
-                        ),
-                        Visibility(
-                          visible: provider.selectedFiles.length > 0 ? true : false,
-                          child: Positioned(
-                            bottom: SizeConfig.screenHeight! * 0.012,
-                            left: SizeConfig.screenWidth! * 0.005,
-                            right: SizeConfig.screenWidth! * 0.005,
-                            child: BackupButton(
-                              text: '${AppStrings.backup}',
-                              width: SizeConfig.screenWidth! * 0.58,
-                              onTap: () async {
-                                //  pd.show(max: 100, msg: 'File Uploading...');
-                                if (provider.selectedFiles.length > 0) {
-                                  Navigator.pushNamed(context, QuesScreen.routeName, arguments: provider.selectedFiles)
-                                      .whenComplete(() {
-                                    print('whencomplete call...');
-                                    provider.selectedFiles.clear();
-                                  });
-                                }
-                              },
-                              btnColor: AppColors.kGreyColor,
-                              padding: SizeConfig.screenHeight! * 0.02,
+                  child: Image.asset("assets/gifs/loader.gif",
+                      height: MediaQuery.of(context).size.height * 0.4, width: MediaQuery.of(context).size.width * 0.4),
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: AppColors.kPrimaryPurpleColor,
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/container_background.svg'),
+                            )
+                            // Image.asset('assets/container_background.svg'),
                             ),
+                        // height: SizeConfig.screenHeight! * 0.15,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              '${provider.selectedFiles.length} Selected',
+                              style:
+                                  TextStyle(fontSize: SizeConfig.screenHeight! * 0.024, color: AppColors.kWhiteColor),
+                            ),
+                            SizedBox(
+                              width: SizeConfig.screenWidth! * 0.3,
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                provider.selectAllInList(provider.audiosList);
+                              },
+                              icon: Icon(
+                                provider.selectedFiles.length > 0
+                                    ? Icons.check_box_outlined
+                                    : Icons.check_box_outline_blank,
+                                color: AppColors.kWhiteColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Visibility(
+                      visible: provider.audiosList.isNotEmpty,
+                      replacement: Center(child: Text('No Files Found')),
+                      child: Expanded(
+                        flex: 17,
+                        child: Container(
+                          // height: SizeConfig.screenHeight! * 0.82,
+                          decoration: BoxDecoration(
+                              color: AppColors.kWhiteColor,
+                              borderRadius:
+                                  BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+                          child: Stack(
+                            children: [
+                              ListView.builder(
+                                padding: EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
+                                itemCount: provider.audiosList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                    height: SizeConfig.screenHeight! * 0.15,
+                                    color: AppColors.kWhiteColor,
+                                    child: Stack(
+                                      children: [
+                                        Center(
+                                          child: SizedBox(
+                                            height: SizeConfig.screenHeight! * 0.11,
+                                            child: Card(
+                                              color: AppColors.kListTileLightGreyColor,
+                                              shape: RoundedRectangleBorder(
+                                                // side: BorderSide(color: Colors.white70, width: 1),
+                                                borderRadius: BorderRadius.circular(12),
+                                              ),
+                                              // margin: EdgeInsets.only(top: 10),
+                                              elevation: 0.0,
+                                              child: ListTile(
+                                                minVerticalPadding: SizeConfig.screenHeight! * 0.035,
+                                                leading: CircleAvatar(
+                                                  backgroundColor: AppColors.kPrimaryPurpleColor,
+                                                  child: SvgPicture.asset(
+                                                    'assets/images/audio_icon.svg',
+                                                    height: SizeConfig.screenHeight! * 0.022,
+                                                  ),
+                                                ),
+                                                title: Text('${provider.audiosList[index].file.path.split('/').last}'),
+                                                subtitle: Text(
+                                                  FileManagerUtilities.formatBytes(
+                                                      provider.audiosList[index].file.lengthSync(), 3),
+                                                ),
+
+                                                // subtitle: Text('${app.packageName}'),
+                                                onTap: () {
+                                                  provider.changeIsSelected(index, provider.audiosList);
+                                                  if (provider.audiosList[index].isSelected) {
+                                                    provider.addToSelectedList = provider.audiosList[index].file;
+                                                  } else {
+                                                    provider.removeFromSelectedList = provider.audiosList[index].file;
+                                                  }
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        provider.audiosList[index].isSelected
+                                            ? Positioned(
+                                                top: SizeConfig.screenHeight! * -0.02,
+                                                right: 0,
+                                                child: Container(
+                                                  height: SizeConfig.screenHeight! * 0.1,
+                                                  width: SizeConfig.screenWidth! * 0.07,
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.circle, color: AppColors.kPrimaryPurpleColor),
+                                                  child: Padding(
+                                                      padding: const EdgeInsets.all(5.0),
+                                                      child: Icon(
+                                                        Icons.check,
+                                                        size: SizeConfig.screenHeight! * 0.02,
+                                                        color: Colors.white,
+                                                      )),
+                                                ),
+                                              )
+                                            : SizedBox(
+                                                height: 2.0,
+                                              ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                // separatorBuilder: (BuildContext context, int index) {
+                                //   return CustomDivider();
+                                // },
+                              ),
+                              Visibility(
+                                visible: provider.selectedFiles.length > 0 ? true : false,
+                                child: Positioned(
+                                  bottom: SizeConfig.screenHeight! * 0.012,
+                                  left: SizeConfig.screenWidth! * 0.005,
+                                  right: SizeConfig.screenWidth! * 0.005,
+                                  child: BackupButton(
+                                    text: '${AppStrings.backup}',
+                                    width: SizeConfig.screenWidth! * 0.58,
+                                    onTap: () async {
+                                      //  pd.show(max: 100, msg: 'File Uploading...');
+                                      if (provider.selectedFiles.length > 0) {
+                                        Navigator.pushNamed(context, QuesScreen.routeName,
+                                                arguments: provider.selectedFiles)
+                                            .whenComplete(() {
+                                          print('whencomplete call...');
+                                          provider.selectedFiles.clear();
+                                          provider.clearAllSelectedLists();
+                                        });
+                                      }
+                                    },
+                                    btnColor: AppColors.kGreyColor,
+                                    padding: SizeConfig.screenHeight! * 0.02,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ),
-            ],
-          ),
         );
       },
     );

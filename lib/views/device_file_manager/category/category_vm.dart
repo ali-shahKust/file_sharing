@@ -36,21 +36,15 @@ class CategoryVm extends BaseVm {
   get imageList => _imageList;
 
   List<FileMangerModel> appsList = <FileMangerModel>[];
-  // List<DeviceAppModel> appList = <DeviceAppModel>[];
-
   List<File> selectedFiles = <File>[];
-
-  // List<String> selectedFilesPathList = <String>[];
-
   List<File> selectedVideoConversionList = <File>[];
-
   List<String> imageTabs = <String>[];
-
   List<FileSystemEntity> audio = <FileSystemEntity>[];
   List<String> audioTabs = <String>[];
   List<FileSystemEntity> currentFiles = [];
 
   bool showHidden = false;
+
   int sort = 0;
   final isolates = IsolateHandler();
 
@@ -569,6 +563,7 @@ class CategoryVm extends BaseVm {
     for (int i = 0; i < audiosList.length; i++) {
       audiosList[i].isSelected = false;
     }
+    notifyListeners();
   }
 
   // void changeConvertIsSelected(int index, List<FileMangerModel> list) {

@@ -1,9 +1,17 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:quick_backup/configurations/size_config.dart';
+import 'package:quick_backup/constants/app_colors.dart';
+import 'package:quick_backup/constants/app_constants.dart';
+import 'package:quick_backup/data/models/file_model.dart';
+import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 
 class FileManagerUtilities {
   static String waPath = '/storage/emulated/0/WhatsApp/Media/.Statuses';
@@ -198,5 +206,42 @@ class FileManagerUtilities {
     }
 
     return list;
+  }
+  static Widget? getLogoFromExtension(String? type) {
+    if (type != null) {
+      if (type==AppConstants.docCategories[0]) {
+        return SvgPicture.asset("assets/images/document_pdf_white.svg");
+      }
+      if (type==AppConstants.docCategories[1]) {
+        return SvgPicture.asset("assets/images/document_ppt_white.svg");
+      }
+      if (type==AppConstants.docCategories[2]) {
+        return SvgPicture.asset("assets/images/document_doc_white.svg");
+      }
+      if (type==AppConstants.docCategories[3]) {
+        return SvgPicture.asset("assets/images/document_archive_white.svg");
+      }
+    }
+    return Icon(
+      Icons.attachment,
+      color: AppColors.kWhiteColor,
+      size: SizeConfig.defaultSize! * 4,
+    );
+  }
+
+  static List<FileMangerModel> getDocList(String type,BuildContext context){
+    if (type==AppConstants.docCategories[0]) {
+      return Provider.of<CategoryVm>(context,listen: false).pdfList;
+    }
+    if (type==AppConstants.docCategories[1]) {
+      return Provider.of<CategoryVm>(context,listen: false).pptList;
+    }
+    if (type==AppConstants.docCategories[2]) {
+      return Provider.of<CategoryVm>(context,listen: false).docList;
+    }
+    if (type==AppConstants.docCategories[3]) {
+      return Provider.of<CategoryVm>(context,listen: false).otherDocList;
+    }
+    return Provider.of<CategoryVm>(context,listen: false).pdfList;
   }
 }

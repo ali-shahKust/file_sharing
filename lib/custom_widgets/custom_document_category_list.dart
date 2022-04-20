@@ -7,6 +7,7 @@ class CustomDocumentCategoryList extends StatelessWidget {
   final icon;
   final String type;
   final Color color;
+  final String isSelected;
   final onTap;
 
   const CustomDocumentCategoryList(
@@ -14,6 +15,7 @@ class CustomDocumentCategoryList extends StatelessWidget {
         required this.icon,
         required this.type,
         required this.color,
+        required this.isSelected,
         this.onTap})
       : super(key: key);
 
@@ -44,7 +46,7 @@ class CustomDocumentCategoryList extends StatelessWidget {
                     width: 1.5
                   ),
                   borderRadius: BorderRadius.circular(20),
-                  color: Colors.white70
+                  color: isSelected=='1'?color.withOpacity(0.4):Colors.white70
                 ),
                 height: SizeConfig.screenHeight! * 0.1,
                 width: SizeConfig.screenWidth! * 0.2,
