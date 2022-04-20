@@ -65,7 +65,7 @@ class _DocumentViewsState extends State<DocumentViews> {
           )
               : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start ,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
                 flex: 2,

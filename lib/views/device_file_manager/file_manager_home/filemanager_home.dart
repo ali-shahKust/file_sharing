@@ -187,13 +187,13 @@ class HeaderContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (BuildContext context, CoreVm provider, Widget? child) {
-      if (provider.storageLoading) {
-        return Container(
-          height: MediaQuery.of(context).size.height / 5,
-          child: Image.asset("assets/gifs/loader.gif",
-              height: MediaQuery.of(context).size.height * 0.4, width: MediaQuery.of(context).size.width * 0.4),
-        );
-      } else {
+      // if (provider.storageLoading) {
+      //   return Container(
+      //     height: MediaQuery.of(context).size.height / 5,
+      //     child: Image.asset("assets/gifs/loader.gif",
+      //         height: MediaQuery.of(context).size.height * 0.4, width: MediaQuery.of(context).size.width * 0.4),
+      //   );
+      // } else {
         _totalSpace = ((provider.totalSpace) / 1000000000).round();
         _usedSpace = ((provider.freeSpace) / 1000000000).round();
         _percentageUse = ((_usedSpace / _totalSpace) * 100).round();
@@ -251,7 +251,7 @@ class HeaderContainer extends StatelessWidget {
             ],
           ),
         );
-      }
+      // }
     });
     // return Container(
     //   height: SizeConfig.screenHeight! * 0.14,
