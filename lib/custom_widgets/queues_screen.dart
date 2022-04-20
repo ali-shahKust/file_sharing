@@ -264,7 +264,7 @@ class _QuesScreenState extends State<QuesScreen> {
                                             CircularStrokeCap.round,
                                         progressColor: type == "video"
                                             ? AppColors
-                                                .kStorageSliderToolTipColor
+                                                .kButtonSecondColor
                                             : type == "audio"
                                                 ? AppColors.kAudioPinkColor
                                                 : type == "image"

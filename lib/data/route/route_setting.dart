@@ -42,8 +42,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => VideosView());
     case AudioViews.routeName:
       return MaterialPageRoute(builder: (context) => AudioViews());
-    case FileViews.routeName:
-      return MaterialPageRoute(builder: (context) => FileViews());
       case CloudImages.routeName:
       return MaterialPageRoute(builder: (context) => CloudImages());
       case OnBoardingScreen.routeName:
