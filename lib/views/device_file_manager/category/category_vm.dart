@@ -22,15 +22,20 @@ class CategoryVm extends BaseVm {
   bool videoLoader = true;
   List<FileSystemEntity> downloads = <FileSystemEntity>[];
   List<FileMangerModel> videoTempList = [];
+  List<int> filesLength=[];
   List<String> downloadTabs = <String>[];
   List<FileMangerModel> _imageList = [];
   List<FileMangerModel> videosList = [];
   List<FileMangerModel> audiosList = [];
   List<FileMangerModel> filesList = [];
+  List<FileMangerModel> docList = [];
+  List<FileMangerModel> pdfList = [];
+  List<FileMangerModel> pptList = [];
+  List<FileMangerModel> otherDocList = [];
 
   get imageList => _imageList;
 
-  // List<FileMangerModel> appsList = <FileMangerModel>[];
+  List<FileMangerModel> appsList = <FileMangerModel>[];
   // List<DeviceAppModel> appList = <DeviceAppModel>[];
 
   List<File> selectedFiles = <File>[];
@@ -66,12 +71,17 @@ class CategoryVm extends BaseVm {
     notifyListeners();
   }
 
+  fetchAllListLength(){
+    filesLength.add(_imageList.length);
+    filesLength.add(videosList.length);
+    filesLength.add(audiosList.length);
+    filesLength.add(filesList.length);
+    filesLength.add(appsList.length);
+
+  }
+
   int get videoIndex => _videoIndex;
 
-  addToConversionList(File file) {
-    this.selectedVideoConversionList.add(file);
-    notifyListeners();
-  }
 
   set removeFromSelectedList(File file) {
     print('file to remove from selected list from app screen is $file');
@@ -317,6 +327,27 @@ class CategoryVm extends BaseVm {
           filesList.add(fm);
           // audio.add(file);
         }
+        if (AppConstants.fileTypeList[3] == 'text' && extension(file.path)=='.pdf') {
+          FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
+          pdfList.add(fm);
+          // audio.add(file);
+        }
+        if (AppConstants.fileTypeList[3] == 'text' && (extension(file.path)=='.docx' ||extension(file.path)=='.doc') ) {
+          FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
+          docList.add(fm);
+
+        }
+
+        if (AppConstants.fileTypeList[3] == 'text' && extension(file.path)=='.ppt') {
+          FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
+          pptList.add(fm);
+          // // audio.add(file);
+        }
+        else {
+          FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
+          otherDocList.add(fm);
+
+        }
         // if (mimeType.split('/')[0] == fileTypeList[3]) {
         //   // images.add(file);
         //
@@ -472,6 +503,21 @@ class CategoryVm extends BaseVm {
     }
     notifyListeners();
   }
+  void selectAllInList( List<FileMangerModel> list) {
+    list.forEach((element) {
+      if (element.isSelected) {
+        element.isSelected = false;
+        removeFromSelectedList = element.file;
+      } else {
+        element.isSelected = true;
+        addToSelectedList = element.file;
+
+
+      }
+    });
+
+    notifyListeners();
+  }
 
   Future setSort(value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -525,28 +571,28 @@ class CategoryVm extends BaseVm {
     }
   }
 
-  void changeConvertIsSelected(int index, List<FileMangerModel> list) {
-    print('before adding one at list........');
-
-    for (int i = 0; i < list.length; i++) {
-      list[i].isSelected = false;
-      // print('is seclect value of video $i at provide is ${list[i].isSelected}');
-    }
-    if (list[index].isSelected) {
-      list[index].isSelected = false;
-    } else {
-      list[index].isSelected = true;
-      addToConversionList(list[index].file);
-    }
-    print('after adding one at list........');
-
-    // for (int i = 0; i < list.length; i++) {
-    //   // list[i].isSelected = false;
-    //   print('is seclect value of video $i at provide is ${list[i].isSelected}');
-    // }
-
-    notifyListeners();
-  }
+  // void changeConvertIsSelected(int index, List<FileMangerModel> list) {
+  //   print('before adding one at list........');
+  //
+  //   for (int i = 0; i < list.length; i++) {
+  //     list[i].isSelected = false;
+  //     // print('is seclect value of video $i at provide is ${list[i].isSelected}');
+  //   }
+  //   if (list[index].isSelected) {
+  //     list[index].isSelected = false;
+  //   } else {
+  //     list[index].isSelected = true;
+  //     addToConversionList(list[index].file);
+  //   }
+  //   print('after adding one at list........');
+  //
+  //   // for (int i = 0; i < list.length; i++) {
+  //   //   // list[i].isSelected = false;
+  //   //   print('is seclect value of video $i at provide is ${list[i].isSelected}');
+  //   // }
+  //
+  //   notifyListeners();
+  // }
 
   bool getIsSelectedVal(int index, List<FileMangerModel> list) {
     return list[index].isSelected;

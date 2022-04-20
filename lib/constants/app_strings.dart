@@ -10,6 +10,7 @@ class AppStrings {
   static const String scanned = "Scanned";
   static const String appTitle = "BackUp App";
   static const String phoneStorage = "Phone Storage";
+  static const String backup = "Backup Now";
 
 
   // static const List<String> transferDocumentCategories = ['SharedDocuments', 'ReceivedDocuments'];

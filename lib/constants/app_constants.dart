@@ -41,12 +41,7 @@ class AppConstants {
   }
 
   static List categories = [
-    // {
-    //   'title': 'Downloads',
-    //   'icon': Icons.download,
-    //   'path': '',
-    //   'color': Colors.purple
-    // },
+
     {
       'title': 'Images',
       'icon': 'assets/file_manager_assets/filemanager_home_images.svg',
@@ -83,6 +78,41 @@ class AppConstants {
       'startColor':Color.fromRGBO(174, 148, 254, 1),
       'endColor':Color.fromRGBO(55, 36, 255, 1),
     },
+  ];
+
+  static List documnetCategories = [
+    // {
+    //   'title': 'Downloads',
+    //   'icon': Icons.download,
+    //   'path': '',
+    //   'color': Colors.purple
+    // },
+
+    {
+      'title': 'PDF',
+      'icon': 'assets/images/document_pdf.svg',
+      'startColor':Color.fromRGBO(143, 254, 241, 1),
+      'endColor':Color.fromRGBO(31, 209, 191, 1),
+    },
+    {
+      'title': 'Slides',
+      'icon': 'assets/images/document_ppt.svg',
+      'startColor':Color.fromRGBO(255, 208, 188, 1),
+      'endColor':Color.fromRGBO(254, 120, 62, 1),
+    },
+    {
+      'title': 'DOC',
+      'icon': 'assets/images/document_doc.svg',
+      'startColor':Color.fromRGBO(254, 175, 255, 1),
+      'endColor':Color.fromRGBO(251, 98, 254, 1),
+    },
+    {
+      'title': 'Others',
+      'icon': 'assets/images/document_archive.svg',
+      'startColor':Color.fromRGBO(173, 235, 254, 1),
+      'endColor':Color.fromRGBO(19, 181, 222, 1),
+    },
+
   ];
 
   static List<String> fileTypeList = ['app', 'image', 'video', 'text', 'audio'];

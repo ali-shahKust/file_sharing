@@ -1,7 +1,7 @@
 package com.dummyapp.glass_mor;
 
 import android.os.Bundle;
-
+import android.os.Environment;
 import android.os.StatFs;
 import android.util.Log;
 import java.io.File;
@@ -42,10 +42,10 @@ public class MainActivity extends FlutterActivity {
                             // System.out.print(s
                         }
                         if(call.method.equals("getStorageFreeSpace")){
-                            result.success(getExternalStorageFreeSpace());
+                            result.success(getStorageFreeSpace());
                         }
                         if(call.method.equals("getStorageTotalSpace")){
-                            result.success(getExternalStorageTotalSpace());
+                            result.success(getStorageTotalSpace());
                         }
                     }
                 });
@@ -85,30 +85,30 @@ public class MainActivity extends FlutterActivity {
 //        Log.i("myTag", userId);
         return userId;
     }
-    public Long getExternalStorageTotalSpace() {
-        File[] dirs = getExternalFilesDirs("");
-        StatFs stat = new StatFs(dirs[1].getPath().split("Android")[0]);
-        return stat.getTotalBytes();
-    }
-
-
-    public Long getExternalStorageFreeSpace() {
-        File[] dirs =getExternalFilesDirs("");
-        StatFs stat = new StatFs(dirs[1].getPath().split("Android")[0]);
-//        Log.i("Internal", path.getPath());
-        return stat.getAvailableBytes();
-    }
-//    public Long getStorageTotalSpace() {
-//        File path = Environment.getDataDirectory();
-//        StatFs stat = new StatFs(path.getPath());
+//    public Long getExternalStorageTotalSpace() {
+//        File[] dirs = getExternalFilesDirs("");
+//        StatFs stat = new StatFs(dirs[1].getPath().split("Android")[0]);
 //        return stat.getTotalBytes();
 //    }
 //
-//    public Long getStorageFreeSpace(){
-//        File path = Environment.getDataDirectory();
-//        StatFs stat = new  StatFs(path.getPath());
-//        Log.i("Internal", path.getPath());
+//
+//    public Long getExternalStorageFreeSpace() {
+//        File[] dirs =getExternalFilesDirs("");
+//        StatFs stat = new StatFs(dirs[1].getPath().split("Android")[0]);
+////        Log.i("Internal", path.getPath());
 //        return stat.getAvailableBytes();
 //    }
+    public Long getStorageTotalSpace() {
+        File path = Environment.getDataDirectory();
+        StatFs stat = new StatFs(path.getPath());
+        return stat.getTotalBytes();
+    }
+
+    public Long getStorageFreeSpace(){
+        File path = Environment.getDataDirectory();
+        StatFs stat = new  StatFs(path.getPath());
+        Log.i("Internal", path.getPath());
+        return stat.getAvailableBytes();
+    }
 
 }

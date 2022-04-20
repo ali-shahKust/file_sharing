@@ -1,6 +1,8 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:quick_backup/configurations/size_config.dart';
+import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/utilities/custom_theme.dart';
 
 class AppStyle {
@@ -26,8 +28,8 @@ class AppStyle {
   //     fontSize: SizeConfig.screenHeight! * 0.022,
   //     fontWeight: FontWeight.bold,
   //     fontFamily: 'WorkSans');
-  // static final kSubTitleStyle =
-  // TextStyle(color: AppColors.kGreyColor, fontSize: SizeConfig.screenHeight! * 0.02, fontFamily: 'WorkSans');
+  static final kStorageTextStyle =
+  TextStyle(color: AppColors.kPrimaryColor, fontSize: SizeConfig.screenHeight! * 0.02,fontWeight: FontWeight.bold);
   //
   // static final kContainerTitleStyle = TextStyle(
   //     color: AppColors.kGreyColor,
