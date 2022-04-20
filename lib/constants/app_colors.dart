@@ -34,6 +34,7 @@ class AppColors {
   static Color kButtonGradientSecondColor = Color.fromRGBO(254, 121, 64, 1);
   static Color kButtonGradientThirdColor =  Color.fromRGBO(255, 154, 112, 1);
   static Color kListTileLightGreyColor =  Color.fromRGBO(242, 241, 255, 1);
+  static Color kYellowColor = Colors.yellow;
 
 }
 
