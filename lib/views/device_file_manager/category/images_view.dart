@@ -12,10 +12,7 @@ import 'package:quick_backup/constants/app_strings.dart';
 import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/custom_widgets/queues_screen.dart';
 import 'package:quick_backup/data/models/file_model.dart';
-import 'package:quick_backup/utilities/i_utills.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
-
-import '../../../custom_widgets/app_text_widget.dart';
 
 class ImagesView extends StatefulWidget {
   static const routeName = 'images';
@@ -28,13 +25,11 @@ class ImagesView extends StatefulWidget {
   _ImagesViewState createState() => _ImagesViewState();
 }
 
-class _ImagesViewState extends State<ImagesView>
-    with SingleTickerProviderStateMixin {
+class _ImagesViewState extends State<ImagesView> with SingleTickerProviderStateMixin {
   // final provider = GetIt.I.get<CategoryVm>();
   @override
   Widget build(BuildContext context) {
-    print(
-        'image list length is ${Provider.of<CategoryVm>(context, listen: false).imageList.length}');
+    print('image list length is ${Provider.of<CategoryVm>(context, listen: false).imageList.length}');
     SizeConfig().init(context);
     // print('all files list length is ${Provider.of<CategoryVm>(context,listen: false).imageList.length}');
 
@@ -42,146 +37,129 @@ class _ImagesViewState extends State<ImagesView>
       builder: (context, provider, _) {
         return Scaffold(
             backgroundColor: AppColors.kPrimaryPurpleColor,
-            body: SafeArea(
-              child: Container(
-                width: SizeConfig.screenWidth,
-                height: SizeConfig.screenHeight,
-                decoration: BoxDecoration(
-                  color: AppColors.kPrimaryPurpleColor,
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/container_background.webp'),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    // SizedBox(
-                    //   height: SizeConfig.screenHeight! * 0.01,
-                    // ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: Icon(
-                                Icons.arrow_back_ios,
-                                size: SizeConfig.screenHeight! * 0.024,
-                                color: Colors.white,
-                              )),
-                          PrimaryText(
-                            "Photos",
-                            fontSize: SizeConfig.screenHeight! * 0.020,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          SizedBox(
-                            width: 50,
-                          )
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '${provider.selectedFiles.length} Selected',
-                            style: TextStyle(
-                                fontSize: SizeConfig.screenHeight! * 0.024,
-                                color: AppColors.kWhiteColor),
-                          ),
-                          SizedBox(
-                            width: SizeConfig.screenWidth! * 0.3,
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              provider.selectAllInList(provider.imageList);
-                            },
-                            icon: Icon(
-                              provider.selectedFiles.length > 0
-                                  ? Icons.check_box_outlined
-                                  : Icons.check_box_outline_blank,
-                              color: AppColors.kWhiteColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: SizeConfig.screenHeight! * 0.82,
-                      decoration: BoxDecoration(
-                          color: AppColors.kWhiteColor,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30))),
-                      child: Stack(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: SizeConfig.screenHeight! * 0.02,
-                                right: SizeConfig.screenHeight! * 0.02,
-                                top: SizeConfig.screenHeight! * 0.04),
-                            child: GridView.builder(
-                                addAutomaticKeepAlives: false,
-                                addRepaintBoundaries: false,
-                                reverse: false,
-                                cacheExtent: 50,
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  mainAxisSpacing: 4.0,
-                                  crossAxisSpacing: 7.0,
-                                ),
-                                itemCount: provider.imageList.length,
-                                itemBuilder: (BuildContext ctx, index) {
-                                  FileMangerModel fmm = provider.imageList[index];
-                                  return _MediaTile(
-                                    imgmodel: fmm,
-                                    provider: provider,
-                                    index: index,
-                                    // file: item.file
-                                  );
-                                }),
-                          ),
-                          Visibility(
-                            visible:
-                                provider.selectedFiles.length > 0 ? true : false,
-                            child: Positioned(
-                              bottom: SizeConfig.screenHeight! * 0.012,
-                              left: SizeConfig.screenWidth! * 0.005,
-                              right: SizeConfig.screenWidth! * 0.005,
-                              child: BackupButton(
-                                text: '${AppStrings.backup}',
-                                width: SizeConfig.screenWidth! * 0.58,
-                                onTap: () async {
-                                  //  pd.show(max: 100, msg: 'File Uploading...');
-                                  if (provider.selectedFiles.length > 0) {
-                                    Navigator.pushNamed(
-                                        context, QuesScreen.routeName,
-                                        arguments: {
-                                          'files': provider.selectedFiles,
-                                          "drawer": false
-                                        }).whenComplete(() {
-                                      print('whencomplete call...');
-                                      provider.selectedFiles.clear();
-                                    });
-                                  }
-                                },
-                                btnColor: AppColors.kGreyColor,
-                                padding: SizeConfig.screenHeight! * 0.02,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+            appBar: AppBar(
+              elevation: 0.0,
+              backgroundColor: AppColors.kPrimaryPurpleColor,
+              title: Text('Photos'),
+              centerTitle: true,
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: AppColors.kWhiteColor,
                 ),
               ),
+            ),
+            body: Column(
+              children: [
+                // SizedBox(
+                //   height: SizeConfig.screenHeight! * 0.01,
+                // ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.kPrimaryPurpleColor,
+
+                      // image: DecorationImage(
+                      //   image: AssetImage('assets/images/container_background.webp'),
+                      // )
+                      // Image.asset('assets/container_background.svg'),
+                    ),
+
+                    // height: SizeConfig.screenHeight! * 0.15,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${provider.selectedFiles.length} Selected',
+                          style: TextStyle(fontSize: SizeConfig.screenHeight! * 0.024, color: AppColors.kWhiteColor),
+                        ),
+                        SizedBox(
+                          width: SizeConfig.screenWidth! * 0.3,
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            provider.changeIsAllImagesSelected();
+                            print('value of selection var on tap is ${provider.isAllAudioSelected}');
+                            provider.selectAllInList(provider.imageList);
+                            // provider.selectAllInList(provider.imageList);
+                          },
+                          icon: Icon(
+                            provider.isAllImagesSelected
+                                ? Icons.check_box_outlined
+                                : Icons.check_box_outline_blank,
+                            color: AppColors.kWhiteColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: SizeConfig.screenHeight! * 0.82,
+                  decoration: BoxDecoration(
+                      color: AppColors.kWhiteColor,
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: SizeConfig.screenHeight! * 0.02,
+                            right: SizeConfig.screenHeight! * 0.02,
+                            top: SizeConfig.screenHeight! * 0.04),
+                        child: GridView.builder(
+                            addAutomaticKeepAlives: false,
+                            addRepaintBoundaries: false,
+                            reverse: false,
+                            cacheExtent: 50,
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              mainAxisSpacing: 4.0,
+                              crossAxisSpacing: 7.0,
+                            ),
+                            itemCount: provider.imageList.length,
+                            itemBuilder: (BuildContext ctx, index) {
+                              FileMangerModel fmm = provider.imageList[index];
+                              return _MediaTile(
+                                imgmodel: fmm,
+                                provider: provider,
+                                index: index,
+                                // file: item.file
+                              );
+                            }),
+                      ),
+                      Visibility(
+                        visible: provider.selectedFiles.length > 0 ? true : false,
+                        child: Positioned(
+                          bottom: SizeConfig.screenHeight! * 0.012,
+                          left: SizeConfig.screenWidth! * 0.005,
+                          right: SizeConfig.screenWidth! * 0.005,
+                          child: BackupButton(
+                            text: '${AppStrings.backup}',
+                            width: SizeConfig.screenWidth! * 0.58,
+                            onTap: () async {
+                              //  pd.show(max: 100, msg: 'File Uploading...');
+                              if (provider.selectedFiles.length > 0) {
+                                Navigator.pushNamed(context, QuesScreen.routeName,
+                                    arguments: {'files': provider.selectedFiles, "drawer": false}).whenComplete(() {
+                                  print('whencomplete call...');
+                                  provider.selectedFiles.clear();
+                                });
+                              }
+                            },
+                            btnColor: AppColors.kGreyColor,
+                            padding: SizeConfig.screenHeight! * 0.02,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             )
             //   CustomScrollView(
             //   primary: false,
@@ -248,9 +226,7 @@ class _MediaTile extends StatelessWidget {
         children: [
           Container(
             padding: EdgeInsets.all(SizeConfig.screenHeight! * 0.003),
-            decoration: BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.all(Radius.circular(8))),
+            decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.all(Radius.circular(8))),
             // height: screenHeight * 0.15  ,
             // width: screenWidht * 0.47,
             child: ClipRRect(
@@ -274,9 +250,7 @@ class _MediaTile extends StatelessWidget {
                   ? Container(
                       height: SizeConfig.screenHeight! * 0.1,
                       width: SizeConfig.screenWidth! * 0.07,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.kPrimaryPurpleColor),
+                      decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.kPrimaryPurpleColor),
                       child: Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Icon(

@@ -60,14 +60,14 @@ class _FileManagerHomeState extends State<FileManagerHome> {
         //         ),
         //   )
         // ],
-        leading: GestureDetector(
-          child: Icon(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
             Icons.arrow_back_ios,
             color: AppColors.kWhiteColor,
           ),
-          onTap: () {
-            Navigator.pop(context);
-          },
         ),
       ),
       body: Column(
@@ -195,7 +195,7 @@ class HeaderContainer extends StatelessWidget {
         );
       } else {
         _totalSpace = ((provider.totalSpace) / 1000000000).round();
-        _usedSpace = ((provider.freeSpace) / 1000000000).round();
+        _usedSpace = ((provider.usedSpace) / 1000000000).round();
         _percentageUse = ((_usedSpace / _totalSpace) * 100).round();
         return Container(
           height: SizeConfig.screenHeight! * 0.14,
@@ -212,7 +212,7 @@ class HeaderContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Used: ${((provider.freeSpace) / 1000000000).round()}  GB',
+                    'Used: ${((provider.usedSpace) / 1000000000).round()}  GB',
                     style: AppStyle.kStorageTextStyle,
                   ),
                   Text(

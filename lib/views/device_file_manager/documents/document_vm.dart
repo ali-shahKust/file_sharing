@@ -31,6 +31,9 @@ class DocumentVm extends BaseVm {
     }
     notifyListeners();
   }
+
+
+
 // if(fileCategoryList[index]['isSelected']=='1'){
 //   fileCategoryList[index]['isSelected']='0';
 // }
