@@ -5,6 +5,7 @@ import 'package:quick_backup/custom_widgets/queues_screen.dart';
 import 'package:quick_backup/views/device_file_manager/category/audio_view.dart';
 import 'package:quick_backup/views/device_file_manager/category/images_view.dart';
 import 'package:quick_backup/views/device_file_manager/category/videos_view.dart';
+import 'package:quick_backup/views/device_file_manager/device_apps/app_views.dart';
 import 'package:quick_backup/views/device_file_manager/documents/document_view.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/filemanager_home.dart';
 import 'package:quick_backup/views/dashboard/dashboard_screen.dart';
@@ -54,6 +55,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => UserNameSettingScreen());
     case UpdateUserNameScreen.routeName:
       return MaterialPageRoute(builder: (context) => UpdateUserNameScreen());
+    case AppViews.routeName:
+      return MaterialPageRoute(builder: (context) => AppViews());
     //   case FileManagerHome.routeName:
     //   return MaterialPageRoute(
     //       builder: (context) => MultiProvider(

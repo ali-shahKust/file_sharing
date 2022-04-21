@@ -2,9 +2,11 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
+import 'package:device_apps/device_apps.dart';
 import 'package:flutter/foundation.dart';
 import 'package:quick_backup/constants/app_constants.dart';
 import 'package:quick_backup/data/base/base_vm.dart';
+import 'package:quick_backup/data/models/device_app_model.dart';
 import 'package:quick_backup/data/models/file_model.dart';
 import 'package:isolate_handler/isolate_handler.dart';
 import 'package:mime_type/mime_type.dart';
@@ -38,10 +40,11 @@ class CategoryVm extends BaseVm {
   List<FileMangerModel> appsList = <FileMangerModel>[];
   List<File> selectedFiles = <File>[];
   List<File> selectedVideoConversionList = <File>[];
-  List<String> imageTabs = <String>[];
+  // List<String> imageTabs = <String>[];
   List<FileSystemEntity> audio = <FileSystemEntity>[];
-  List<String> audioTabs = <String>[];
-  List<FileSystemEntity> currentFiles = [];
+  List<DeviceAppModel> appList = <DeviceAppModel>[];
+  // List<String> audioTabs = <String>[];
+  // List<FileSystemEntity> currentFiles = [];
 
   bool showHidden = false;
   bool _isAllImagesSelected = false;
@@ -178,7 +181,7 @@ class CategoryVm extends BaseVm {
     getVideos();
     getAudios();
     getTextFile();
-    // getAllApps();
+    getAllApps();
   }
 
   // getAllFilesData() async {
@@ -486,76 +489,34 @@ class CategoryVm extends BaseVm {
   }
 
 //TODO unCommit to get device apps ....
-  // getAllApps() async {
-  //   appList.clear();
-  //   final apps = await DeviceApps.getInstalledApplications(
-  //     onlyAppsWithLaunchIntent: true,
-  //     includeSystemApps: false,
-  //     includeAppIcons: true,
-  //   );
-  //   // print('data in apps object is $apps');
-  //   apps.forEach((file) {
-  //     // String mimeType = mime(file.path) ?? '';
-  //     // if (mimeType.split('/')[0] == fileTypeList[1]) {
-  //     // images.add(file);
-  //     DeviceAppModel appModel = DeviceAppModel(apps: file, isSelected: false);
-  //     appList.add(appModel);
-  //
-  //     // for (int i = 0; i < appList.length; i++) {
-  //     //   print('apps in the device is ....${appList[i].apps}');
-  //     // }
-  //
-  //     // }
-  //     // notifyListeners();
-  //   });
-  //   setLoading(false);
-  // }
+  getAllApps() async {
+    appList.clear();
+    final apps = await DeviceApps.getInstalledApplications(
+      onlyAppsWithLaunchIntent: true,
+      includeSystemApps: false,
+      includeAppIcons: true,
+    );
+    // print('data in apps object is $apps');
+    apps.forEach((file) {
+      // String mimeType = mime(file.path) ?? '';
+      // if (mimeType.split('/')[0] == fileTypeList[1]) {
+      // images.add(file);
+      DeviceAppModel appModel = DeviceAppModel(apps: file, isSelected: false);
+      appList.add(appModel);
 
-  // void getaudios() {
-  //   for (int i = 0; i < audiosList.length; i++) {
-  //     print('data in the audio list is ${audiosList[i].file}');
-  //   }
-  // }
+      // for (int i = 0; i < appList.length; i++) {
+      //   print('apps in the device is ....${appList[i].apps}');
+      // }
 
-  // switchCurrentFiles(List list, String label) async {
-  //   List<FileSystemEntity> l = await compute(getTabImages, [list, label]);
-  //   currentFiles = l;
-  //   notifyListeners();
-  // }
+      // }
+      // notifyListeners();
+    });
+    setLoading(false);
+  }
 
-  // static Future<List<FileSystemEntity>> getTabImages(List item) async {
-  //   List items = item[0];
-  //   String label = item[1];
-  //   List<FileSystemEntity> files = [];
-  //   items.forEach((file) {
-  //     if ('${file.path.split('/')[file.path.split('/').length - 2]}' == label) {
-  //       files.add(file);
-  //     }
-  //   });
-  //   return files;
-  // }
 
-  // static Future<List> separateAudios(Map body) async {
-  //   List files = body['files'];
-  //   String type = body['type'];
-  //   List<FileSystemEntity> audio = [];
-  //   List<String> audioTabs = [];
-  //   for (File file in files) {
-  //     String mimeType = mime(file.path) ?? '';
-  //     print(extension(file.path));
-  //     if (type == 'text' && docExtensions.contains(extension(file.path))) {
-  //       audio.add(file);
-  //     }
-  //     if (mimeType.isNotEmpty) {
-  //       if (mimeType.split('/')[0] == type) {
-  //         audio.add(file);
-  //         audioTabs.add('${file.path.split('/')[file.path.split('/').length - 2]}');
-  //         audioTabs = audioTabs.toSet().toList();
-  //       }
-  //     }
-  //   }
-  //   return [audio, audioTabs];
-  // }
+
+
 
   static List docExtensions = [
     '.txt',
@@ -586,6 +547,21 @@ class CategoryVm extends BaseVm {
       } else {
         element.isSelected = true;
         addToSelectedList = element.file;
+      }
+    });
+
+    notifyListeners();
+  }
+  void selectAllAppInList(List<DeviceAppModel> list) {
+    list.forEach((element) {
+      if (element.isSelected) {
+        element.isSelected = false;
+        // File(provider.appList[index].apps.apkFilePath)
+        removeFromSelectedList = File(element.apps.apkFilePath);
+
+      } else {
+        element.isSelected = true;
+        addToSelectedList = File(element.apps.apkFilePath);
       }
     });
 
@@ -683,23 +659,23 @@ class CategoryVm extends BaseVm {
   }
 
 // Specific for Device app  "Model Change"..............
-//   void changeIsSelectedApp(int index, List<DeviceAppModel> list) {
-//     if (list[index].isSelected) {
-//       list[index].isSelected = false;
-//     } else {
-//       list[index].isSelected = true;
-//     }
-//     notifyListeners();
-//   }
+  void changeIsSelectedApp(int index, List<DeviceAppModel> list) {
+    if (list[index].isSelected) {
+      list[index].isSelected = false;
+    } else {
+      list[index].isSelected = true;
+    }
+    notifyListeners();
+  }
 
-  // bool getIsSelectedAppVal(int index, List<DeviceAppModel> list) {
-  //   return list[index].isSelected;
-  // }
-  //
-  // void isSelectedAppVal(bool val, DeviceAppModel obj) {
-  //   obj.isSelected = val;
-  //   notifyListeners();
-  // }
+  bool getIsSelectedAppVal(int index, List<DeviceAppModel> list) {
+    return list[index].isSelected;
+  }
+
+  void isSelectedAppVal(bool val, DeviceAppModel obj) {
+    obj.isSelected = val;
+    notifyListeners();
+  }
 
   void setLoading(value) {
     loading = value;
@@ -758,6 +734,18 @@ class CategoryVm extends BaseVm {
     // _isAllAudioSelected ==true?false:true;
     notifyListeners();
   }
+  bool get isAllAppsSelected => _isAllAppsSelected;
+
+  void changeIsAllAppsSelected() {
+    if(_isAllAppsSelected ==true){
+      this._isAllAppsSelected=false;
+    }
+    else if(_isAllAppsSelected ==false){
+      this._isAllAppsSelected=true;
+    }
+    // _isAllAudioSelected ==true?false:true;
+    notifyListeners();
+  }
 
   bool get isAllFilesSelected => _isAllFilesSelected;
 
@@ -771,17 +759,17 @@ class CategoryVm extends BaseVm {
     notifyListeners();
   }
 
-  bool get isAllAppsSelected => _isAllAppsSelected;
-
-  void changeIsAllAppsSelected() {
-    if(_isAllAppsSelected ==true){
-      this._isAllAppsSelected=false;
-    }
-    else if(_isAllAppsSelected ==false){
-      this._isAllAppsSelected=true;
-    }
-    notifyListeners();
-  }
+  // bool get isAllAppsSelected => _isAllAppsSelected;
+  //
+  // void changeIsAllAppsSelected() {
+  //   if(_isAllAppsSelected ==true){
+  //     this._isAllAppsSelected=false;
+  //   }
+  //   else if(_isAllAppsSelected ==false){
+  //     this._isAllAppsSelected=true;
+  //   }
+  //   notifyListeners();
+  // }
   bool get isAllPdfSelected => _isAllPdfSelected;
 
   void changeIsAllPdfSelected() {

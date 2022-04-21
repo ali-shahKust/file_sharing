@@ -15,6 +15,7 @@ import 'package:quick_backup/views/device_file_manager/category/category_vm.dart
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:quick_backup/views/device_file_manager/category/images_view.dart';
 import 'package:quick_backup/views/device_file_manager/category/videos_view.dart';
+import 'package:quick_backup/views/device_file_manager/device_apps/app_views.dart';
 import 'package:quick_backup/views/device_file_manager/documents/document_view.dart';
 import 'package:quick_backup/views/device_file_manager/documents/document_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/core_vm.dart';
@@ -160,6 +161,9 @@ class _CategoriesSection extends StatelessWidget {
               } else if (index == 3) {
                 Navigator.pushNamed(context, DocumentViews.routeName);
               }
+              else if (index == 4) {
+                Navigator.pushNamed(context, AppViews.routeName);
+              }
             },
           );
         },
@@ -174,16 +178,10 @@ class _CategoriesSection extends StatelessWidget {
 class HeaderContainer extends StatelessWidget {
   HeaderContainer({Key? key}) : super(key: key);
   int _totalSpace = 0;
-
-  // ((coreProvider.totalSpace)/1000000000).round();
   int _usedSpace = 0;
-
-  // ((coreProvider.freeSpace)/1000000000).round();
-  // print('total avaliable space $_totalSpace');
-  // print('free space is $_usedSpace');
   int _percentageUse = 0;
 
-  // ((_usedSpace/_totalSpace)*100).round();
+
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (BuildContext context, CoreVm provider, Widget? child) {

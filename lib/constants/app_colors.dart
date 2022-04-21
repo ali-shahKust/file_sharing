@@ -37,6 +37,28 @@ class AppColors {
   static Color kButtonGradientSecondColor = Color.fromRGBO(254, 121, 64, 1);
   static Color kButtonGradientThirdColor =  Color.fromRGBO(255, 154, 112, 1);
   static Color kListTileLightGreyColor =  Color.fromRGBO(242, 241, 255, 1);
+  static Color kAppsCardLighColor =  Color.fromRGBO(0, 199, 255, 0.07);
+  //Random Colors.for apps Icon....
+  static Color kAvatarBlue = const Color(0xFF435FF0);
+  static Color kAvatarGreen = const Color.fromRGBO(94,184,116,1);
+  static Color kAvatarPurple = const Color.fromRGBO(181,88,242,1);
+  static Color kAvatarPink = const Color.fromRGBO(254,100,186,1);
+  static Color kAvatarOrange = const Color.fromRGBO(250,143,61,1);
+  static Color kAvatarRed= const Color.fromRGBO(242,100,91,1);
+  static Color kAvatarAquaBlue = const Color.fromRGBO(77,205,230,1);
+  static Color kAvatarDarkGrey = const Color(0xFF5E5E5E);
+
+  static List<Color> avatarBgColors = [
+    AppColors.kAvatarBlue,
+    AppColors.kAvatarGreen,
+    AppColors.kAvatarPurple,
+    AppColors.kAvatarPink,
+    AppColors.kAvatarOrange,
+    AppColors.kAvatarRed,
+    AppColors.kAvatarAquaBlue,
+    AppColors.kAvatarDarkGrey,
+  ];
+
   static Color kYellowColor = Colors.yellow;
 
 }
