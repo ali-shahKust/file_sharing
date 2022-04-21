@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/constants/app_strings.dart';
+import 'package:quick_backup/custom_widgets/app_text_widget.dart';
 import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/data/models/file_model.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
@@ -39,130 +40,144 @@ class _VideosViewState extends State<VideosView> {
         return Scaffold(
           // backgroundColor: Colors.white,
           backgroundColor: AppColors.kPrimaryPurpleColor,
-          appBar: AppBar(
-            elevation: 0.0,
-            backgroundColor: AppColors.kPrimaryPurpleColor,
-            title: Text('Videos'),
-            centerTitle: true,
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: AppColors.kWhiteColor,
+          body: SafeArea(
+            child: Container(
+              width: SizeConfig.screenWidth,
+              height: SizeConfig.screenHeight,
+              decoration: BoxDecoration(
+                  color: AppColors.kPrimaryPurpleColor,
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/container_background.webp'),
+                  )
+                // Image.asset('assets/container_background.svg'),
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: Icon(
+                              Icons.arrow_back_ios,
+                              size: SizeConfig.screenHeight! * 0.024,
+                              color: Colors.white,
+                            )),
+                        PrimaryText(
+                          "Videos",
+                          fontSize: SizeConfig.screenHeight! * 0.020,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        SizedBox(
+                          width: 50,
+                        )
+                      ],
+                    ),
+                  ),
+
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${provider.selectedFiles.length} Selected',
+                          style: TextStyle(fontSize: SizeConfig.screenHeight! * 0.024, color: AppColors.kWhiteColor),
+                        ),
+                        SizedBox(
+                          width: SizeConfig.screenWidth! * 0.3,
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            provider.changeIsAllVideosSelected();
+                            provider.selectAllInList(provider.videosList);
+                          },
+                          icon: Icon(
+                            provider.isAllVideosSelected
+                                ? Icons.check_box_outlined
+                                : Icons.check_box_outline_blank,
+                            color: AppColors.kWhiteColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+
+                  Container(
+                    height: SizeConfig.screenHeight! * 0.82,
+                    decoration: BoxDecoration(
+                        color: AppColors.kWhiteColor,
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+                    child: Stack(
+                      //
+                      children: [
+                        Visibility(
+                          visible: provider.videosList.isNotEmpty,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: SizeConfig.screenHeight! * 0.02,
+                                right: SizeConfig.screenHeight! * 0.02,
+                                top: SizeConfig.screenHeight! * 0.04),
+                            child: PagewiseGridViewExample(),
+                          ),
+                        ),
+                        Visibility(
+                          visible: provider.selectedFiles.length > 0 ? true : false,
+                          child: Positioned(
+                            bottom: SizeConfig.screenHeight! * 0.012,
+                            left: SizeConfig.screenWidth! * 0.005,
+                            right: SizeConfig.screenWidth! * 0.005,
+                            child: BackupButton(
+                              text: '${AppStrings.backup}',
+                              width: SizeConfig.screenWidth! * 0.58,
+                              onTap: () async {
+                                //  pd.show(max: 100, msg: 'File Uploading...');
+                                if (provider.selectedFiles.length > 0) {
+                                  print('Button pressed.');
+                                  Navigator.pushNamed(context, QuesScreen.routeName, arguments: {'files':provider.selectedFiles,"drawer":false})
+                                      .whenComplete(() {
+                                    print('whencomplete call...');
+                                    provider.selectedFiles.clear();
+                                  });
+                                  // Toast('No file Selected', context);
+                                }
+                              },
+                              btnColor: AppColors.kGreyColor,
+                              padding: SizeConfig.screenHeight! * 0.02,
+                            ),
+                          ),
+                        ),
+
+                        // Positioned(
+                        //   bottom: 5,
+                        //   left:50,
+                        //   right: 50,
+                        //   child: RaisedButton(
+                        //     color: Colors.blue,
+                        //     child: Text(
+                        //       "Selected Files ${provider.selectedFiles.length}",
+                        //       style: TextStyle(color: Colors.white,fontSize: 18),
+                        //     ),
+                        //     onPressed: () {
+                        //       for (int i = 0; i < provider.selectedFiles.length; i++) {
+                        //         print(
+                        //             'files in the selected list are.....${provider.selectedFiles[i]}');
+                        //       }
+                        //     },
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-          body: Column(
-            children: [
-              Expanded(
-                flex: 1,
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: AppColors.kPrimaryPurpleColor,
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/container_background.webp'),
-                      )
-                    // Image.asset('assets/container_background.svg'),
-                  ),
-                  // height: SizeConfig.screenHeight! * 0.15,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${provider.selectedFiles.length} Selected',
-                        style: TextStyle(fontSize: SizeConfig.screenHeight! * 0.024, color: AppColors.kWhiteColor),
-                      ),
-                      SizedBox(
-                        width: SizeConfig.screenWidth! * 0.3,
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          provider.changeIsAllVideosSelected();
-                          provider.selectAllInList(provider.videosList);
-                        },
-                        icon: Icon(
-                          provider.isAllVideosSelected
-                              ? Icons.check_box_outlined
-                              : Icons.check_box_outline_blank,
-                          color: AppColors.kWhiteColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-
-              Container(
-                height: SizeConfig.screenHeight! * 0.82,
-                decoration: BoxDecoration(
-                    color: AppColors.kWhiteColor,
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-                child: Stack(
-                  //
-                  children: [
-                    Visibility(
-                      visible: provider.videosList.isNotEmpty,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            left: SizeConfig.screenHeight! * 0.02,
-                            right: SizeConfig.screenHeight! * 0.02,
-                            top: SizeConfig.screenHeight! * 0.04),
-                        child: PagewiseGridViewExample(),
-                      ),
-                    ),
-                    Visibility(
-                      visible: provider.selectedFiles.length > 0 ? true : false,
-                      child: Positioned(
-                        bottom: SizeConfig.screenHeight! * 0.012,
-                        left: SizeConfig.screenWidth! * 0.005,
-                        right: SizeConfig.screenWidth! * 0.005,
-                        child: BackupButton(
-                          text: '${AppStrings.backup}',
-                          width: SizeConfig.screenWidth! * 0.58,
-                          onTap: () async {
-                            //  pd.show(max: 100, msg: 'File Uploading...');
-                            if (provider.selectedFiles.length > 0) {
-                              print('Button pressed.');
-                              Navigator.pushNamed(context, QuesScreen.routeName, arguments: {'files':provider.selectedFiles,"drawer":false})
-                                  .whenComplete(() {
-                                print('whencomplete call...');
-                                provider.selectedFiles.clear();
-                              });
-                              // Toast('No file Selected', context);
-                            }
-                          },
-                          btnColor: AppColors.kGreyColor,
-                          padding: SizeConfig.screenHeight! * 0.02,
-                        ),
-                      ),
-                    ),
-
-                    // Positioned(
-                    //   bottom: 5,
-                    //   left:50,
-                    //   right: 50,
-                    //   child: RaisedButton(
-                    //     color: Colors.blue,
-                    //     child: Text(
-                    //       "Selected Files ${provider.selectedFiles.length}",
-                    //       style: TextStyle(color: Colors.white,fontSize: 18),
-                    //     ),
-                    //     onPressed: () {
-                    //       for (int i = 0; i < provider.selectedFiles.length; i++) {
-                    //         print(
-                    //             'files in the selected list are.....${provider.selectedFiles[i]}');
-                    //       }
-                    //     },
-                    //   ),
-                    // ),
-                  ],
-                ),
-              ),
-            ],
           ),
         );
       },
