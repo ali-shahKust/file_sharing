@@ -6,6 +6,7 @@ import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_constants.dart';
 import 'package:quick_backup/custom_widgets/app_text_widget.dart';
 import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
+import 'package:quick_backup/utilities/file_manager_utilities.dart';
 import 'package:quick_backup/utilities/i_utills.dart';
 import 'package:quick_backup/views/download/download_screen.dart';
 import 'package:quick_backup/views/online_backup/cloud_images.dart';
@@ -33,9 +34,8 @@ class _CloudDocsScreenState extends State<CloudDocsScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<OnlineBackUpVm>(builder: (context, vm, _) {
-      double sizeInKb = vm.usedSpace / (1024);
-      double sizeInMb = vm.usedSpace / (1024 * 1024);
-      double sizeInGB = vm.usedSpace / (1024 * 1024*1024);
+      String size = FileManagerUtilities.formatBytes(vm.usedSpace, 2);
+
 
       return Scaffold(
         backgroundColor: AppColors.kPrimaryPurpleColor,
@@ -126,7 +126,7 @@ class _CloudDocsScreenState extends State<CloudDocsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               PrimaryText(
-                                sizeInMb<1?sizeInKb.toStringAsFixed(2) +" KB " :sizeInMb>1023?sizeInGB.toStringAsFixed(2) +" GB " : sizeInMb.toStringAsFixed(2) + " MB ",
+                                size,
                                 fontSize: 19,
                                 fontWeight: FontWeight.w600,
                                 color: Color(0xff74D5DE),
