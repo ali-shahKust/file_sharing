@@ -36,16 +36,6 @@ class _VideosViewState extends State<VideosView> {
     return Consumer(
       builder: (BuildContext context, CategoryVm provider, Widget? child) {
         print('length of video list from provider is ${provider.videosList.length}');
-        // if (provider.videoLoader) {
-        //   return Scaffold(
-        //     body: Center(
-        //       child: Container(
-        //         child: Image.asset("assets/gifs/loader.gif",
-        //             height: SizeConfig.screenHeight! * 0.4, width: SizeConfig.screenWidth! * 0.4),
-        //       ),
-        //     ),
-        //   );
-        // }
         return Scaffold(
           // backgroundColor: Colors.white,
           backgroundColor: AppColors.kPrimaryPurpleColor,
@@ -54,14 +44,14 @@ class _VideosViewState extends State<VideosView> {
             backgroundColor: AppColors.kPrimaryPurpleColor,
             title: Text('Videos'),
             centerTitle: true,
-            leading: GestureDetector(
-              child: Icon(
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
                 Icons.arrow_back_ios,
                 color: AppColors.kWhiteColor,
               ),
-              onTap: () {
-                Navigator.pop(context);
-              },
             ),
           ),
           body: Column(
@@ -72,7 +62,7 @@ class _VideosViewState extends State<VideosView> {
                   decoration: BoxDecoration(
                       color: AppColors.kPrimaryPurpleColor,
                       image: DecorationImage(
-                        image: AssetImage('assets/images/container_background.svg'),
+                        image: AssetImage('assets/images/container_background.webp'),
                       )
                     // Image.asset('assets/container_background.svg'),
                   ),
@@ -90,10 +80,11 @@ class _VideosViewState extends State<VideosView> {
                       ),
                       IconButton(
                         onPressed: () {
+                          provider.changeIsAllVideosSelected();
                           provider.selectAllInList(provider.videosList);
                         },
                         icon: Icon(
-                          provider.selectedFiles.length > 0
+                          provider.isAllVideosSelected
                               ? Icons.check_box_outlined
                               : Icons.check_box_outline_blank,
                           color: AppColors.kWhiteColor,

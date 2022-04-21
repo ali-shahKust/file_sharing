@@ -42,14 +42,14 @@ class _ImagesViewState extends State<ImagesView> with SingleTickerProviderStateM
               backgroundColor: AppColors.kPrimaryPurpleColor,
               title: Text('Photos'),
               centerTitle: true,
-              leading: GestureDetector(
-                child: Icon(
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(
                   Icons.arrow_back_ios,
                   color: AppColors.kWhiteColor,
                 ),
-                onTap: () {
-                  Navigator.pop(context);
-                },
               ),
             ),
             body: Column(
@@ -61,12 +61,14 @@ class _ImagesViewState extends State<ImagesView> with SingleTickerProviderStateM
                   flex: 1,
                   child: Container(
                     decoration: BoxDecoration(
-                        color: AppColors.kPrimaryPurpleColor,
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/container_background.svg'),
-                        )
-                        // Image.asset('assets/container_background.svg'),
-                        ),
+                      color: AppColors.kPrimaryPurpleColor,
+
+                      // image: DecorationImage(
+                      //   image: AssetImage('assets/images/container_background.webp'),
+                      // )
+                      // Image.asset('assets/container_background.svg'),
+                    ),
+
                     // height: SizeConfig.screenHeight! * 0.15,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -81,10 +83,13 @@ class _ImagesViewState extends State<ImagesView> with SingleTickerProviderStateM
                         ),
                         IconButton(
                           onPressed: () {
+                            provider.changeIsAllImagesSelected();
+                            print('value of selection var on tap is ${provider.isAllAudioSelected}');
                             provider.selectAllInList(provider.imageList);
+                            // provider.selectAllInList(provider.imageList);
                           },
                           icon: Icon(
-                            provider.selectedFiles.length > 0
+                            provider.isAllImagesSelected
                                 ? Icons.check_box_outlined
                                 : Icons.check_box_outline_blank,
                             color: AppColors.kWhiteColor,
@@ -139,8 +144,8 @@ class _ImagesViewState extends State<ImagesView> with SingleTickerProviderStateM
                             onTap: () async {
                               //  pd.show(max: 100, msg: 'File Uploading...');
                               if (provider.selectedFiles.length > 0) {
-                                Navigator.pushNamed(context, QuesScreen.routeName, arguments: {'files':provider.selectedFiles,"drawer":false})
-                                    .whenComplete(() {
+                                Navigator.pushNamed(context, QuesScreen.routeName,
+                                    arguments: {'files': provider.selectedFiles, "drawer": false}).whenComplete(() {
                                   print('whencomplete call...');
                                   provider.selectedFiles.clear();
                                 });

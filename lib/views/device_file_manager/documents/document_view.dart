@@ -40,6 +40,7 @@ class _DocumentViewsState extends State<DocumentViews> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (BuildContext context, CategoryVm provider, Widget? child) {
+        print('i im in build function of type ${provider.getDocCurrentSelection(type)}');
         print('number of ppt in doc are...${provider.pptList.length}');
         return Scaffold(
           backgroundColor: AppColors.kPrimaryPurpleColor,
@@ -48,14 +49,14 @@ class _DocumentViewsState extends State<DocumentViews> {
             backgroundColor: AppColors.kPrimaryPurpleColor,
             title: Text('Documents '),
             centerTitle: true,
-            leading: GestureDetector(
-              child: Icon(
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
                 Icons.arrow_back_ios,
                 color: AppColors.kWhiteColor,
               ),
-              onTap: () {
-                Navigator.pop(context);
-              },
             ),
           ),
           body: provider.loading
@@ -78,36 +79,14 @@ class _DocumentViewsState extends State<DocumentViews> {
                         decoration: BoxDecoration(
                             color: AppColors.kPrimaryPurpleColor,
                             image: DecorationImage(
-                              image: AssetImage('assets/images/container_background.png'),
-                            )
+                                image: AssetImage(
+                                  'assets/images/container_background.webp',
+                                ),
+                                fit: BoxFit.cover)
                             // Image.asset('assets/container_background.svg'),
                             ),
                         // height: SizeConfig.screenHeight! * 0.15,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              '${provider.selectedFiles.length} Selected',
-                              style:
-                                  TextStyle(fontSize: SizeConfig.screenHeight! * 0.024, color: AppColors.kWhiteColor),
-                            ),
-                            SizedBox(
-                              width: SizeConfig.screenWidth! * 0.3,
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                provider.selectAllInList(FileManagerUtilities.getDocList(type, context));
-                              },
-                              icon: Icon(
-                                provider.selectedFiles.length > 0
-                                    ? Icons.check_box_outlined
-                                    : Icons.check_box_outline_blank,
-                                color: AppColors.kWhiteColor,
-                              ),
-                            ),
-                          ],
-                        ),
+                        //  child:Image.asset(''),
                       ),
                     ),
                     Expanded(
@@ -178,7 +157,7 @@ class _DocumentViewsState extends State<DocumentViews> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(left: SizeConfig.screenWidth! * 0.05),
+                              padding: EdgeInsets.only(left: SizeConfig.screenWidth! * 0.06),
                               child: Text(
                                 '$type Files',
                                 style: TextStyle(
@@ -187,6 +166,39 @@ class _DocumentViewsState extends State<DocumentViews> {
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
+                            ),
+                            SizedBox(
+                              height: SizeConfig.screenHeight! * 0.02,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '${provider.selectedFiles.length} Selected',
+                                  style: TextStyle(
+                                    fontSize: SizeConfig.screenHeight! * 0.024,
+                                    color: AppColors.kBlackColor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: SizeConfig.screenWidth! * 0.3,
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    provider.ChangeDocSelection(type);
+
+                                    provider.selectAllInList(FileManagerUtilities.getDocList(type, context));
+                                  },
+                                  icon: Icon(
+                                    provider.getDocCurrentSelection(type)
+                                        ? Icons.check_box_outlined
+                                        : Icons.check_box_outline_blank,
+                                    color: AppColors.kBlackColor,
+                                  ),
+                                ),
+                              ],
                             ),
                             SizedBox(
                               height: SizeConfig.screenHeight! * 0.02,

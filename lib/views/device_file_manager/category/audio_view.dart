@@ -43,14 +43,14 @@ class _AudioViewsState extends State<AudioViews> {
             backgroundColor: AppColors.kPrimaryPurpleColor,
             title: Text('Audios'),
             centerTitle: true,
-            leading: GestureDetector(
-              child: Icon(
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
                 Icons.arrow_back_ios,
                 color: AppColors.kWhiteColor,
               ),
-              onTap: () {
-                Navigator.pop(context);
-              },
             ),
           ),
           body: provider.loading
@@ -68,7 +68,7 @@ class _AudioViewsState extends State<AudioViews> {
                         decoration: BoxDecoration(
                             color: AppColors.kPrimaryPurpleColor,
                             image: DecorationImage(
-                              image: AssetImage('assets/images/container_background.svg'),
+                              image: AssetImage('assets/images/container_background.webp'),
                             )
                             // Image.asset('assets/container_background.svg'),
                             ),
@@ -87,10 +87,12 @@ class _AudioViewsState extends State<AudioViews> {
                             ),
                             IconButton(
                               onPressed: () {
+                                provider.changeIsAllAudioSelected();
+                                print('value of selection var on tap is ${provider.isAllAudioSelected}');
                                 provider.selectAllInList(provider.audiosList);
                               },
                               icon: Icon(
-                                provider.selectedFiles.length > 0
+                                provider.isAllAudioSelected
                                     ? Icons.check_box_outlined
                                     : Icons.check_box_outline_blank,
                                 color: AppColors.kWhiteColor,
