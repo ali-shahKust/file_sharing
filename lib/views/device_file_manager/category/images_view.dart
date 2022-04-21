@@ -63,7 +63,7 @@ class _ImagesViewState extends State<ImagesView> with SingleTickerProviderStateM
                     decoration: BoxDecoration(
                         color: AppColors.kPrimaryPurpleColor,
                         image: DecorationImage(
-                          image: AssetImage('assets/images/container_background.svg'),
+                          image: AssetImage('assets/images/container_background.webp'),
                         )
                         // Image.asset('assets/container_background.svg'),
                         ),

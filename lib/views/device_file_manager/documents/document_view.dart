@@ -78,7 +78,7 @@ class _DocumentViewsState extends State<DocumentViews> {
                         decoration: BoxDecoration(
                             color: AppColors.kPrimaryPurpleColor,
                             image: DecorationImage(
-                              image: AssetImage('assets/images/container_background.png'),
+                              image: AssetImage('assets/images/container_background.webp'),
                             )
                             // Image.asset('assets/container_background.svg'),
                             ),

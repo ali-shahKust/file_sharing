@@ -68,7 +68,7 @@ class _AudioViewsState extends State<AudioViews> {
                         decoration: BoxDecoration(
                             color: AppColors.kPrimaryPurpleColor,
                             image: DecorationImage(
-                              image: AssetImage('assets/images/container_background.svg'),
+                              image: AssetImage('assets/images/container_background.webp'),
                             )
                             // Image.asset('assets/container_background.svg'),
                             ),
