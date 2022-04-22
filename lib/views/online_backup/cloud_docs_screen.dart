@@ -39,44 +39,6 @@ class _CloudDocsScreenState extends State<CloudDocsScreen> {
 
       return Scaffold(
         backgroundColor: AppColors.kPrimaryPurpleColor,
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: AppColors.kPrimaryPurpleColor,
-          title: PrimaryText('Cloud Documents'),
-          centerTitle: true,
-          //TODO uncomment to show premium icon...
-          // actions: [
-          //   Padding(
-          //     padding: EdgeInsets.only(top: SizeConfig.screenHeight! * 0.01),
-          //     child: Container(
-          //         height: SizeConfig.screenHeight! * 0.15,
-          //         width: SizeConfig.screenWidth! * 0.2,
-          //         decoration: BoxDecoration(
-          //             color: AppColors.kDarkPurpleColor,
-          //             borderRadius: BorderRadius.only(topLeft: Radius.circular(20), bottomLeft: Radius.circular(20))),
-          //         child: Align(
-          //             alignment: Alignment.centerLeft,
-          //             child: Padding(
-          //               padding: EdgeInsets.only(left: SizeConfig.screenHeight! * 0.015),
-          //               child: Icon(
-          //                 Icons.workspace_premium,
-          //                 color: Colors.red,
-          //               ),
-          //             ))
-          //         // SvgPicture.asset('assets/premium_icon.svg'),
-          //         ),
-          //   )
-          // ],
-          leading: GestureDetector(
-            child: Icon(
-              Icons.arrow_back_ios,
-              color: AppColors.kWhiteColor,
-            ),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
         // bottomNavigationBar: BottomAppBar(
         //   child: ElevatedButton(
         //     onPressed: () async {
@@ -92,109 +54,144 @@ class _CloudDocsScreenState extends State<CloudDocsScreen> {
         //     child: const Text("Restore all"),
         //   ),
         // ),
-        body: Container(
-          width: SizeConfig.screenWidth,
-          height: SizeConfig.screenHeight,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xff7266F8),
-                Color(0xff110D44),
-              ],
-                stops: [
-                  0.133,
-                  0.5
+        body: SafeArea(
+          child: Container(
+            width: SizeConfig.screenWidth,
+            height: SizeConfig.screenHeight,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage(
+                        AppConstants.transfer_background),
+                    fit: BoxFit.cover),
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xff7266F8),
+                  Color(0xff110D44),
                 ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomRight
-            )
-          ),
-          child: Stack(
-            children: [
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12.0, horizontal: 22),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              PrimaryText(
-                                size,
-                                fontSize: 19,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xff74D5DE),
-                              ),
-                              PrimaryText(
-                                "Used",
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              )
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              PrimaryText(
-                                "128GB",
-                                fontSize: 19,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xff74D5DE),
-                              ),
-                              PrimaryText(
-                                "Total",
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    iUtills().upperRoundedContainer(
-                        context,
-                        SizeConfig.screenWidth,
-                        SizeConfig.screenHeight! * 0.475,
-                        color: AppColors.kWhiteColor,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 18.0, horizontal: 22),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              InkWell(
-                                onTap: (){
-                                  Navigator.pushNamed(context, CloudImages.routeName);
-                                },
-                                child: customTile(AppConstants.images_icon, "Images",
-                                    vm.images.length.toString() + " files "),
-                              ),
-                              customTile(AppConstants.videos_icon, "Videos",
-                                  vm.videos.length.toString() + " files "),
-                              customTile(AppConstants.audio_icon, "Audio",
-                                  vm.audios.length.toString() + " files "),
-                              customTile(
-                                  AppConstants.document_icon,
-                                  "Documents",
-                                  vm.documents.length.toString() + " files "),
-                              customTile(AppConstants.apps_icon, "Apps",
-                                  vm.apps.length.toString() + " files "),
-                            ],
-                          ),
-                        )),
+                  stops: [
+                    0.133,
+                    0.5
                   ],
-                ),
+                begin: Alignment.topCenter,
+                end: Alignment.bottomRight
               )
-            ],
+            ),
+            child: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Row(
+                    mainAxisAlignment:
+                    MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            size: SizeConfig.screenHeight! *
+                                0.024,
+                            color: Colors.white,
+                          )),
+                      PrimaryText(
+                        "Cloud Document",
+                        fontSize:
+                        SizeConfig.screenHeight! * 0.020,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      SizedBox(
+                        width: 50,
+                      )
+                    ],
+                  ),
+                ),
+
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 22),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                PrimaryText(
+                                  size,
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xff74D5DE),
+                                ),
+                                PrimaryText(
+                                  "Used",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                )
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                PrimaryText(
+                                  "128GB",
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xff74D5DE),
+                                ),
+                                PrimaryText(
+                                  "Total",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      iUtills().upperRoundedContainer(
+                          context,
+                          SizeConfig.screenWidth,
+                          SizeConfig.screenHeight! * 0.475,
+                          color: AppColors.kWhiteColor,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 18.0, horizontal: 22),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                InkWell(
+                                  onTap: (){
+                                    Navigator.pushNamed(context, CloudImages.routeName);
+                                  },
+                                  child: customTile(AppConstants.images_icon, "Images",
+                                      vm.images.length.toString() + " files "),
+                                ),
+                                customTile(AppConstants.videos_icon, "Videos",
+                                    vm.videos.length.toString() + " files "),
+                                customTile(AppConstants.audio_icon, "Audio",
+                                    vm.audios.length.toString() + " files "),
+                                customTile(
+                                    AppConstants.document_icon,
+                                    "Documents",
+                                    vm.documents.length.toString() + " files "),
+                                customTile(AppConstants.apps_icon, "Apps",
+                                    vm.apps.length.toString() + " files "),
+                              ],
+                            ),
+                          )),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       );
