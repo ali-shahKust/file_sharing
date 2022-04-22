@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_colors.dart';
@@ -27,6 +28,35 @@ class GeneralUtilities {
           ],
         ),
       ),
+    );
+  }
+
+  static  Widget LoadingFileWidget(){
+    return Container(
+      decoration: BoxDecoration(
+          color: AppColors.kWhiteColor,
+          borderRadius:
+          BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+      width: SizeConfig.screenWidth,
+      height: SizeConfig.screenHeight,
+      child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                color: AppColors.kPrimaryPurpleColor,
+              ),
+              SizedBox(
+                height: SizeConfig.screenHeight! * 0.05,
+              ),
+              Text(
+                'Getting Files.....',
+                style: TextStyle(
+                    color: AppColors.kBlackColor, fontSize: SizeConfig.screenHeight! * 0.023),
+              ),
+            ],
+          )),
     );
   }
   static String getFileName(String fileKey) {

@@ -242,6 +242,7 @@ class CategoryVm extends BaseVm {
 
   getImages() async {
     // String type = fileTypeList[1].toLowerCase();
+    double totalSize=0;
     print('get images fun call...');
     setLoading(true);
     _imageList.clear();
@@ -263,20 +264,17 @@ class CategoryVm extends BaseVm {
       files.forEach((file) async {
         print('files in image fun is ${file.path}');
         // var base64Image;
+
         String mimeType = mime(file.path) ?? '';
         if (mimeType.split('/')[0] == AppConstants.fileTypeList[1]) {
-          // final imageBytes = await file.readAsBytes();
-          // // print('Here are the image bytes: $imageBytes');
-          // String base64ImageLocal = base64Encode(imageBytes);
-
-          // base64Image = base64ImageLocal;
-          //imgBytes: base64ImageLocal
-          // images.add(file);
+          totalSize = totalSize+ file.lengthSync();
           FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
           _imageList.add(fm);
           print('image list in function is ${_imageList.length}');
         }
       });
+      setTotalFilesLength(_imageList.length,0);
+      setTotalFilesSizes(FileManagerUtilities.formatBytes(totalSize, 2) , 0);
       setLoading(false);
       notifyListeners();
 
@@ -285,9 +283,20 @@ class CategoryVm extends BaseVm {
     });
   }
 
+  void setTotalFilesLength(int length,int index){
+    List fileCategory = AppConstants.categories;
+    fileCategory[index]['noOfFiles'] = '$length Files';
+    notifyListeners();
+  }
+  void setTotalFilesSizes(String size,int index){
+    List fileCategory = AppConstants.categories;
+    fileCategory[index]['fileSize'] = '$size';
+    notifyListeners();
+  }
+
   Future<List<FileMangerModel>> getVideos() async {
     print('get video fun call...');
-
+       double  totalSize =0;
     // print('type in the function is $type');
     // setVideoLoading(true);
     videosList.clear();
@@ -315,6 +324,7 @@ class CategoryVm extends BaseVm {
         String mimeType = mime(file.path) ?? '';
         print('mimeType value in the function is $mimeType');
         if (mimeType.split('/')[0] == AppConstants.fileTypeList[2]) {
+          totalSize = totalSize+ file.lengthSync();
           FileMangerModel fm = FileMangerModel(
             file: file,
             isSelected: false,
@@ -326,11 +336,10 @@ class CategoryVm extends BaseVm {
       });
       print('video list length in provider is ${videosList.length}');
 
-      // currentFiles = images;
-
-      // for(int i = 0;i<imageList.length;i++){
-      //    print('data in the model is ${imageList[i].fileList[i].path}');
-      // }
+      setTotalFilesLength(videosList.length,1);
+      setTotalFilesSizes(FileManagerUtilities.formatBytes(totalSize, 2), 1);
+      // (FileManagerUtilities.formatBytes(totalSize, 3)
+      notifyListeners();
       _port.close();
       IsolateNameServer.removePortNameMapping('${isolateName}_2');
     });
@@ -339,6 +348,7 @@ class CategoryVm extends BaseVm {
 
   getAudios() async {
     // setVideoLoading(true);
+    double totalSize =0 ;
     print('get audio fun call...');
 
     audiosList.clear();
@@ -360,6 +370,7 @@ class CategoryVm extends BaseVm {
       files.forEach((file) {
         String mimeType = mime(file.path) ?? '';
         if (mimeType.split('/')[0] == AppConstants.fileTypeList[4]) {
+          totalSize = totalSize+ file.lengthSync();
           // images.add(file);
           FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
           audiosList.add(fm);
@@ -367,8 +378,9 @@ class CategoryVm extends BaseVm {
 
         // notifyListeners();
       });
-
-      // setVideoLoading(false);
+     setTotalFilesSizes(FileManagerUtilities.formatBytes(totalSize, 2), 2);
+      setTotalFilesLength(audiosList.length,2);
+      notifyListeners();
       _port.close();
       IsolateNameServer.removePortNameMapping('${isolateName}_2');
     });
@@ -376,7 +388,7 @@ class CategoryVm extends BaseVm {
 
   getTextFile() async {
     print('get files fun call...');
-
+  double totalSize =0 ;
     setLoading(true);
     pdfList.clear();
     pptList.clear();
@@ -401,9 +413,10 @@ class CategoryVm extends BaseVm {
       files.forEach((file) {
         // String mimeType = mime(file.path) ?? '';
         //  && docExtensions.contains(extension(file.path))
-        // if (AppConstants.fileTypeList[3] == 'text' && docExtensions.contains(extension(file.path))) {
+        // if (AppConstants.fileTypeList[3] == 'text' ) {
         //   FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
         //   filesList.add(fm);
+        //   totalSize = totalSize +fm.file.lengthSync();
         //   // audio.add(file);
         // }
         if (AppConstants.fileTypeList[3] == 'text' && extension(file.path) == '.pdf') {
@@ -413,15 +426,18 @@ class CategoryVm extends BaseVm {
         }
         if (AppConstants.fileTypeList[3] == 'text' &&
             (extension(file.path) == '.docx' || extension(file.path) == '.doc')) {
+          totalSize = totalSize + file.lengthSync();
           FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
           docList.add(fm);
         }
 
         if (AppConstants.fileTypeList[3] == 'text' && extension(file.path) == '.ppt') {
+          totalSize = totalSize + file.lengthSync();
           FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
           pptList.add(fm);
           // // audio.add(file);
         } else if(AppConstants.fileTypeList[3] == 'text' && docExtensions.contains(extension(file.path))) {
+          totalSize = totalSize + file.lengthSync();
           FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
           otherDocList.add(fm);
         }
@@ -432,7 +448,9 @@ class CategoryVm extends BaseVm {
 
         // notifyListeners();
       });
-
+      setTotalFilesSizes(FileManagerUtilities.formatBytes(totalSize, 2), 3);
+      setTotalFilesLength(pdfList.length+pptList.length+docList.length+otherDocList.length,3);
+      notifyListeners();
       setLoading(false);
       _port.close();
       IsolateNameServer.removePortNameMapping('${isolateName}_2');
@@ -490,6 +508,8 @@ class CategoryVm extends BaseVm {
 
 //TODO unCommit to get device apps ....
   getAllApps() async {
+    double totalSize = 0;
+    setLoading(true);
     appList.clear();
     final apps = await DeviceApps.getInstalledApplications(
       onlyAppsWithLaunchIntent: true,
@@ -498,19 +518,15 @@ class CategoryVm extends BaseVm {
     );
     // print('data in apps object is $apps');
     apps.forEach((file) {
-      // String mimeType = mime(file.path) ?? '';
-      // if (mimeType.split('/')[0] == fileTypeList[1]) {
-      // images.add(file);
+
       DeviceAppModel appModel = DeviceAppModel(apps: file, isSelected: false);
+      // totalSize = totalSize +file.apkFilePath.length.toString();
       appList.add(appModel);
 
-      // for (int i = 0; i < appList.length; i++) {
-      //   print('apps in the device is ....${appList[i].apps}');
-      // }
-
-      // }
-      // notifyListeners();
     });
+    // setTotalFilesSizes(FileManagerUtilities.formatBytes(totalSize, 3), 4);
+    setTotalFilesLength(appList.length,4);
+    notifyListeners();
     setLoading(false);
   }
 

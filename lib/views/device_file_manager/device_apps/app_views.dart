@@ -41,7 +41,7 @@ class AppViews extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
+                    padding: EdgeInsets.only(top: SizeConfig.screenHeight! * 0.02),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -56,11 +56,11 @@ class AppViews extends StatelessWidget {
                             )),
                         PrimaryText(
                           "Apps",
-                          fontSize: SizeConfig.screenHeight! * 0.020,
+                          fontSize: SizeConfig.screenHeight! * 0.028,
                           fontWeight: FontWeight.w500,
                         ),
                         SizedBox(
-                          width: 50,
+                          width: SizeConfig.screenWidth! * 0.050,
                         )
                       ],
                     ),
@@ -103,113 +103,118 @@ class AppViews extends StatelessWidget {
                               left: SizeConfig.screenHeight! * 0.02,
                               right: SizeConfig.screenHeight! * 0.02,
                               top: SizeConfig.screenHeight! * 0.04),
-                          child: GridView.builder(
-                              addAutomaticKeepAlives: false,
-                              addRepaintBoundaries: false,
-                              reverse: false,
-                              cacheExtent: 50,
-                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 4.0,
-                                crossAxisSpacing: 7.0,
-                              ),
-                              itemCount: provider.appList.length,
-                              itemBuilder: (BuildContext ctx, index) {
-                                Application app = provider.appList[index].apps;
-
-                                return GestureDetector(
-                                  onTap: () {
-                                    provider.changeIsSelectedApp(index, provider.appList);
-                                    if (provider.appList[index].isSelected) {
-                                      provider.addToSelectedList = File(provider.appList[index].apps.apkFilePath);
-                                    } else {
-                                      provider.removeFromSelectedList = File(provider.appList[index].apps.apkFilePath);
-                                    }
-                                  },
-                                  child: Container(
-                                    child: Stack(
-                                      children: [
-                                        Positioned(
-                                          top: SizeConfig.screenHeight! * 0.05,
-                                          left: 0,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                color: AppColors.kAppsCardLighColor,
-                                                border: Border.all(
-                                                  // AppColors.avatarBgColors[GeneralUtilities.getRandomNumber(0, 7)],
-                                                  //                                               borderRadius: BorderRadius.circular(50),
-                                                  //                                             ),
-                                                  color: AppColors.avatarBgColors[GeneralUtilities.getRandomNumber(0, 7)],
-                                                  width: 1.5,
-                                                ),
-                                                borderRadius: BorderRadius.all(Radius.circular(20))),
-                                            height: SizeConfig.screenHeight! * 0.155,
-                                            width: SizeConfig.screenWidth! * 0.44,
-                                            child: Padding(
-                                              padding: EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
-                                              child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  SizedBox(
-                                                    height: SizeConfig.screenHeight! * 0.06,
-                                                  ),
-                                                  Text(
-                                                    app.appName,
-                                                    style: TextStyle(
-                                                        color: AppColors.kBlackColor,
-                                                        fontSize: SizeConfig.screenHeight! * 0.023),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Positioned(
-                                          top: 0,
-                                          left: SizeConfig.screenHeight! * 0.02,
-                                          child: Container(
-                                            height: SizeConfig.screenHeight! * 0.1,
-                                            width: SizeConfig.screenWidth! * 0.22,
-                                            decoration: BoxDecoration(
-                                              color: AppColors.avatarBgColors[GeneralUtilities.getRandomNumber(0, 7)],
-                                              borderRadius: BorderRadius.circular(50),
-                                            ),
-                                            child: Center(
-                                              child: app is ApplicationWithIcon
-                                                  ? Image.memory(app.icon,
-                                                      height: SizeConfig.screenHeight! * 0.13,
-                                                      width: SizeConfig.screenWidth! * 0.13)
-                                                  : null,
-                                            ),
-                                          ),
-                                        ),
-                                        provider.appList[index].isSelected
-                                            ? Positioned(
-                                                top: SizeConfig.screenHeight! * -0.002,
-                                                right: 0,
-                                                child: Container(
-                                                  height: SizeConfig.screenHeight! * 0.1,
-                                                  width: SizeConfig.screenWidth! * 0.07,
-                                                  decoration: BoxDecoration(
-                                                      shape: BoxShape.circle, color: AppColors.kPrimaryPurpleColor),
-                                                  child: Padding(
-                                                      padding: EdgeInsets.all(SizeConfig.screenHeight! * 0.005),
-                                                      child: Icon(
-                                                        Icons.check,
-                                                        size: SizeConfig.screenHeight! * 0.02,
-                                                        color: Colors.white,
-                                                      )),
-                                                ),
-                                              )
-                                            : SizedBox(
-                                                height: 2.0,
-                                              ),
-                                      ],
-                                    ),
+                          child: provider.loading == true
+                              ? GeneralUtilities.LoadingFileWidget()
+                              : GridView.builder(
+                                  addAutomaticKeepAlives: false,
+                                  addRepaintBoundaries: false,
+                                  reverse: false,
+                                  cacheExtent: 50,
+                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 4.0,
+                                    crossAxisSpacing: 7.0,
                                   ),
-                                );
-                              }),
+                                  itemCount: provider.appList.length,
+                                  itemBuilder: (BuildContext ctx, index) {
+                                    Application app = provider.appList[index].apps;
+
+                                    return GestureDetector(
+                                      onTap: () {
+                                        provider.changeIsSelectedApp(index, provider.appList);
+                                        if (provider.appList[index].isSelected) {
+                                          provider.addToSelectedList = File(provider.appList[index].apps.apkFilePath);
+                                        } else {
+                                          provider.removeFromSelectedList =
+                                              File(provider.appList[index].apps.apkFilePath);
+                                        }
+                                      },
+                                      child: Container(
+                                        child: Stack(
+                                          children: [
+                                            Positioned(
+                                              top: SizeConfig.screenHeight! * 0.05,
+                                              left: 0,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    color: AppColors.kAppsCardLighColor,
+                                                    border: Border.all(
+                                                      // AppColors.avatarBgColors[GeneralUtilities.getRandomNumber(0, 7)],
+                                                      //                                               borderRadius: BorderRadius.circular(50),
+                                                      //                                             ),
+                                                      color: AppColors
+                                                          .avatarBgColors[GeneralUtilities.getRandomNumber(0, 7)],
+                                                      width: 1.5,
+                                                    ),
+                                                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                                                height: SizeConfig.screenHeight! * 0.155,
+                                                width: SizeConfig.screenWidth! * 0.44,
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      SizedBox(
+                                                        height: SizeConfig.screenHeight! * 0.03,
+                                                      ),
+                                                      Text(
+                                                        app.appName,
+                                                        style: TextStyle(
+                                                            color: AppColors.kBlackColor,
+                                                            fontSize: SizeConfig.screenHeight! * 0.023),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: 0,
+                                              left: SizeConfig.screenHeight! * 0.02,
+                                              child: Container(
+                                                height: SizeConfig.screenHeight! * 0.1,
+                                                width: SizeConfig.screenWidth! * 0.22,
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      AppColors.avatarBgColors[GeneralUtilities.getRandomNumber(0, 7)],
+                                                  borderRadius: BorderRadius.circular(50),
+                                                ),
+                                                child: Center(
+                                                  child: app is ApplicationWithIcon
+                                                      ? Image.memory(app.icon,
+                                                          height: SizeConfig.screenHeight! * 0.13,
+                                                          width: SizeConfig.screenWidth! * 0.13)
+                                                      : null,
+                                                ),
+                                              ),
+                                            ),
+                                            provider.appList[index].isSelected
+                                                ? Positioned(
+                                                    top: SizeConfig.screenHeight! * -0.002,
+                                                    right: 0,
+                                                    child: Container(
+                                                      height: SizeConfig.screenHeight! * 0.1,
+                                                      width: SizeConfig.screenWidth! * 0.07,
+                                                      decoration: BoxDecoration(
+                                                          shape: BoxShape.circle, color: AppColors.kPrimaryPurpleColor),
+                                                      child: Padding(
+                                                          padding: EdgeInsets.all(SizeConfig.screenHeight! * 0.005),
+                                                          child: Icon(
+                                                            Icons.check,
+                                                            size: SizeConfig.screenHeight! * 0.02,
+                                                            color: Colors.white,
+                                                          )),
+                                                    ),
+                                                  )
+                                                : SizedBox(
+                                                    height: 2.0,
+                                                  ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  }),
                         ),
                         Visibility(
                           visible: provider.selectedFiles.length > 0 ? true : false,

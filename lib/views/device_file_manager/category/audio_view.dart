@@ -11,6 +11,7 @@ import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
 import 'package:quick_backup/custom_widgets/queues_screen.dart';
 import 'package:quick_backup/utilities/file_manager_utilities.dart';
+import 'package:quick_backup/utilities/general_utilities.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 
 class AudioViews extends StatefulWidget {
@@ -34,93 +35,85 @@ class _AudioViewsState extends State<AudioViews> {
 
   @override
   Widget build(BuildContext context) {
+    bool isLoading = true;
     SizeConfig().init(context);
     return Consumer<CategoryVm>(
       builder: (context, provider, _) {
         return Scaffold(
           backgroundColor: AppColors.kPrimaryPurpleColor,
-
-          body: provider.loading
-              ? Container(
-
-                  child: Image.asset("assets/gifs/loader.gif",
-                      height: MediaQuery.of(context).size.height * 0.4, width: MediaQuery.of(context).size.width * 0.4),
-                )
-                : SafeArea(
-                child: Container(
-            width: SizeConfig.screenWidth,
-            height: SizeConfig.screenHeight,
-            decoration: BoxDecoration(
+          body: SafeArea(
+            child: Container(
+              width: SizeConfig.screenWidth,
+              height: SizeConfig.screenHeight,
+              decoration: BoxDecoration(
                   color: AppColors.kPrimaryPurpleColor,
                   image: DecorationImage(
                     image: AssetImage('assets/images/container_background.webp'),
                   )
-                // Image.asset('assets/container_background.svg'),
-            ),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  // Image.asset('assets/container_background.svg'),
+                  ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: SizeConfig.screenHeight! * 0.02),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  icon: Icon(
-                                    Icons.arrow_back_ios,
-                                    size: SizeConfig.screenHeight! * 0.024,
-                                    color: Colors.white,
-                                  )),
-                              PrimaryText(
-                                "Audios",
-                                fontSize: SizeConfig.screenHeight! * 0.020,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              SizedBox(
-                                width: 50,
-                              )
-                            ],
+                        IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: Icon(
+                              Icons.arrow_back_ios,
+                              size: SizeConfig.screenHeight! * 0.024,
+                              color: Colors.white,
+                            )),
+                        PrimaryText(
+                          "Audios",
+                          fontSize: SizeConfig.screenHeight! * 0.028,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        SizedBox(
+                          width: SizeConfig.screenWidth! * 0.050,
+                        )
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${provider.selectedFiles.length} Selected',
+                          style: TextStyle(fontSize: SizeConfig.screenHeight! * 0.024, color: AppColors.kWhiteColor),
+                        ),
+                        SizedBox(
+                          width: SizeConfig.screenWidth! * 0.3,
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            provider.changeIsAllAudioSelected();
+                            provider.selectAllInList(provider.audiosList);
+                          },
+                          icon: Icon(
+                            provider.isAllAudioSelected ? Icons.check_box_outlined : Icons.check_box_outline_blank,
+                            color: AppColors.kWhiteColor,
                           ),
                         ),
-
-                        Expanded(
-                          flex: 2,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '${provider.selectedFiles.length} Selected',
-                                style:
-                                    TextStyle(fontSize: SizeConfig.screenHeight! * 0.024, color: AppColors.kWhiteColor),
-                              ),
-                              SizedBox(
-                                width: SizeConfig.screenWidth! * 0.3,
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  provider.changeIsAllAudioSelected();
-                                  provider.selectAllInList(provider.audiosList);
-                                },
-                                icon: Icon(
-                                  provider.isAllAudioSelected
-                                      ? Icons.check_box_outlined
-                                      : Icons.check_box_outline_blank,
-                                  color: AppColors.kWhiteColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Visibility(
-                          visible: provider.audiosList.isNotEmpty,
-                          replacement: Center(child: Text('No Files Found')),
-                          child: Expanded(
-                            flex: 17,
-                            child: Container(
+                      ],
+                    ),
+                  ),
+                  Visibility(
+                    visible: provider.audiosList.isNotEmpty,
+                    replacement: Center(child: Text('No Files Found')),
+                    child: Expanded(
+                      flex: 17,
+                      child: provider.loading == true
+                          ? GeneralUtilities.LoadingFileWidget()
+                          : Container(
                               // height: SizeConfig.screenHeight! * 0.82,
                               decoration: BoxDecoration(
                                   color: AppColors.kWhiteColor,
@@ -157,7 +150,8 @@ class _AudioViewsState extends State<AudioViews> {
                                                         height: SizeConfig.screenHeight! * 0.022,
                                                       ),
                                                     ),
-                                                    title: Text('${provider.audiosList[index].file.path.split('/').last}'),
+                                                    title:
+                                                        Text('${provider.audiosList[index].file.path.split('/').last}'),
                                                     subtitle: Text(
                                                       FileManagerUtilities.formatBytes(
                                                           provider.audiosList[index].file.lengthSync(), 3),
@@ -169,7 +163,8 @@ class _AudioViewsState extends State<AudioViews> {
                                                       if (provider.audiosList[index].isSelected) {
                                                         provider.addToSelectedList = provider.audiosList[index].file;
                                                       } else {
-                                                        provider.removeFromSelectedList = provider.audiosList[index].file;
+                                                        provider.removeFromSelectedList =
+                                                            provider.audiosList[index].file;
                                                       }
                                                     },
                                                   ),
@@ -234,12 +229,12 @@ class _AudioViewsState extends State<AudioViews> {
                                 ],
                               ),
                             ),
-                          ),
-                        ),
-                      ],
                     ),
-                ),
+                  ),
+                ],
               ),
+            ),
+          ),
         );
       },
     );

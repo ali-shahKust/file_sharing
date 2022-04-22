@@ -54,7 +54,7 @@ class _VideosViewState extends State<VideosView> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
+                    padding:  EdgeInsets.only(top: SizeConfig.screenHeight!*0.02),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -69,11 +69,11 @@ class _VideosViewState extends State<VideosView> {
                             )),
                         PrimaryText(
                           "Videos",
-                          fontSize: SizeConfig.screenHeight! * 0.020,
+                          fontSize: SizeConfig.screenHeight! * 0.028,
                           fontWeight: FontWeight.w500,
                         ),
                         SizedBox(
-                          width: 50,
+                          width: SizeConfig.screenWidth!*0.050,
                         )
                       ],
                     ),

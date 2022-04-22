@@ -1,7 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_colors.dart';
@@ -10,7 +9,6 @@ import 'package:quick_backup/constants/app_style.dart';
 import 'package:quick_backup/custom_widgets/app_text_widget.dart';
 import 'package:quick_backup/custom_widgets/custom_list_tile.dart';
 import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
-import 'package:quick_backup/utilities/custom_theme.dart';
 import 'package:quick_backup/views/device_file_manager/category/audio_view.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -18,7 +16,6 @@ import 'package:quick_backup/views/device_file_manager/category/images_view.dart
 import 'package:quick_backup/views/device_file_manager/category/videos_view.dart';
 import 'package:quick_backup/views/device_file_manager/device_apps/app_views.dart';
 import 'package:quick_backup/views/device_file_manager/documents/document_view.dart';
-import 'package:quick_backup/views/device_file_manager/documents/document_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/core_vm.dart';
 
 class FileManagerHome extends StatefulWidget {
@@ -33,45 +30,6 @@ class _FileManagerHomeState extends State<FileManagerHome> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
 
-    //SafeArea(
-    //                 child: Container(
-    //             width: SizeConfig.screenWidth,
-    //             height: SizeConfig.screenHeight,
-    //             decoration: BoxDecoration(
-    //                   color: AppColors.kPrimaryPurpleColor,
-    //                   image: DecorationImage(
-    //                     image: AssetImage('assets/images/container_background.webp'),
-    //                   )
-    //                 // Image.asset('assets/container_background.svg'),
-    //             ),
-    //                   child: Column(
-    //                       crossAxisAlignment: CrossAxisAlignment.start,
-    //                       children: [
-    //                         Padding(
-    //                           padding: const EdgeInsets.only(top: 8.0),
-    //                           child: Row(
-    //                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //                             children: [
-    //                               IconButton(
-    //                                   onPressed: () {
-    //                                     Navigator.pop(context);
-    //                                   },
-    //                                   icon: Icon(
-    //                                     Icons.arrow_back_ios,
-    //                                     size: SizeConfig.screenHeight! * 0.024,
-    //                                     color: Colors.white,
-    //                                   )),
-    //                               PrimaryText(
-    //                                 "Audios",
-    //                                 fontSize: SizeConfig.screenHeight! * 0.020,
-    //                                 fontWeight: FontWeight.w500,
-    //                               ),
-    //                               SizedBox(
-    //                                 width: 50,
-    //                               )
-    //                             ],
-    //                           ),
-    //                         ),
     return Scaffold(
       backgroundColor: AppColors.kPrimaryPurpleColor,
       // appBar: AppBar(
@@ -115,55 +73,47 @@ class _FileManagerHomeState extends State<FileManagerHome> {
       body: SafeArea(
         child: Container(
           width: SizeConfig.screenWidth,
-                      height: SizeConfig.screenHeight,
-                      decoration: BoxDecoration(
-                            color: AppColors.kPrimaryPurpleColor,
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/container_background.webp'),
-                            )
-                          // Image.asset('assets/container_background.svg'),
-                      ),
+          height: SizeConfig.screenHeight,
+          decoration: BoxDecoration(
+              color: AppColors.kPrimaryPurpleColor,
+              image: DecorationImage(
+                image: AssetImage('assets/images/container_background.webp'),
+              )
+              // Image.asset('assets/container_background.svg'),
+              ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-          Padding(
-                                    padding: const EdgeInsets.only(top: 8.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        IconButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            icon: Icon(
-                                              Icons.arrow_back_ios,
-                                              size: SizeConfig.screenHeight! * 0.024,
-                                              color: Colors.white,
-                                            )),
-                                        PrimaryText(
-                                          "Audios",
-                                          fontSize: SizeConfig.screenHeight! * 0.020,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                        SizedBox(
-                                          width: 50,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-              // SizedBox(height: SizeConfig.screenHeight! * 0.04),
-              Expanded(
-                flex: 4,
-                child: Container(
-                  color: AppColors.kPrimaryPurpleColor,
-                  height: SizeConfig.screenHeight! * 0.2,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      HeaderContainer(),
-                    ],
-                  ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.arrow_back_ios,
+                          size: SizeConfig.screenHeight! * 0.024,
+                          color: Colors.white,
+                        )),
+                    PrimaryText(
+                      "Quick Backup",
+                      fontSize: SizeConfig.screenHeight! * 0.028,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    SizedBox(
+                      width: 50,
+                    )
+                  ],
                 ),
+              ),
+              SizedBox(height: SizeConfig.screenHeight! * 0.02),
+              HeaderContainer(),
+              SizedBox(
+                height: SizeConfig.screenHeight! * 0.04,
               ),
               Expanded(flex: 12, child: _CategoriesSection()),
               // SizedBox(height: SizeConfig.screenHeight! * 0.03),
@@ -223,9 +173,9 @@ class _CategoriesSection extends StatelessWidget {
           return CustomListTile(
             title: category['title'],
             leadingIcon: category['icon'],
-            subtitleFileSize: '2 GB',
+            subtitleFileSize: category['fileSize'],
             leadingColorDark: category['endColor'],
-            subtitleFileLenght: ' Files',
+            subtitleFileLenght: category['noOfFiles'],
             leadingColorLight: category['startColor'],
             onTap: () {
               if (index == 0) {
@@ -239,8 +189,7 @@ class _CategoriesSection extends StatelessWidget {
                 Navigator.pushNamed(context, AudioViews.routeName);
               } else if (index == 3) {
                 Navigator.pushNamed(context, DocumentViews.routeName);
-              }
-              else if (index == 4) {
+              } else if (index == 4) {
                 Navigator.pushNamed(context, AppViews.routeName);
               }
             },
@@ -260,16 +209,14 @@ class HeaderContainer extends StatelessWidget {
   int _usedSpace = 0;
   int _percentageUse = 0;
 
-
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (BuildContext context, CoreVm provider, Widget? child) {
       if (provider.storageLoading) {
-        return Container(
-          height: MediaQuery.of(context).size.height / 5,
-          child: Image.asset("assets/gifs/loader.gif",
-              height: MediaQuery.of(context).size.height * 0.4, width: MediaQuery.of(context).size.width * 0.4),
-        );
+        return Center(
+            child: CircularProgressIndicator(
+          color: AppColors.kWhiteColor,
+        ));
       } else {
         _totalSpace = ((provider.totalSpace) / 1000000000).round();
         _usedSpace = ((provider.usedSpace) / 1000000000).round();
