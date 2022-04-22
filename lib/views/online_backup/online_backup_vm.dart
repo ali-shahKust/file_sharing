@@ -23,7 +23,7 @@ class OnlineBackUpVm extends BaseVm {
   List<DownloadModel> _documents = [];
   List<DownloadModel> _apps = [];
   int _usedSpace = 0;
-  List<QueueModel> selectedFiles = <QueueModel>[];
+  List<QueueModel> _selectedFiles = <QueueModel>[];
 
   bool _isAllImagesSelected = false;
   bool _isAllVideosSelected = false;
@@ -37,116 +37,6 @@ class OnlineBackUpVm extends BaseVm {
   bool _isDocSelected = false;
 
   bool get isAllImagesSelected => _isAllImagesSelected;
-
-  set isAllImagesSelected(bool value) {
-    _isAllImagesSelected = value;
-  }
-
-  int get usedSpace => _usedSpace;
-
-  set usedSpace(int value) {
-    _usedSpace = value;
-  }
-
-  List<DownloadModel> get images => _images;
-
-  set images(List<DownloadModel> value) {
-    _images = value;
-  }
-
-  List<DownloadModel> get videos => _videos;
-
-  set videos(List<DownloadModel> value) {
-    _videos = value;
-  }
-
-  List<DownloadModel> get audios => _audios;
-
-  set audios(List<DownloadModel> value) {
-    _audios = value;
-  }
-
-  List<DownloadModel> get documents => _documents;
-
-  set documents(List<DownloadModel> value) {
-    _documents = value;
-  }
-
-  List<DownloadModel> get apps => _apps;
-
-  set apps(List<DownloadModel> value) {
-    _apps = value;
-  }
-
-  List get pics => _pics;
-
-  set pics(List value) {
-    _pics = value;
-  }
-
-  Future<void> listItems(context) async {
-    try {
-      pics.clear();
-      audios.clear();
-      videos.clear();
-      images.clear();
-      documents.clear();
-      usedSpace = 0;
-      final ListResult result = await Amplify.Storage.list(
-        options: ListOptions(accessLevel: StorageAccessLevel.protected),
-      );
-      final List<StorageItem> items = result.items;
-
-      for (int i = 0; i < items.length; i++) {
-        final GetUrlResult result = await Amplify.Storage.getUrl(
-            key: items[i].key,
-            options: GetUrlOptions(accessLevel: StorageAccessLevel.protected));
-        print('MY DATA ${items[i].key}');
-        if (mime(items[i].key)!.split("/").first == "video") {
-          videos.add(DownloadModel(
-              url: result.url,
-              key: items[i].key,
-              date: items[i].lastModified.toString(),
-              size: items[i].size.toString(),isSelected: false));
-        } else if (mime(items[i].key)!.split("/").first == "image") {
-          images.add(DownloadModel(
-              url: result.url,
-              key: items[i].key,
-              date: items[i].lastModified.toString(),
-              size: items[i].size.toString(),isSelected: false));
-        } else if (mime(items[i].key)!.split("/").first == "audio") {
-          audios.add(DownloadModel(
-              url: result.url,
-              key: items[i].key,
-              date: items[i].lastModified.toString(),
-              size: items[i].size.toString(),isSelected: false));
-        } else if (mime(items[i].key)!.split("/").first == "document") {
-          documents.add(DownloadModel(
-              url: result.url,
-              key: items[i].key,
-              date: items[i].lastModified.toString(),
-              size: items[i].size.toString(),isSelected: false));
-        } else {
-          apps.add(DownloadModel(
-              url: result.url,
-              key: items[i].key,
-              date: items[i].lastModified.toString(),
-              size: items[i].size.toString(),isSelected: false));
-        }
-        usedSpace += items[i].size!;
-
-        // pics.add({
-        //   "url": result.url,
-        //   "key": items[i].key,
-        //   'date': items[i].lastModified,
-        //   'size': items[i].size
-        // });
-        notifyListeners();
-      }
-    } on StorageException catch (e) {
-      print('Error listing items: $e');
-    }
-  }
 
   bool get isAllVideosSelected => _isAllVideosSelected;
 
@@ -200,5 +90,178 @@ class OnlineBackUpVm extends BaseVm {
 
   set isDocSelected(bool value) {
     _isDocSelected = value;
+  }
+
+  set isAllImagesSelected(bool value) {
+    _isAllImagesSelected = value;
+  }
+
+  int get usedSpace => _usedSpace;
+
+  set usedSpace(int value) {
+    _usedSpace = value;
+  }
+
+  List<DownloadModel> get images => _images;
+
+  set images(List<DownloadModel> value) {
+    _images = value;
+    notifyListeners();
+  }
+
+  List<DownloadModel> get videos => _videos;
+
+  set videos(List<DownloadModel> value) {
+    _videos = value;
+    notifyListeners();
+
+  }
+
+  List<DownloadModel> get audios => _audios;
+
+  set audios(List<DownloadModel> value) {
+    _audios = value;
+    notifyListeners();
+
+  }
+
+  List<DownloadModel> get documents => _documents;
+
+  set documents(List<DownloadModel> value) {
+    _documents = value;
+    notifyListeners();
+
+  }
+
+  List<DownloadModel> get apps => _apps;
+
+  set apps(List<DownloadModel> value) {
+    _apps = value;
+    notifyListeners();
+
+  }
+
+  List get pics => _pics;
+
+  set pics(List value) {
+    _pics = value;
+    notifyListeners();
+
+  }
+
+  List<QueueModel> get selectedFiles => _selectedFiles;
+
+  set selectedFiles(List<QueueModel> value) {
+    _selectedFiles = value;
+    notifyListeners();
+  }
+
+  Future<void> listItems(context) async {
+    try {
+      pics.clear();
+      audios.clear();
+      videos.clear();
+      images.clear();
+      documents.clear();
+      usedSpace = 0;
+      final ListResult result = await Amplify.Storage.list(
+        options: ListOptions(accessLevel: StorageAccessLevel.protected),
+      );
+      final List<StorageItem> items = result.items;
+
+      for (int i = 0; i < items.length; i++) {
+        final GetUrlResult result = await Amplify.Storage.getUrl(
+            key: items[i].key,
+            options: GetUrlOptions(accessLevel: StorageAccessLevel.protected));
+        print('MY DATA ${items[i].key}');
+        if (mime(items[i].key)!.split("/").first == "video") {
+          videos.add(DownloadModel(
+              url: result.url,
+              key: items[i].key,
+              date: items[i].lastModified.toString(),
+              size: items[i].size.toString(),
+              isSelected: false));
+        } else if (mime(items[i].key)!.split("/").first == "image") {
+          images.add(DownloadModel(
+              url: result.url,
+              key: items[i].key,
+              date: items[i].lastModified.toString(),
+              size: items[i].size.toString(),
+              isSelected: false));
+        } else if (mime(items[i].key)!.split("/").first == "audio") {
+          audios.add(DownloadModel(
+              url: result.url,
+              key: items[i].key,
+              date: items[i].lastModified.toString(),
+              size: items[i].size.toString(),
+              isSelected: false));
+        } else if (mime(items[i].key)!.split("/").first == "document") {
+          documents.add(DownloadModel(
+              url: result.url,
+              key: items[i].key,
+              date: items[i].lastModified.toString(),
+              size: items[i].size.toString(),
+              isSelected: false));
+        } else {
+          apps.add(DownloadModel(
+              url: result.url,
+              key: items[i].key,
+              date: items[i].lastModified.toString(),
+              size: items[i].size.toString(),
+              isSelected: false));
+        }
+        usedSpace += items[i].size!;
+
+        // pics.add({
+        //   "url": result.url,
+        //   "key": items[i].key,
+        //   'date': items[i].lastModified,
+        //   'size': items[i].size
+        // });
+        notifyListeners();
+      }
+    } on StorageException catch (e) {
+      print('Error listing items: $e');
+    }
+  }
+
+  set removeFromSelectedList(DownloadModel file) {
+    print('file to remove from selected list from app screen is $file');
+    this.selectedFiles.removeWhere((element) => element.name == file.key);
+
+    // for (int i = 0; i < selectedFiles.length; i++) {
+    //   print('data in the selected list after remove is...${selectedFiles[i]}');
+    // }
+    notifyListeners();
+  }
+
+  set addToSelectedList(DownloadModel file ) {
+    print('file to add in the list from app screen is $file');
+    this.selectedFiles.add(QueueModel(key:file.key,name: file.key, size: file.size, date: file.date, status: "pending", progress: "pending"));
+    notifyListeners();
+  }
+  void selectAllInList(List<DownloadModel> list) {
+    list.forEach((element) {
+      if (element.isSelected) {
+        element.isSelected = false;
+        removeFromSelectedList = element;
+      } else {
+        element.isSelected = true;
+        addToSelectedList = element;
+      }
+    });
+
+
+
+    notifyListeners();
+  }
+  clearAllSelection(){
+    selectedFiles.clear();
+    _isAllAppsSelected = false;
+    _isAllAudioSelected = false;
+    _isAllDocSelected = false;
+    _isAllImagesSelected = false;
+    _isAllVideosSelected = false;
+    notifyListeners();
   }
 }

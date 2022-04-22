@@ -9,7 +9,10 @@ import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_d
 import 'package:quick_backup/utilities/file_manager_utilities.dart';
 import 'package:quick_backup/utilities/i_utills.dart';
 import 'package:quick_backup/views/download/download_screen.dart';
-import 'package:quick_backup/views/online_backup/cloud_images.dart';
+import 'package:quick_backup/views/online_backup/compnents/cloud_apps.dart';
+import 'package:quick_backup/views/online_backup/compnents/cloud_audios.dart';
+import 'package:quick_backup/views/online_backup/compnents/cloud_images.dart';
+import 'package:quick_backup/views/online_backup/compnents/cloud_videos.dart';
 import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 
 import '../../constants/app_colors.dart';
@@ -36,7 +39,6 @@ class _CloudDocsScreenState extends State<CloudDocsScreen> {
     return Consumer<OnlineBackUpVm>(builder: (context, vm, _) {
       String size = FileManagerUtilities.formatBytes(vm.usedSpace, 2);
 
-
       return Scaffold(
         backgroundColor: AppColors.kPrimaryPurpleColor,
         // bottomNavigationBar: BottomAppBar(
@@ -60,44 +62,35 @@ class _CloudDocsScreenState extends State<CloudDocsScreen> {
             height: SizeConfig.screenHeight,
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage(
-                        AppConstants.transfer_background),
+                    image: AssetImage(AppConstants.transfer_background),
                     fit: BoxFit.cover),
-              gradient: LinearGradient(
-                colors: [
+                gradient: LinearGradient(colors: [
                   Color(0xff7266F8),
                   Color(0xff110D44),
-                ],
-                  stops: [
-                    0.133,
-                    0.5
-                  ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomRight
-              )
-            ),
+                ], stops: [
+                  0.133,
+                  0.5
+                ], begin: Alignment.topCenter, end: Alignment.bottomRight)),
             child: Stack(
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
                           onPressed: () {
                             Navigator.pop(context);
+                            vm.clearAllSelection();
                           },
                           icon: Icon(
                             Icons.arrow_back_ios,
-                            size: SizeConfig.screenHeight! *
-                                0.024,
+                            size: SizeConfig.screenHeight! * 0.024,
                             color: Colors.white,
                           )),
                       PrimaryText(
                         "Cloud Document",
-                        fontSize:
-                        SizeConfig.screenHeight! * 0.020,
+                        fontSize: SizeConfig.screenHeight! * 0.020,
                         fontWeight: FontWeight.w500,
                       ),
                       SizedBox(
@@ -106,7 +99,6 @@ class _CloudDocsScreenState extends State<CloudDocsScreen> {
                     ],
                   ),
                 ),
-
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Column(
@@ -139,7 +131,7 @@ class _CloudDocsScreenState extends State<CloudDocsScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 PrimaryText(
-                                  "128GB",
+                                  AppConstants.allow_space,
                                   fontSize: 19,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xff74D5DE),
@@ -168,40 +160,55 @@ class _CloudDocsScreenState extends State<CloudDocsScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 InkWell(
-                                  onTap: (){
-                                    Navigator.pushNamed(context, CloudImages.routeName,arguments: "Images");
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, CloudImages.routeName,
+                                        arguments: "Images");
                                   },
-                                  child: customTile(AppConstants.images_icon, "Images",
+                                  child: customTile(
+                                      AppConstants.images_icon,
+                                      "Images",
                                       vm.images.length.toString() + " files "),
                                 ),
                                 InkWell(
-                                  onTap: (){
-                                    Navigator.pushNamed(context, CloudImages.routeName,arguments: "Videos");
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, CloudVideos.routeName);
                                   },
-                                  child: customTile(AppConstants.videos_icon, "Videos",
+                                  child: customTile(
+                                      AppConstants.videos_icon,
+                                      "Videos",
                                       vm.videos.length.toString() + " files "),
                                 ),
                                 InkWell(
-                                  onTap: (){
-                                    Navigator.pushNamed(context, CloudImages.routeName,arguments: "Audios");
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, CloudAudios.routeName);
                                   },
-                                  child: customTile(AppConstants.audio_icon, "Audios",
+                                  child: customTile(
+                                      AppConstants.audio_icon,
+                                      "Audios",
                                       vm.audios.length.toString() + " files "),
                                 ),
                                 InkWell(
-                                  onTap: (){
-                                    Navigator.pushNamed(context, CloudImages.routeName,arguments: "Documents");
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, CloudDocsScreen.routeName);
                                   },
                                   child: customTile(
                                       AppConstants.document_icon,
                                       "Documents",
-                                      vm.documents.length.toString() + " files "),
+                                      vm.documents.length.toString() +
+                                          " files "),
                                 ),
                                 InkWell(
-                                  onTap: (){
-                                    Navigator.pushNamed(context, CloudImages.routeName,arguments: "Apps");
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, CloudApps.routeName);
                                   },
-                                  child: customTile(AppConstants.apps_icon, "Apps",
+                                  child: customTile(
+                                      AppConstants.apps_icon,
+                                      "Apps",
                                       vm.apps.length.toString() + " files "),
                                 ),
                               ],
@@ -221,7 +228,12 @@ class _CloudDocsScreenState extends State<CloudDocsScreen> {
   Widget customTile(icon, title, fileslength, {progress}) {
     return Row(
       children: [
-        SvgPicture.asset(icon,width: 32,height: 32,fit: BoxFit.fill,),
+        SvgPicture.asset(
+          icon,
+          width: 32,
+          height: 32,
+          fit: BoxFit.fill,
+        ),
         SizedBox(
           width: 20,
         ),

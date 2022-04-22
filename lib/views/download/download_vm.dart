@@ -46,34 +46,35 @@ class DownloadVm extends BaseVm {
   }
 
   Future<void> downloadFile(
-      var files,context
+      List<QueueModel> files,context
       ) async {
     queue.clear();
-    for (var data in files) {
-      String key =
-      data['key'].replaceAll("${Provider.of<PreferencesProvider>(context,listen: false).userCognito}/", "");
-      String date = data['date'].toString();
-
-      queue.add(QueueModel(
-          id: null,
-          name: key,
-          date: date,
-          size: data['size'].toString(),
-          status: "pending",
-          progress: "pending"));
-    }
+    // for (var data in files) {
+    //   String key =
+    //   data['key'].replaceAll("${Provider.of<PreferencesProvider>(context,listen: false).userCognito}/", "");
+    //   String date = data['date'].toString();
+    //
+    //   queue.addAll(QueueModel(
+    //       id: null,
+    //       name: key,
+    //       date: date,
+    //       size: data['size'].toString(),
+    //       status: "pending",
+    //       progress: "pending"));
+    // }
+    queue.addAll(files);
     final documentsDir = "/storage/emulated/0";
     for (int i = 0; i < files.length; i++) {
       final filepath = documentsDir +
-          "/Backupfiles" +
-          '/${files[i]['key'].replaceAll("${Provider.of<PreferencesProvider>(context,listen: false).userCognito}/", "")}';
+          "/Backupfiles/" +
+          '/${files[i].key!.replaceAll("${Provider.of<PreferencesProvider>(context,listen: false).userCognito}/", "")}';
       final file = File(filepath);
       bool fileExists = await file.exists();
       if (!fileExists) {
         try {
           await Amplify.Storage.downloadFile(
               options: DownloadFileOptions(accessLevel: StorageAccessLevel.protected),
-              key: files[i]['key'],
+              key: files[i].key!,
               local: file,
               onProgress: (progress) {
                 queue[i]!.progress =

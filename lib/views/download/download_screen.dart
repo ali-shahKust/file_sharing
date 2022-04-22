@@ -8,8 +8,10 @@ import 'package:quick_backup/constants/app_constants.dart';
 import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
 import 'package:quick_backup/data/extension.dart';
 import 'package:provider/provider.dart';
+import 'package:quick_backup/data/models/queue_model.dart';
 import 'package:quick_backup/utilities/file_manager_utilities.dart';
 import 'package:quick_backup/views/download/download_vm.dart';
+import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 import '../../configurations/size_config.dart';
 import '../../custom_widgets/app_text_widget.dart';
 import '../../utilities/custom_theme.dart';
@@ -19,7 +21,7 @@ import '../dashboard/dashboard_vm.dart';
 
 class DownloadScreen extends StatefulWidget {
   static const routeName = 'download_screen';
-  List files;
+  List<QueueModel> files;
 
 
   DownloadScreen({required this.files});
@@ -39,6 +41,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
   }
 
   Future<bool> _onWillPop() async {
+    Provider.of<OnlineBackUpVm>(context, listen: false).clearAllSelection();
     return (await Provider.of<DownloadVm>(context,listen: false).queue.isEmpty?true:iUtills().exitPopUp(context)) ?? false;
   }
 
@@ -190,7 +193,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                 SvgPicture.asset(
                                     AppConstants.send_file),
                                 PrimaryText(
-                                  "Uploading ${vm.queue.length} Files",
+                                  "Downloading ${vm.queue.length} Files",
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                 )
@@ -262,7 +265,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                         SizeConfig.screenWidth! -
                                             160,
                                         child: PrimaryText(
-                                          vm.queue[index]!.name,
+                                          vm.queue[index]!.name.split("/").last,
                                           overflow:
                                           TextOverflow.ellipsis,
                                           fontSize: SizeConfig
@@ -293,14 +296,16 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                     width: 5,
                                   ),
                                   CircularPercentIndicator(
-                                    radius: 32.0,
+                                    radius: 34.0,
                                     lineWidth: 3.0,
                                     animation: false,
                                     percent:
                                     vm.queue[index]!.progress ==
                                         "pending"
-                                        ? 0.0
-                                        : double.parse(vm
+                                        ? 0.0:
+                                    vm.queue[index]!.progress ==
+                                        "Exist already"
+                                        ?1.0: double.parse(vm
                                         .queue[index]!
                                         .progress) /
                                         100,
@@ -308,7 +313,14 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                       mainAxisAlignment:
                                       MainAxisAlignment.center,
                                       children: [
-                                        PrimaryText(
+                                        vm.queue[index]!.progress ==
+                                            "Exist already"
+                                            ?PrimaryText(
+                                          "Exist already",
+                                          fontSize: 4,
+                                          color: Colors.black54,
+                                          fontWeight: FontWeight.w300,
+                                        ):PrimaryText(
                                           "${vm.queue[index]!.progress}%",
                                           fontSize: 6,
                                           color: Colors.black54,
