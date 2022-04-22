@@ -7,6 +7,7 @@ import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/constants/app_constants.dart';
 import 'package:quick_backup/constants/app_style.dart';
+import 'package:quick_backup/custom_widgets/app_text_widget.dart';
 import 'package:quick_backup/custom_widgets/custom_list_tile.dart';
 import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
 import 'package:quick_backup/utilities/custom_theme.dart';
@@ -31,66 +32,144 @@ class _FileManagerHomeState extends State<FileManagerHome> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+
+    //SafeArea(
+    //                 child: Container(
+    //             width: SizeConfig.screenWidth,
+    //             height: SizeConfig.screenHeight,
+    //             decoration: BoxDecoration(
+    //                   color: AppColors.kPrimaryPurpleColor,
+    //                   image: DecorationImage(
+    //                     image: AssetImage('assets/images/container_background.webp'),
+    //                   )
+    //                 // Image.asset('assets/container_background.svg'),
+    //             ),
+    //                   child: Column(
+    //                       crossAxisAlignment: CrossAxisAlignment.start,
+    //                       children: [
+    //                         Padding(
+    //                           padding: const EdgeInsets.only(top: 8.0),
+    //                           child: Row(
+    //                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //                             children: [
+    //                               IconButton(
+    //                                   onPressed: () {
+    //                                     Navigator.pop(context);
+    //                                   },
+    //                                   icon: Icon(
+    //                                     Icons.arrow_back_ios,
+    //                                     size: SizeConfig.screenHeight! * 0.024,
+    //                                     color: Colors.white,
+    //                                   )),
+    //                               PrimaryText(
+    //                                 "Audios",
+    //                                 fontSize: SizeConfig.screenHeight! * 0.020,
+    //                                 fontWeight: FontWeight.w500,
+    //                               ),
+    //                               SizedBox(
+    //                                 width: 50,
+    //                               )
+    //                             ],
+    //                           ),
+    //                         ),
     return Scaffold(
       backgroundColor: AppColors.kPrimaryPurpleColor,
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: AppColors.kPrimaryPurpleColor,
-        title: Text('Quick Backup'),
-        centerTitle: true,
-        //TODO uncomment to show premium icon...
-        // actions: [
-        //   Padding(
-        //     padding: EdgeInsets.only(top: SizeConfig.screenHeight! * 0.01),
-        //     child: Container(
-        //         height: SizeConfig.screenHeight! * 0.15,
-        //         width: SizeConfig.screenWidth! * 0.2,
-        //         decoration: BoxDecoration(
-        //             color: AppColors.kDarkPurpleColor,
-        //             borderRadius: BorderRadius.only(topLeft: Radius.circular(20), bottomLeft: Radius.circular(20))),
-        //         child: Align(
-        //             alignment: Alignment.centerLeft,
-        //             child: Padding(
-        //               padding: EdgeInsets.only(left: SizeConfig.screenHeight! * 0.015),
-        //               child: Icon(
-        //                 Icons.workspace_premium,
-        //                 color: Colors.red,
-        //               ),
-        //             ))
-        //         // SvgPicture.asset('assets/premium_icon.svg'),
-        //         ),
-        //   )
-        // ],
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.kWhiteColor,
+      // appBar: AppBar(
+      //   elevation: 0.0,
+      //   backgroundColor: AppColors.kPrimaryPurpleColor,
+      //   title: Text('Quick Backup'),
+      //   centerTitle: true,
+      //   //TODO uncomment to show premium icon...
+      //   // actions: [
+      //   //   Padding(
+      //   //     padding: EdgeInsets.only(top: SizeConfig.screenHeight! * 0.01),
+      //   //     child: Container(
+      //   //         height: SizeConfig.screenHeight! * 0.15,
+      //   //         width: SizeConfig.screenWidth! * 0.2,
+      //   //         decoration: BoxDecoration(
+      //   //             color: AppColors.kDarkPurpleColor,
+      //   //             borderRadius: BorderRadius.only(topLeft: Radius.circular(20), bottomLeft: Radius.circular(20))),
+      //   //         child: Align(
+      //   //             alignment: Alignment.centerLeft,
+      //   //             child: Padding(
+      //   //               padding: EdgeInsets.only(left: SizeConfig.screenHeight! * 0.015),
+      //   //               child: Icon(
+      //   //                 Icons.workspace_premium,
+      //   //                 color: Colors.red,
+      //   //               ),
+      //   //             ))
+      //   //         // SvgPicture.asset('assets/premium_icon.svg'),
+      //   //         ),
+      //   //   )
+      //   // ],
+      //   leading: IconButton(
+      //     onPressed: () {
+      //       Navigator.pop(context);
+      //     },
+      //     icon: Icon(
+      //       Icons.arrow_back_ios,
+      //       color: AppColors.kWhiteColor,
+      //     ),
+      //   ),
+      // ),
+      body: SafeArea(
+        child: Container(
+          width: SizeConfig.screenWidth,
+                      height: SizeConfig.screenHeight,
+                      decoration: BoxDecoration(
+                            color: AppColors.kPrimaryPurpleColor,
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/container_background.webp'),
+                            )
+                          // Image.asset('assets/container_background.svg'),
+                      ),
+          child: Column(
+            children: <Widget>[
+          Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        IconButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            icon: Icon(
+                                              Icons.arrow_back_ios,
+                                              size: SizeConfig.screenHeight! * 0.024,
+                                              color: Colors.white,
+                                            )),
+                                        PrimaryText(
+                                          "Audios",
+                                          fontSize: SizeConfig.screenHeight! * 0.020,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        SizedBox(
+                                          width: 50,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+              // SizedBox(height: SizeConfig.screenHeight! * 0.04),
+              Expanded(
+                flex: 4,
+                child: Container(
+                  color: AppColors.kPrimaryPurpleColor,
+                  height: SizeConfig.screenHeight! * 0.2,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      HeaderContainer(),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(flex: 12, child: _CategoriesSection()),
+              // SizedBox(height: SizeConfig.screenHeight! * 0.03),
+            ],
           ),
         ),
-      ),
-      body: Column(
-        children: <Widget>[
-          // SizedBox(height: SizeConfig.screenHeight! * 0.04),
-          Expanded(
-            flex: 4,
-            child: Container(
-              color: AppColors.kPrimaryPurpleColor,
-              height: SizeConfig.screenHeight! * 0.2,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  HeaderContainer(),
-                ],
-              ),
-            ),
-          ),
-          Expanded(flex: 12, child: _CategoriesSection()),
-          // SizedBox(height: SizeConfig.screenHeight! * 0.03),
-        ],
       ),
       // Browse(),
     );
