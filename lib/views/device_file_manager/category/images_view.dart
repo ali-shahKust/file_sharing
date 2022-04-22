@@ -12,6 +12,7 @@ import 'package:quick_backup/constants/app_strings.dart';
 import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/custom_widgets/queues_screen.dart';
 import 'package:quick_backup/data/models/file_model.dart';
+import 'package:quick_backup/utilities/general_utilities.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 
 import '../../../custom_widgets/app_text_widget.dart';
@@ -48,15 +49,15 @@ class _ImagesViewState extends State<ImagesView> with SingleTickerProviderStateM
                     image: DecorationImage(
                       image: AssetImage('assets/images/container_background.webp'),
                     )
-                  // Image.asset('assets/container_background.svg'),
-                ),
+                    // Image.asset('assets/container_background.svg'),
+                    ),
                 child: Column(
                   children: [
                     // SizedBox(
                     //   height: SizeConfig.screenHeight! * 0.01,
                     // ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
+                      padding: EdgeInsets.only(top: SizeConfig.screenHeight! * 0.02),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -71,11 +72,11 @@ class _ImagesViewState extends State<ImagesView> with SingleTickerProviderStateM
                               )),
                           PrimaryText(
                             "Photos",
-                            fontSize: SizeConfig.screenHeight! * 0.020,
+                            fontSize: SizeConfig.screenHeight! * 0.028,
                             fontWeight: FontWeight.w500,
                           ),
                           SizedBox(
-                            width: 50,
+                            width: SizeConfig.screenWidth! * 0.050,
                           )
                         ],
                       ),
@@ -102,75 +103,84 @@ class _ImagesViewState extends State<ImagesView> with SingleTickerProviderStateM
                               // provider.selectAllInList(provider.imageList);
                             },
                             icon: Icon(
-                              provider.isAllImagesSelected
-                                  ? Icons.check_box_outlined
-                                  : Icons.check_box_outline_blank,
+                              provider.isAllImagesSelected ? Icons.check_box_outlined : Icons.check_box_outline_blank,
                               color: AppColors.kWhiteColor,
                             ),
                           ),
                         ],
                       ),
                     ),
-                    Container(
-                      height: SizeConfig.screenHeight! * 0.82,
-                      decoration: BoxDecoration(
-                          color: AppColors.kWhiteColor,
-                          borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-                      child: Stack(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: SizeConfig.screenHeight! * 0.02,
-                                right: SizeConfig.screenHeight! * 0.02,
-                                top: SizeConfig.screenHeight! * 0.04),
-                            child: GridView.builder(
-                                addAutomaticKeepAlives: false,
-                                addRepaintBoundaries: false,
-                                reverse: false,
-                                cacheExtent: 50,
-                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  mainAxisSpacing: 4.0,
-                                  crossAxisSpacing: 7.0,
-                                ),
-                                itemCount: provider.imageList.length,
-                                itemBuilder: (BuildContext ctx, index) {
-                                  FileMangerModel fmm = provider.imageList[index];
-                                  return _MediaTile(
-                                    imgmodel: fmm,
-                                    provider: provider,
-                                    index: index,
-                                    // file: item.file
-                                  );
-                                }),
+                    provider.loading == true
+                        ? Expanded(
+                      flex: 10,
+                        child: GeneralUtilities.LoadingFileWidget())
+                        : Container(
+                            height: SizeConfig.screenHeight! * 0.82,
+                            decoration: BoxDecoration(
+                                color: AppColors.kWhiteColor,
+                                borderRadius:
+                                    BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+                            child: provider.imageList.length > 0
+                                ? Stack(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            left: SizeConfig.screenHeight! * 0.02,
+                                            right: SizeConfig.screenHeight! * 0.02,
+                                            top: SizeConfig.screenHeight! * 0.04),
+                                        child: GridView.builder(
+                                            addAutomaticKeepAlives: false,
+                                            addRepaintBoundaries: false,
+                                            reverse: false,
+                                            cacheExtent: 50,
+                                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 3,
+                                              mainAxisSpacing: 4.0,
+                                              crossAxisSpacing: 7.0,
+                                            ),
+                                            itemCount: provider.imageList.length,
+                                            itemBuilder: (BuildContext ctx, index) {
+                                              FileMangerModel fmm = provider.imageList[index];
+                                              return _MediaTile(
+                                                imgmodel: fmm,
+                                                provider: provider,
+                                                index: index,
+                                                // file: item.file
+                                              );
+                                            }),
+                                      ),
+                                      Visibility(
+                                        visible: provider.selectedFiles.length > 0 ? true : false,
+                                        child: Positioned(
+                                          bottom: SizeConfig.screenHeight! * 0.012,
+                                          left: SizeConfig.screenWidth! * 0.005,
+                                          right: SizeConfig.screenWidth! * 0.005,
+                                          child: BackupButton(
+                                            text: '${AppStrings.backup}',
+                                            width: SizeConfig.screenWidth! * 0.58,
+                                            onTap: () async {
+                                              //  pd.show(max: 100, msg: 'File Uploading...');
+                                              if (provider.selectedFiles.length > 0) {
+                                                Navigator.pushNamed(context, QuesScreen.routeName,
+                                                        arguments: {'files': provider.selectedFiles, "drawer": false})
+                                                    .whenComplete(() {
+                                                  print('whencomplete call...');
+                                                  provider.selectedFiles.clear();
+                                                });
+                                              }
+                                            },
+                                            btnColor: AppColors.kGreyColor,
+                                            padding: SizeConfig.screenHeight! * 0.02,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Center(
+                                    child: CircularProgressIndicator(
+                                    color: AppColors.kPrimaryPurpleColor,
+                                  )),
                           ),
-                          Visibility(
-                            visible: provider.selectedFiles.length > 0 ? true : false,
-                            child: Positioned(
-                              bottom: SizeConfig.screenHeight! * 0.012,
-                              left: SizeConfig.screenWidth! * 0.005,
-                              right: SizeConfig.screenWidth! * 0.005,
-                              child: BackupButton(
-                                text: '${AppStrings.backup}',
-                                width: SizeConfig.screenWidth! * 0.58,
-                                onTap: () async {
-                                  //  pd.show(max: 100, msg: 'File Uploading...');
-                                  if (provider.selectedFiles.length > 0) {
-                                    Navigator.pushNamed(context, QuesScreen.routeName,
-                                        arguments: {'files': provider.selectedFiles, "drawer": false}).whenComplete(() {
-                                      print('whencomplete call...');
-                                      provider.selectedFiles.clear();
-                                    });
-                                  }
-                                },
-                                btnColor: AppColors.kGreyColor,
-                                padding: SizeConfig.screenHeight! * 0.02,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ),

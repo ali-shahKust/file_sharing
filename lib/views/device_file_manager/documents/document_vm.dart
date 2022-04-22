@@ -32,6 +32,31 @@ class DocumentVm extends BaseVm {
     notifyListeners();
   }
 
+  List fileCategory = AppConstants.categories;
+
+  changeNoOfFiles(int length,int index) {
+    for (int i = 0; i < fileCategory.length; i++) {
+      if (i != index) {
+        fileCategory[i]['isSelected'] = '0';
+      } else {
+        fileCategory[index]['isSelected'] = '1';
+      }
+      print('isSelect value in unSelect function is ${fileCategory[index]['isSelected']}');
+    }
+    notifyListeners();
+  }
+  changeFileSize(int fileSize,int index) {
+    for (int i = 0; i < fileCategory.length; i++) {
+      if (i != index) {
+        fileCategory[i]['isSelected'] = '0';
+      } else {
+        fileCategory[index]['isSelected'] = '1';
+      }
+      print('isSelect value in unSelect function is ${fileCategory[index]['isSelected']}');
+    }
+    notifyListeners();
+  }
+
 
 
 // if(fileCategoryList[index]['isSelected']=='1'){

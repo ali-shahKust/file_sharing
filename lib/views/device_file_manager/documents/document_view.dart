@@ -5,10 +5,12 @@ import 'package:provider/provider.dart';
 import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/constants/app_constants.dart';
+import 'package:quick_backup/custom_widgets/app_text_widget.dart';
 import 'package:quick_backup/custom_widgets/custom_document_category_list.dart';
 import 'package:quick_backup/custom_widgets/custom_list_tile.dart';
 import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
 import 'package:quick_backup/utilities/file_manager_utilities.dart';
+import 'package:quick_backup/utilities/general_utilities.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 import 'package:quick_backup/views/device_file_manager/documents/document_vm.dart';
 
@@ -44,178 +46,207 @@ class _DocumentViewsState extends State<DocumentViews> {
         print('number of ppt in doc are...${provider.pptList.length}');
         return Scaffold(
           backgroundColor: AppColors.kPrimaryPurpleColor,
-          appBar: AppBar(
-            elevation: 0.0,
-            backgroundColor: AppColors.kPrimaryPurpleColor,
-            title: Text('Documents '),
-            centerTitle: true,
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: AppColors.kWhiteColor,
-              ),
-            ),
-          ),
-          body: provider.loading
-              ? Container(
-                  // width: MediaQuery.of(context).size.width /2 ,
-                  // height: MediaQuery.of(context).size.height / 2,
-                  child: Center(
-                    child: Image.asset("assets/gifs/loader.gif",
-                        height: MediaQuery.of(context).size.height * 0.4,
-                        width: MediaQuery.of(context).size.width * 0.4),
-                  ),
-                )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: AppColors.kPrimaryPurpleColor,
-                            image: DecorationImage(
-                                image: AssetImage(
-                                  'assets/images/container_background.webp',
-                                ),
-                                fit: BoxFit.cover)
-                            // Image.asset('assets/container_background.svg'),
-                            ),
-                        // height: SizeConfig.screenHeight! * 0.15,
-                        //  child:Image.asset(''),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 17,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: AppColors.kWhiteColor,
-                            borderRadius:
-                                BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              flex: 5,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                padding: EdgeInsets.only(left: 10),
-                                itemCount: AppConstants.documnetCategories.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  final documentVm = Provider.of<DocumentVm>(context, listen: false);
-                                  // Map category = AppConstants.documnetCategories[index];
 
-                                  return CustomDocumentCategoryList(
-                                    type: documentVm.fileCategoryList[index]['title'],
-                                    isSelected: documentVm.fileCategoryList[index]['isSelected'],
-                                    icon: documentVm.fileCategoryList[index]['icon'],
-                                    color: documentVm.fileCategoryList[index]['startColor'],
-                                    onTap: () {
-                                      if (index == 0) {
-                                        setState(() {
-                                          type = AppConstants.docCategories[0];
-                                          documentVm.changeIsSelected(index);
-                                          // documentVm.unSelectAll(index);
-                                        });
-                                        // print(
-                                        //     'image list in function is testing ${Provider.of<CategoryVm>(context, listen: false).imageList.length}');
-                                        //
-                                        // Navigator.pushNamed(context, ImagesView.routeName);
-                                      } else if (index == 1) {
-                                        setState(() {
-                                          type = AppConstants.docCategories[1];
-                                          documentVm.changeIsSelected(index);
-                                          // documentVm.unSelectAll(index);
-                                          // category['isSelected']=='1';
-                                          // isSelected=!isSelected;
-                                        });
-                                        // Navigator.pushNamed(context, VideosView.routeName);
-                                      } else if (index == 2) {
-                                        setState(() {
-                                          type = AppConstants.docCategories[2];
-                                          documentVm.changeIsSelected(index);
-                                          // documentVm.unSelectAll(index);
-                                        });
-                                        // Navigator.pushNamed(context, AudioViews.routeName);
-                                      } else if (index == 3) {
-                                        setState(() {
-                                          type = AppConstants.docCategories[3];
-                                          documentVm.changeIsSelected(index);
-                                          // documentVm.unSelectAll(index);
-                                          // isSelected=!isSelected;
-                                        });
-                                        // Navigator.pushNamed(context, DocumentViews.routeName);
-                                      }
-                                    },
-                                  );
-                                },
+          body: SafeArea(
+                child: Container(
+            width: SizeConfig.screenWidth,
+            height: SizeConfig.screenHeight,
+            decoration: BoxDecoration(
+                  color: AppColors.kPrimaryPurpleColor,
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/container_background.webp'),
+                  )
+                // Image.asset('assets/container_background.svg'),
+            ),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding:  EdgeInsets.only(top: SizeConfig.screenHeight!*0.02),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: Icon(
+                                    Icons.arrow_back_ios,
+                                    size: SizeConfig.screenHeight! * 0.024,
+                                    color: Colors.white,
+                                  )),
+                              PrimaryText(
+                                "Documents",
+                                fontSize: SizeConfig.screenHeight! * 0.028,
+                                fontWeight: FontWeight.w500,
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: SizeConfig.screenWidth! * 0.06),
-                              child: Text(
-                                '$type Files',
-                                style: TextStyle(
-                                  fontSize: SizeConfig.screenHeight! * 0.023,
-                                  color: AppColors.kPrimaryPurpleColor,
-                                  fontWeight: FontWeight.w600,
+                              SizedBox(
+                                width: SizeConfig.screenWidth!*0.050,
+                              )
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                '${provider.selectedFiles.length} Selected',
+                                style:
+                                TextStyle(fontSize: SizeConfig.screenHeight! * 0.024, color: AppColors.kWhiteColor),
+                              ),
+                              SizedBox(
+                                width: SizeConfig.screenWidth! * 0.3,
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  provider.changeIsAllAudioSelected();
+                                  provider.selectAllInList(provider.audiosList);
+                                },
+                                icon: Icon(
+                                  provider.isAllAudioSelected
+                                      ? Icons.check_box_outlined
+                                      : Icons.check_box_outline_blank,
+                                  color: AppColors.kWhiteColor,
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              height: SizeConfig.screenHeight! * 0.02,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 17,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: AppColors.kWhiteColor,
+                                borderRadius:
+                                    BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  '${provider.selectedFiles.length} Selected',
-                                  style: TextStyle(
-                                    fontSize: SizeConfig.screenHeight! * 0.024,
-                                    color: AppColors.kBlackColor,
-                                    fontWeight: FontWeight.w600,
+                                Expanded(
+                                  flex: 5,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    padding: EdgeInsets.only(left: 10),
+                                    itemCount: AppConstants.documnetCategories.length,
+                                    itemBuilder: (BuildContext context, int index) {
+                                      final documentVm = Provider.of<DocumentVm>(context, listen: false);
+                                      // Map category = AppConstants.documnetCategories[index];
+
+                                      return CustomDocumentCategoryList(
+                                        type: documentVm.fileCategoryList[index]['title'],
+                                        isSelected: documentVm.fileCategoryList[index]['isSelected'],
+                                        icon: documentVm.fileCategoryList[index]['icon'],
+                                        color: documentVm.fileCategoryList[index]['startColor'],
+                                        onTap: () {
+                                          if (index == 0) {
+                                            setState(() {
+                                              type = AppConstants.docCategories[0];
+                                              documentVm.changeIsSelected(index);
+                                              // documentVm.unSelectAll(index);
+                                            });
+                                            // print(
+                                            //     'image list in function is testing ${Provider.of<CategoryVm>(context, listen: false).imageList.length}');
+                                            //
+                                            // Navigator.pushNamed(context, ImagesView.routeName);
+                                          } else if (index == 1) {
+                                            setState(() {
+                                              type = AppConstants.docCategories[1];
+                                              documentVm.changeIsSelected(index);
+                                              // documentVm.unSelectAll(index);
+                                              // category['isSelected']=='1';
+                                              // isSelected=!isSelected;
+                                            });
+                                            // Navigator.pushNamed(context, VideosView.routeName);
+                                          } else if (index == 2) {
+                                            setState(() {
+                                              type = AppConstants.docCategories[2];
+                                              documentVm.changeIsSelected(index);
+                                              // documentVm.unSelectAll(index);
+                                            });
+                                            // Navigator.pushNamed(context, AudioViews.routeName);
+                                          } else if (index == 3) {
+                                            setState(() {
+                                              type = AppConstants.docCategories[3];
+                                              documentVm.changeIsSelected(index);
+                                              // documentVm.unSelectAll(index);
+                                              // isSelected=!isSelected;
+                                            });
+                                            // Navigator.pushNamed(context, DocumentViews.routeName);
+                                          }
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: SizeConfig.screenWidth! * 0.06),
+                                  child: Text(
+                                    '$type Files',
+                                    style: TextStyle(
+                                      fontSize: SizeConfig.screenHeight! * 0.023,
+                                      color: AppColors.kPrimaryPurpleColor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
                                 SizedBox(
-                                  width: SizeConfig.screenWidth! * 0.3,
+                                  height: SizeConfig.screenHeight! * 0.02,
                                 ),
-                                IconButton(
-                                  onPressed: () {
-                                    provider.ChangeDocSelection(type);
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '${provider.selectedFiles.length} Selected',
+                                      style: TextStyle(
+                                        fontSize: SizeConfig.screenHeight! * 0.024,
+                                        color: AppColors.kBlackColor,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: SizeConfig.screenWidth! * 0.3,
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        provider.ChangeDocSelection(type);
 
-                                    provider.selectAllInList(FileManagerUtilities.getDocList(type, context));
-                                  },
-                                  icon: Icon(
-                                    provider.getDocCurrentSelection(type)
-                                        ? Icons.check_box_outlined
-                                        : Icons.check_box_outline_blank,
-                                    color: AppColors.kBlackColor,
+                                        provider.selectAllInList(FileManagerUtilities.getDocList(type, context));
+                                      },
+                                      icon: Icon(
+                                        provider.getDocCurrentSelection(type)
+                                            ? Icons.check_box_outlined
+                                            : Icons.check_box_outline_blank,
+                                        color: AppColors.kBlackColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: SizeConfig.screenHeight! * 0.02,
+                                ),
+                                Expanded(
+                                  flex: 12,
+                                  child: provider.loading == true
+                                      ? GeneralUtilities.LoadingFileWidget()
+                                      :CustomDocumentListTile(
+                                    type: type,
+                                    list: FileManagerUtilities.getDocList(type, context),
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(
-                              height: SizeConfig.screenHeight! * 0.02,
-                            ),
-                            Expanded(
-                              flex: 12,
-                              child: CustomDocumentListTile(
-                                type: type,
-                                list: FileManagerUtilities.getDocList(type, context),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
                 ),
+              ),
         );
       },
     );

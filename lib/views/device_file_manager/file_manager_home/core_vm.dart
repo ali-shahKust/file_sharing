@@ -5,10 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:isolate_handler/isolate_handler.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:quick_backup/data/base/base_vm.dart';
 import 'package:quick_backup/utilities/file_manager_utilities.dart';
 
 
-class CoreVm extends ChangeNotifier {
+class CoreVm extends BaseVm {
   List<FileSystemEntity> availableStorage = <FileSystemEntity>[];
   List<FileSystemEntity> recentFiles = <FileSystemEntity>[];
   final isolates = IsolateHandler();
