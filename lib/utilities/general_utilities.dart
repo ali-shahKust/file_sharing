@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quick_backup/configurations/size_config.dart';
@@ -26,5 +28,30 @@ class GeneralUtilities {
         ),
       ),
     );
+  }
+  static String getFileName(String fileKey) {
+    var fileName = fileKey.split('/');
+    if(fileName!=null){
+      if(fileName.contains('base.apk')){
+        var  appFileName = fileName[fileName.length-2].split('-').first+'.apk';
+        print('final app name is $appFileName');
+        return appFileName;
+      }
+      else{
+        return fileName.last;
+      }
+
+    }
+    else{
+      return fileKey;
+    }
+
+  }
+  static int getRandomNumber(min, max) {
+    Random random = Random();
+    random = Random();
+    int randomNumber = min + random.nextInt(max - min);
+    debugPrint("$randomNumber is in the range of $min and $max");
+    return randomNumber;
   }
 }

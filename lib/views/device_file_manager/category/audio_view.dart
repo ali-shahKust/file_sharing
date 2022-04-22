@@ -102,10 +102,11 @@ class _AudioViewsState extends State<AudioViews> {
                               ),
                               IconButton(
                                 onPressed: () {
+                                  provider.changeIsAllAudioSelected();
                                   provider.selectAllInList(provider.audiosList);
                                 },
                                 icon: Icon(
-                                  provider.selectedFiles.length > 0
+                                  provider.isAllAudioSelected
                                       ? Icons.check_box_outlined
                                       : Icons.check_box_outline_blank,
                                   color: AppColors.kWhiteColor,
