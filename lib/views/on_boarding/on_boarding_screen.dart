@@ -29,6 +29,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 child: PageView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: vm.pages.length,
+                    onPageChanged: (index){
+                      vm.currentPage = index;
+                    },
                     allowImplicitScrolling: true,
                     controller: vm.pageController,
                     itemBuilder: (context, index) {

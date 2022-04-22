@@ -9,18 +9,38 @@ import 'package:mime_type/mime_type.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_backup/data/base/base_vm.dart';
 import 'package:quick_backup/data/models/app_model.dart';
+import 'package:quick_backup/data/models/download_model.dart';
+import 'package:quick_backup/data/models/queue_model.dart';
 
 import '../../utilities/pref_provider.dart';
 
 class OnlineBackUpVm extends BaseVm {
   var queue = GetIt.I.get<AppModel>().queue;
   List _pics = [];
-  List _images = [];
-  List _videos = [];
-  List _audios = [];
-  List _documents = [];
-  List _apps = [];
+  List<DownloadModel> _images = [];
+  List<DownloadModel> _videos = [];
+  List<DownloadModel> _audios = [];
+  List<DownloadModel> _documents = [];
+  List<DownloadModel> _apps = [];
   int _usedSpace = 0;
+  List<QueueModel> selectedFiles = <QueueModel>[];
+
+  bool _isAllImagesSelected = false;
+  bool _isAllVideosSelected = false;
+  bool _isAllAudioSelected = false;
+  bool _isAllFilesSelected = false;
+  bool _isAllAppsSelected = false;
+  bool _isAllPdfSelected = false;
+  bool _isAllPptsSelected = false;
+  bool _isAllDocSelected = false;
+  bool _isAllOtherDocSelected = false;
+  bool _isDocSelected = false;
+
+  bool get isAllImagesSelected => _isAllImagesSelected;
+
+  set isAllImagesSelected(bool value) {
+    _isAllImagesSelected = value;
+  }
 
   int get usedSpace => _usedSpace;
 
@@ -28,33 +48,33 @@ class OnlineBackUpVm extends BaseVm {
     _usedSpace = value;
   }
 
-  List get images => _images;
+  List<DownloadModel> get images => _images;
 
-  set images(List value) {
+  set images(List<DownloadModel> value) {
     _images = value;
   }
 
-  List get videos => _videos;
+  List<DownloadModel> get videos => _videos;
 
-  set videos(List value) {
+  set videos(List<DownloadModel> value) {
     _videos = value;
   }
 
-  List get audios => _audios;
+  List<DownloadModel> get audios => _audios;
 
-  set audios(List value) {
+  set audios(List<DownloadModel> value) {
     _audios = value;
   }
 
-  List get documents => _documents;
+  List<DownloadModel> get documents => _documents;
 
-  set documents(List value) {
+  set documents(List<DownloadModel> value) {
     _documents = value;
   }
 
-  List get apps => _apps;
+  List<DownloadModel> get apps => _apps;
 
-  set apps(List value) {
+  set apps(List<DownloadModel> value) {
     _apps = value;
   }
 
@@ -73,48 +93,45 @@ class OnlineBackUpVm extends BaseVm {
       documents.clear();
       usedSpace = 0;
       final ListResult result = await Amplify.Storage.list(
-        options: ListOptions(accessLevel: StorageAccessLevel.protected),);
+        options: ListOptions(accessLevel: StorageAccessLevel.protected),
+      );
       final List<StorageItem> items = result.items;
 
       for (int i = 0; i < items.length; i++) {
-        final GetUrlResult result =
-            await Amplify.Storage.getUrl(key: items[i].key, options: GetUrlOptions(accessLevel: StorageAccessLevel.protected));
+        final GetUrlResult result = await Amplify.Storage.getUrl(
+            key: items[i].key,
+            options: GetUrlOptions(accessLevel: StorageAccessLevel.protected));
         print('MY DATA ${items[i].key}');
         if (mime(items[i].key)!.split("/").first == "video") {
-          videos.add({
-            "url": result.url,
-            "key": items[i].key,
-            'date': items[i].lastModified,
-            'size': items[i].size
-          });
+          videos.add(DownloadModel(
+              url: result.url,
+              key: items[i].key,
+              date: items[i].lastModified.toString(),
+              size: items[i].size.toString(),isSelected: false));
         } else if (mime(items[i].key)!.split("/").first == "image") {
-          images.add({
-            "url": result.url,
-            "key": items[i].key,
-            'date': items[i].lastModified,
-            'size': items[i].size
-          });
+          images.add(DownloadModel(
+              url: result.url,
+              key: items[i].key,
+              date: items[i].lastModified.toString(),
+              size: items[i].size.toString(),isSelected: false));
         } else if (mime(items[i].key)!.split("/").first == "audio") {
-          audios.add({
-            "url": result.url,
-            "key": items[i].key,
-            'date': items[i].lastModified,
-            'size': items[i].size
-          });
+          audios.add(DownloadModel(
+              url: result.url,
+              key: items[i].key,
+              date: items[i].lastModified.toString(),
+              size: items[i].size.toString(),isSelected: false));
         } else if (mime(items[i].key)!.split("/").first == "document") {
-          documents.add({
-            "url": result.url,
-            "key": items[i].key,
-            'date': items[i].lastModified,
-            'size': items[i].size
-          });
+          documents.add(DownloadModel(
+              url: result.url,
+              key: items[i].key,
+              date: items[i].lastModified.toString(),
+              size: items[i].size.toString(),isSelected: false));
         } else {
-          apps.add({
-            "url": result.url,
-            "key": items[i].key,
-            'date': items[i].lastModified,
-            'size': items[i].size
-          });
+          apps.add(DownloadModel(
+              url: result.url,
+              key: items[i].key,
+              date: items[i].lastModified.toString(),
+              size: items[i].size.toString(),isSelected: false));
         }
         usedSpace += items[i].size!;
 
@@ -130,12 +147,58 @@ class OnlineBackUpVm extends BaseVm {
       print('Error listing items: $e');
     }
   }
-  getFileSize(String filepath, int decimals) async {
-    var file = File(filepath);
-    int bytes = await file.length();
-    if (bytes <= 0) return "0 B";
-    const suffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-    var i = (log(bytes) / log(1024)).floor();
-    return ((bytes / pow(1024, i)).toStringAsFixed(decimals)) + ' ' + suffixes[i];
+
+  bool get isAllVideosSelected => _isAllVideosSelected;
+
+  set isAllVideosSelected(bool value) {
+    _isAllVideosSelected = value;
+  }
+
+  bool get isAllAudioSelected => _isAllAudioSelected;
+
+  set isAllAudioSelected(bool value) {
+    _isAllAudioSelected = value;
+  }
+
+  bool get isAllFilesSelected => _isAllFilesSelected;
+
+  set isAllFilesSelected(bool value) {
+    _isAllFilesSelected = value;
+  }
+
+  bool get isAllAppsSelected => _isAllAppsSelected;
+
+  set isAllAppsSelected(bool value) {
+    _isAllAppsSelected = value;
+  }
+
+  bool get isAllPdfSelected => _isAllPdfSelected;
+
+  set isAllPdfSelected(bool value) {
+    _isAllPdfSelected = value;
+  }
+
+  bool get isAllPptsSelected => _isAllPptsSelected;
+
+  set isAllPptsSelected(bool value) {
+    _isAllPptsSelected = value;
+  }
+
+  bool get isAllDocSelected => _isAllDocSelected;
+
+  set isAllDocSelected(bool value) {
+    _isAllDocSelected = value;
+  }
+
+  bool get isAllOtherDocSelected => _isAllOtherDocSelected;
+
+  set isAllOtherDocSelected(bool value) {
+    _isAllOtherDocSelected = value;
+  }
+
+  bool get isDocSelected => _isDocSelected;
+
+  set isDocSelected(bool value) {
+    _isDocSelected = value;
   }
 }

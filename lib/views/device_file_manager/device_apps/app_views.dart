@@ -13,7 +13,6 @@ import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
 import 'package:quick_backup/custom_widgets/queues_screen.dart';
 import 'package:quick_backup/data/models/app_model.dart';
-import 'package:quick_backup/data/models/device_app_model.dart';
 import 'package:quick_backup/utilities/general_utilities.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 

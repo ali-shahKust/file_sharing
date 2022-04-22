@@ -169,21 +169,41 @@ class _CloudDocsScreenState extends State<CloudDocsScreen> {
                               children: [
                                 InkWell(
                                   onTap: (){
-                                    Navigator.pushNamed(context, CloudImages.routeName);
+                                    Navigator.pushNamed(context, CloudImages.routeName,arguments: "Images");
                                   },
                                   child: customTile(AppConstants.images_icon, "Images",
                                       vm.images.length.toString() + " files "),
                                 ),
-                                customTile(AppConstants.videos_icon, "Videos",
-                                    vm.videos.length.toString() + " files "),
-                                customTile(AppConstants.audio_icon, "Audio",
-                                    vm.audios.length.toString() + " files "),
-                                customTile(
-                                    AppConstants.document_icon,
-                                    "Documents",
-                                    vm.documents.length.toString() + " files "),
-                                customTile(AppConstants.apps_icon, "Apps",
-                                    vm.apps.length.toString() + " files "),
+                                InkWell(
+                                  onTap: (){
+                                    Navigator.pushNamed(context, CloudImages.routeName,arguments: "Videos");
+                                  },
+                                  child: customTile(AppConstants.videos_icon, "Videos",
+                                      vm.videos.length.toString() + " files "),
+                                ),
+                                InkWell(
+                                  onTap: (){
+                                    Navigator.pushNamed(context, CloudImages.routeName,arguments: "Audios");
+                                  },
+                                  child: customTile(AppConstants.audio_icon, "Audios",
+                                      vm.audios.length.toString() + " files "),
+                                ),
+                                InkWell(
+                                  onTap: (){
+                                    Navigator.pushNamed(context, CloudImages.routeName,arguments: "Documents");
+                                  },
+                                  child: customTile(
+                                      AppConstants.document_icon,
+                                      "Documents",
+                                      vm.documents.length.toString() + " files "),
+                                ),
+                                InkWell(
+                                  onTap: (){
+                                    Navigator.pushNamed(context, CloudImages.routeName,arguments: "Apps");
+                                  },
+                                  child: customTile(AppConstants.apps_icon, "Apps",
+                                      vm.apps.length.toString() + " files "),
+                                ),
                               ],
                             ),
                           )),
