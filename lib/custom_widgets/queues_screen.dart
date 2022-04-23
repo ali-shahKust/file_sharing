@@ -244,7 +244,8 @@ class _QuesScreenState extends State<QuesScreen> {
                                           SvgPicture.asset(
                                               AppConstants.send_file),
                                           PrimaryText(
-                                            "Uploading ${vm.queue.length} Files",
+                                            "Uploading ${vm.queue.length}" +
+                                                "${vm.queue.length == 1 ? "File":"Files"}",
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600,
                                           )
