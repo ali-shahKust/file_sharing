@@ -16,6 +16,7 @@ import 'package:quick_backup/utilities/custom_theme.dart';
 import 'package:quick_backup/utilities/file_manager_utilities.dart';
 import 'package:quick_backup/utilities/general_utilities.dart';
 import 'package:quick_backup/utilities/i_utills.dart';
+import 'package:quick_backup/views/dashboard/dashboard_screen.dart';
 import 'package:quick_backup/views/dashboard/dashboard_vm.dart';
 
 import 'custom_dialog.dart';
@@ -35,16 +36,63 @@ class _QuesScreenState extends State<QuesScreen> {
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (widget.map['files'] != null && !widget.map['drawer']) {
+        completed = 0;
         Provider.of<DashBoardVm>(context, listen: false)
-            .uploadFile(widget.map['files'], context);
+            .uploadFile(widget.map['files'], context)
+            .then((value) {
+          if (completed ==
+              Provider.of<DashBoardVm>(context, listen: false).queue.length) {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        PrimaryText(
+                          "All Files Uploaded Successfully.",
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                        SizedBox(
+                          height: SizeConfig.screenHeight! * 0.053,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            completed = 0;
+                            Provider.of<DashBoardVm>(context, listen: false)
+                                .queue
+                                .clear();
+                            Navigator.pushNamedAndRemoveUntil(context,
+                                DashBoardScreen.routeName, (route) => false);
+                          },
+                          child: iUtills().gradientButton(
+                              width: SizeConfig.screenWidth! * 0.253,
+                              height: SizeConfig.screenHeight! * 0.053,
+                              child: Center(
+                                  child: PrimaryText(
+                                "OK",
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ))),
+                        )
+                      ],
+                    ),
+                  );
+                });
+          }
+        });
       }
     });
     super.initState();
   }
 
   Future<bool> _onWillPop() async {
-
-    return (await Provider.of<DashBoardVm>(context,listen: false).queue.isEmpty?true:iUtills().exitPopUp(context,'queue')) ?? false;
+    return (await Provider.of<DashBoardVm>(context, listen: false).queue.isEmpty
+            ? true
+            : iUtills().exitPopUp(context, 'queue')) ??
+        false;
   }
 
   @override
@@ -52,7 +100,7 @@ class _QuesScreenState extends State<QuesScreen> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Consumer<DashBoardVm>(builder: (context, vm, _) {
-        print("RESULT XX: ${(completed / vm.queue.length).isNaN}");
+
         return SafeArea(
           child: Scaffold(
             body: vm.connectionLost
@@ -113,7 +161,8 @@ class _QuesScreenState extends State<QuesScreen> {
                                       children: [
                                         IconButton(
                                             onPressed: () {
-                                              iUtills().exitPopUp(context,'queue');
+                                              iUtills()
+                                                  .exitPopUp(context, 'queue');
                                             },
                                             icon: Icon(
                                               Icons.arrow_back_ios,

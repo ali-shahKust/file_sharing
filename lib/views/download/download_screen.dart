@@ -10,6 +10,7 @@ import 'package:quick_backup/data/extension.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_backup/data/models/queue_model.dart';
 import 'package:quick_backup/utilities/file_manager_utilities.dart';
+import 'package:quick_backup/views/dashboard/dashboard_screen.dart';
 import 'package:quick_backup/views/download/download_vm.dart';
 import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 import '../../configurations/size_config.dart';
@@ -34,7 +35,50 @@ class _DownloadScreenState extends State<DownloadScreen> {
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Provider.of<DownloadVm>(context, listen: false).downloadFile(widget.files,context);
+      Provider.of<DownloadVm>(context, listen: false).downloadFile(widget.files,context).then((value) {
+        if (completed ==
+            Provider.of<DownloadVm>(context, listen: false).queue.length) {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      PrimaryText(
+                        "All Files Downloaded Successfully.",
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                      ),
+                      SizedBox(
+                        height: SizeConfig.screenHeight! * 0.053,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          completed = 0;
+                          Provider.of<DashBoardVm>(context, listen: false)
+                              .queue
+                              .clear();
+                          Navigator.pushNamedAndRemoveUntil(context,
+                              DashBoardScreen.routeName, (route) => false);
+                        },
+                        child: iUtills().gradientButton(
+                            width: SizeConfig.screenWidth! * 0.253,
+                            height: SizeConfig.screenHeight! * 0.053,
+                            child: Center(
+                                child: PrimaryText(
+                                  "OK",
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ))),
+                      )
+                    ],
+                  ),
+                );
+              });
+        }
+      });
       print("MY arguments are :${widget.files.length}");
     });
     super.initState();

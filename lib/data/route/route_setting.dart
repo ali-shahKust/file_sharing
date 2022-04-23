@@ -14,9 +14,10 @@ import 'package:quick_backup/views/download/download_screen.dart';
 import 'package:quick_backup/views/local_backup/backup_files.dart';
 import 'package:quick_backup/views/login_page/login_screen.dart';
 import 'package:quick_backup/views/on_boarding/on_boarding_screen.dart';
-import 'package:quick_backup/views/online_backup/cloud_docs_screen.dart';
+import 'package:quick_backup/views/online_backup/cloud_items_screen.dart';
 import 'package:quick_backup/views/online_backup/compnents/cloud_apps.dart';
 import 'package:quick_backup/views/online_backup/compnents/cloud_audios.dart';
+import 'package:quick_backup/views/online_backup/compnents/cloud_docs.dart';
 import 'package:quick_backup/views/online_backup/compnents/cloud_images.dart';
 import 'package:quick_backup/views/online_backup/compnents/cloud_videos.dart';
 import 'package:quick_backup/views/splash/splash.dart';
@@ -42,8 +43,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (context) =>
               DownloadScreen(files: settings.arguments as List<QueueModel>));
-    case CloudDocsScreen.routeName:
-      return MaterialPageRoute(builder: (context) => CloudDocsScreen());
+    case CloudItemsScreen.routeName:
+      return MaterialPageRoute(builder: (context) => CloudItemsScreen());
     case FileManagerHome.routeName:
       return MaterialPageRoute(builder: (context) => FileManagerHome());
     // case FileManagerHome.routeName:
@@ -73,8 +74,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => CloudVideos());
     case CloudApps.routeName:
       return MaterialPageRoute(builder: (context) => CloudApps());
-    case CloudDocsScreen.routeName:
-      return MaterialPageRoute(builder: (context) => CloudDocsScreen());
+    case CloudDocs.routeName:
+      return MaterialPageRoute(builder: (context) => CloudDocs());
     case CloudAudios.routeName:
       return MaterialPageRoute(builder: (context) => CloudAudios());
     //   case FileManagerHome.routeName:

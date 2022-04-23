@@ -17,7 +17,7 @@ import 'package:provider/provider.dart';
 import 'package:quick_backup/views/dashboard/dashboard_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/filemanager_home.dart';
 import 'package:quick_backup/views/local_backup/backup_files.dart';
-import 'package:quick_backup/views/online_backup/cloud_docs_screen.dart';
+import 'package:quick_backup/views/online_backup/cloud_items_screen.dart';
 
 class DashBoardScreen extends StatefulWidget {
   static const routeName = 'dash_board';
@@ -32,7 +32,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   final _controller = AdvancedDrawerController();
   Future<bool> _onWillPop() async {
 
-    return (await Provider.of<DashBoardVm>(context,listen: false).queue.isEmpty?true:iUtills().exitPopUp(context,'dashboard')) ?? false;
+    return (iUtills().exitPopUp(context,'dashboard')) ?? false;
   }
   @override
   Widget build(BuildContext context) {
@@ -123,7 +123,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                 ),
                                 InkWell(
                                   onTap: (){
-                                    Navigator.pushNamed(context, CloudDocsScreen.routeName);
+                                    Navigator.pushNamed(context, CloudItemsScreen.routeName);
                                   },
                                   child: customTile(
                                       icon: AppConstants.restore_icon,
