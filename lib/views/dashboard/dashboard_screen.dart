@@ -33,7 +33,7 @@ class DashBoardScreen extends StatefulWidget {
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
   BuildContext? parentContext;
-  String? osVersion;
+  int? osVersion;
 
   final _advancedDrawerController = AdvancedDrawerController();
   final _controller = AdvancedDrawerController();
@@ -44,22 +44,23 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
   @override
   void initState() {
-    checkVersion();
-    // TODO: implement initState
-    SchedulerBinding.instance!.addPostFrameCallback((_) {
-      Provider.of<CoreVm>(context, listen: false).checkSpace();
-      Provider.of<CategoryVm>(context, listen: false).getDeviceFileManager();
-      Provider.of<CategoryVm>(context, listen: false).fetchAllListLength();
-      // Provider.of<DocumentVm>(context, listen: false).getTextFile();
+    checkVersion().then((value) {
+      SchedulerBinding.instance!.addPostFrameCallback((_) {
+        Provider.of<CoreVm>(context, listen: false).checkSpace();
+        Provider.of<CategoryVm>(context, listen: false).getDeviceFileManager();
+        Provider.of<CategoryVm>(context, listen: false).fetchAllListLength();
+        // Provider.of<DocumentVm>(context, listen: false).getTextFile();
+      });
     });
+
     super.initState();
   }
 
-  void checkVersion() async {
+  Future<void> checkVersion() async {
     if (Platform.isAndroid) {
       var androidInfo = await DeviceInfoPlugin().androidInfo;
       // var release = androidInfo.version.release;
-      osVersion = androidInfo.version.release;
+      osVersion = int.parse(androidInfo.version.release);
       // var sdkInt = androidInfo.version.sdkInt;
       // var manufacturer = androidInfo.manufacturer;
       // var model = androidInfo.model;
@@ -149,64 +150,13 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                 ),
                                 InkWell(
                                   onTap: () async {
-                                    PermissionStatus status = osVersion == '11'
+                                    PermissionStatus status = osVersion! >=11
                                         ? await Permission.manageExternalStorage.status
                                         : await Permission.storage.status;
+                                    print('on tap permission status ....$status');
                                     if (!status.isGranted) {
-                                      showDialog(
-                                          barrierDismissible: true,
-                                          context: parentContext!,
-                                          builder: (context) {
-                                            return InfoDialoge(
-                                              headingText: 'Storage Permission Needed',
-                                              subHeadingText:
-                                              'This App require storage permission to share and receive files',
-                                              btnText: 'Ok',
-                                              onBtnTap: () async {
-                                                Navigator.pop(context);
-                                                if (osVersion == '11') {
-                                                  status = await Permission.manageExternalStorage.status;
-                                                } else {
-                                                  status = await Permission.storage.status;
-                                                }
-                                                // PermissionStatus status = osVersion == '11'? await Permission.manageExternalStorage.status:Permission.storage.status;
-                                                print('manage external storage permission status is ...$status');
-                                                if (status.isGranted) {
-                                                  // Dialogs.showToast('Permission granted...');
-                                                  Navigator.pushNamed(context, FileManagerHome.routeName);
-                                                } else if (status.isDenied) {
-                                                  PermissionStatus status = osVersion == '11'
-                                                      ? await Permission.manageExternalStorage.request()
-                                                      : await Permission.storage.request();
-                                                  print(
-                                                      'manage external storage permission status in denied condition is ...$status');
-                                                  // Dialogs.showToast('Please Grant Storage Permissions');
-                                                  // PermissionStatus status = await Permission.manageExternalStorage.request();
-                                                } else if (status.isRestricted) {
-                                                  // AppSettings.openAppSettings();
-                                                  print('Restricted permission call');
-                                                  PermissionStatus status = osVersion == '11'
-                                                      ? await Permission.manageExternalStorage.request()
-                                                      : await Permission.storage.request();
-                                                  print(
-                                                      'manage external storage permission status in restricted condition is ...$status');
-                                                  // Dialogs.showToast('Please Grant Storage Permissions');
-                                                  // PermissionStatus status = await Permission.manageExternalStorage.request();
-                                                } else {
-                                                  print('else condition permission call');
-                                                  PermissionStatus status = osVersion == '11'
-                                                      ? await Permission.manageExternalStorage.request()
-                                                      : await Permission.storage.request();
-
-                                                  print(
-                                                      'manage external storage permission status in denied condition is ...$status');
-                                                  // Dialogs.showToast('Please Grant Storage Permissions');
-                                                }
-                                                // print('I am in no permission granted with status $status');
-                                                // ShareFilesUtils.requestPermission(context, NewFileManager());
-                                              },
-                                            );
-                                          });
+                                      print('dialoge open...');
+                                     vm.permissionCheck(parentContext,osVersion,status);
                                     } else {
                                       Navigator.pushNamed(parentContext!, FileManagerHome.routeName);
                                     }

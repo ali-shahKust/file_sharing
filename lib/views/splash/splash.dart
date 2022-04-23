@@ -71,27 +71,24 @@ class _SplashScreenState extends State<SplashScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: SizeConfig.screenWidth! * 0.194, vertical: 25),
-                child: InkWell(
-                  onTap: () {},
-                  child: iUtills().gradientButton(
-                    height: SizeConfig.screenHeight! * 0.064,
-                    width: SizeConfig.screenWidth,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (Provider.of<PreferencesProvider>(context,
-                                listen: false)
-                            .isOnBoardingViewed) {
-                          Navigator.pushNamed(context, LoginScreen.routeName);
-                        } else {
-                          Navigator.pushNamed(
-                              context, OnBoardingScreen.routeName);
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                          primary: Colors.transparent,
-                          shadowColor: Colors.transparent),
-                      child: Text('Start'),
-                    ),
+                child: iUtills().gradientButton(
+                  height: SizeConfig.screenHeight! * 0.064,
+                  width: SizeConfig.screenWidth,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (Provider.of<PreferencesProvider>(context,
+                              listen: false)
+                          .isOnBoardingViewed) {
+                        Navigator.pushNamed(context, LoginScreen.routeName);
+                      } else {
+                        Navigator.pushNamed(
+                            context, OnBoardingScreen.routeName);
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.transparent,
+                        shadowColor: Colors.transparent),
+                    child: Text('Start'),
                   ),
                 ),
               )
