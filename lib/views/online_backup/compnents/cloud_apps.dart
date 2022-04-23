@@ -32,7 +32,7 @@ class _CloudAppsState extends State<CloudApps> {
                 color: AppColors.kPrimaryPurpleColor,
                 image: DecorationImage(
                     image:
-                    AssetImage('assets/images/container_background.webp'),
+                        AssetImage('assets/images/container_background.webp'),
                     fit: BoxFit.cover),
 
                 // Image.asset('assets/container_background.svg'),
@@ -82,8 +82,11 @@ class _CloudAppsState extends State<CloudApps> {
                         ),
                         IconButton(
                           onPressed: () {
-                            provider.isAllAppsSelected = !provider.isAllAppsSelected;
-                            provider.selectAllInList(provider.apps);
+                            provider.isAllAppsSelected =
+                                !provider.isAllAppsSelected;
+                            !provider.isAllAppsSelected
+                                ? provider.unselectAllInList(provider.apps)
+                                : provider.selectAllInList(provider.apps);
                           },
                           icon: Icon(
                             provider.isAllAppsSelected
@@ -108,30 +111,33 @@ class _CloudAppsState extends State<CloudApps> {
                         children: [
                           ListView.builder(
                             padding:
-                            EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
+                                EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
                             itemCount: provider.apps.length,
                             itemBuilder: (
-                                BuildContext context,
-                                int index,
-                                ) {
+                              BuildContext context,
+                              int index,
+                            ) {
                               return InkWell(
                                 onTap: () {
-                                  provider.apps[index].isSelected = !provider.apps[index].isSelected;
+                                  provider.apps[index].isSelected =
+                                      !provider.apps[index].isSelected;
                                   if (provider.apps[index].isSelected) {
                                     print("Called if");
-                                    provider.addToSelectedList =provider.apps[index];
-
+                                    provider.addToSelectedList =
+                                        provider.apps[index];
                                   } else {
                                     print("Called else");
-                                    provider.removeFromSelectedList = provider.apps[index];
+                                    provider.removeFromSelectedList =
+                                        provider.apps[index];
                                   }
                                 },
                                 child: cloudFileCard(
+                                    context: context,
                                     size: provider.apps[index].size,
                                     title: provider.apps[index].key,
                                     icon: AppConstants.apps_icon,
-                                    isSelected:
-                                    provider.apps[index].isSelected),
+                                    isSelected: provider.apps[index].isSelected,
+                                    item: provider.apps[index]),
                               );
                             },
                             // separatorBuilder: (BuildContext context, int index) {

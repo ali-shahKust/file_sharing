@@ -242,17 +242,17 @@ class OnlineBackUpVm extends BaseVm {
   }
   void selectAllInList(List<DownloadModel> list) {
     list.forEach((element) {
-      if (element.isSelected) {
+      element.isSelected = true;
+      addToSelectedList = element;
+
+    });
+    notifyListeners();
+  }
+  void unselectAllInList(List<DownloadModel> list) {
+    list.forEach((element) {
         element.isSelected = false;
         removeFromSelectedList = element;
-      } else {
-        element.isSelected = true;
-        addToSelectedList = element;
-      }
     });
-
-
-
     notifyListeners();
   }
   clearAllSelection(){

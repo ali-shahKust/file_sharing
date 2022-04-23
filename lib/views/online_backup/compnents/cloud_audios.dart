@@ -32,7 +32,7 @@ class _CloudAudiosState extends State<CloudAudios> {
                 color: AppColors.kPrimaryPurpleColor,
                 image: DecorationImage(
                     image:
-                    AssetImage('assets/images/container_background.webp'),
+                        AssetImage('assets/images/container_background.webp'),
                     fit: BoxFit.cover),
 
                 // Image.asset('assets/container_background.svg'),
@@ -82,8 +82,11 @@ class _CloudAudiosState extends State<CloudAudios> {
                         ),
                         IconButton(
                           onPressed: () {
-                            provider.isAllAudioSelected = !provider.isAllAudioSelected;
-                            provider.selectAllInList(provider.audios);
+                            provider.isAllAudioSelected =
+                                !provider.isAllAudioSelected;
+                            !provider.isAllAudioSelected
+                                ? provider.unselectAllInList(provider.audios)
+                                : provider.selectAllInList(provider.audios);
                           },
                           icon: Icon(
                             provider.isAllAudioSelected
@@ -108,30 +111,34 @@ class _CloudAudiosState extends State<CloudAudios> {
                         children: [
                           ListView.builder(
                             padding:
-                            EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
+                                EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
                             itemCount: provider.audios.length,
                             itemBuilder: (
-                                BuildContext context,
-                                int index,
-                                ) {
+                              BuildContext context,
+                              int index,
+                            ) {
                               return InkWell(
                                 onTap: () {
-                                  provider.audios[index].isSelected = !provider.audios[index].isSelected;
+                                  provider.audios[index].isSelected =
+                                      !provider.audios[index].isSelected;
                                   if (provider.audios[index].isSelected) {
                                     print("Called if");
-                                    provider.addToSelectedList =provider.audios[index];
-
+                                    provider.addToSelectedList =
+                                        provider.audios[index];
                                   } else {
                                     print("Called else");
-                                    provider.removeFromSelectedList = provider.audios[index];
+                                    provider.removeFromSelectedList =
+                                        provider.audios[index];
                                   }
                                 },
                                 child: cloudFileCard(
+                                    context: context,
                                     size: provider.audios[index].size,
                                     title: provider.audios[index].key,
                                     icon: AppConstants.audio_icon,
+                                    item: provider.audios[index],
                                     isSelected:
-                                    provider.audios[index].isSelected),
+                                        provider.audios[index].isSelected),
                               );
                             },
                             // separatorBuilder: (BuildContext context, int index) {

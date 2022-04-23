@@ -8,6 +8,7 @@ import 'package:quick_backup/views/download/download_screen.dart';
 import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 import '../../../custom_widgets/app_text_widget.dart';
 import 'package:flutter/material.dart';
+
 class CloudDocs extends StatefulWidget {
   static const routeName = 'cloud_docs';
 
@@ -31,7 +32,7 @@ class _CloudDocsState extends State<CloudDocs> {
                 color: AppColors.kPrimaryPurpleColor,
                 image: DecorationImage(
                     image:
-                    AssetImage('assets/images/container_background.webp'),
+                        AssetImage('assets/images/container_background.webp'),
                     fit: BoxFit.cover),
 
                 // Image.asset('assets/container_background.svg'),
@@ -81,8 +82,11 @@ class _CloudDocsState extends State<CloudDocs> {
                         ),
                         IconButton(
                           onPressed: () {
-                            provider.isAllDocSelected = !provider.isAllDocSelected;
-                            provider.selectAllInList(provider.documents);
+                            provider.isAllDocSelected =
+                                !provider.isAllDocSelected;
+                            !provider.isAllDocSelected
+                                ? provider.unselectAllInList(provider.documents)
+                                : provider.selectAllInList(provider.documents);
                           },
                           icon: Icon(
                             provider.isAllDocSelected
@@ -107,30 +111,34 @@ class _CloudDocsState extends State<CloudDocs> {
                         children: [
                           ListView.builder(
                             padding:
-                            EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
+                                EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
                             itemCount: provider.documents.length,
                             itemBuilder: (
-                                BuildContext context,
-                                int index,
-                                ) {
+                              BuildContext context,
+                              int index,
+                            ) {
                               return InkWell(
                                 onTap: () {
-                                  provider.documents[index].isSelected = !provider.documents[index].isSelected;
+                                  provider.documents[index].isSelected =
+                                      !provider.documents[index].isSelected;
                                   if (provider.documents[index].isSelected) {
                                     print("Called if");
-                                    provider.addToSelectedList =provider.documents[index];
-
+                                    provider.addToSelectedList =
+                                        provider.documents[index];
                                   } else {
                                     print("Called else");
-                                    provider.removeFromSelectedList = provider.documents[index];
+                                    provider.removeFromSelectedList =
+                                        provider.documents[index];
                                   }
                                 },
                                 child: cloudFileCard(
+                                    context: context,
                                     size: provider.documents[index].size,
                                     title: provider.documents[index].key,
                                     icon: AppConstants.document_icon,
+                                    item: provider.documents[index],
                                     isSelected:
-                                    provider.documents[index].isSelected),
+                                        provider.documents[index].isSelected),
                               );
                             },
                             // separatorBuilder: (BuildContext context, int index) {

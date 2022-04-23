@@ -85,11 +85,13 @@ class _CloudImagesState extends State<CloudImages> {
                         ),
                         IconButton(
                           onPressed: () {
-                            provider.isAllAudioSelected = !provider.isAllAudioSelected;
-                            provider.selectAllInList(provider.images);
-                          },
+                            provider.isAllImagesSelected =
+                                !provider.isAllImagesSelected;
+                            !provider.isAllImagesSelected
+                                ? provider.unselectAllInList(provider.images)
+                                : provider.selectAllInList(provider.images);                          },
                           icon: Icon(
-                            provider.isAllAudioSelected
+                            provider.isAllImagesSelected
                                 ? Icons.check_box_outlined
                                 : Icons.check_box_outline_blank,
                             color: AppColors.kWhiteColor,
@@ -119,19 +121,23 @@ class _CloudImagesState extends State<CloudImages> {
                             ) {
                               return InkWell(
                                 onTap: () {
-                                  provider.images[index].isSelected = !provider.images[index].isSelected;
+                                  provider.images[index].isSelected =
+                                      !provider.images[index].isSelected;
                                   if (provider.images[index].isSelected) {
                                     print("Called if");
-                                      provider.addToSelectedList =provider.images[index];
-
+                                    provider.addToSelectedList =
+                                        provider.images[index];
                                   } else {
                                     print("Called else");
-                                    provider.removeFromSelectedList = provider.images[index];
+                                    provider.removeFromSelectedList =
+                                        provider.images[index];
                                   }
                                 },
                                 child: cloudFileCard(
+                                    context: context,
                                     size: provider.images[index].size,
                                     title: provider.images[index].key,
+                                    item: provider.images[index],
                                     icon: AppConstants.images_icon,
                                     isSelected:
                                         provider.images[index].isSelected),

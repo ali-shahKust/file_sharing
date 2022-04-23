@@ -8,6 +8,7 @@ import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/views/download/download_screen.dart';
 import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 import '../../../custom_widgets/app_text_widget.dart';
+
 class CloudVideos extends StatefulWidget {
   static const routeName = 'cloud_videos';
 
@@ -31,7 +32,7 @@ class _CloudVideosState extends State<CloudVideos> {
                 color: AppColors.kPrimaryPurpleColor,
                 image: DecorationImage(
                     image:
-                    AssetImage('assets/images/container_background.webp'),
+                        AssetImage('assets/images/container_background.webp'),
                     fit: BoxFit.cover),
 
                 // Image.asset('assets/container_background.svg'),
@@ -81,8 +82,11 @@ class _CloudVideosState extends State<CloudVideos> {
                         ),
                         IconButton(
                           onPressed: () {
-                            provider.isAllVideosSelected = !provider.isAllVideosSelected;
-                            provider.selectAllInList(provider.videos);
+                            provider.isAllVideosSelected =
+                                !provider.isAllVideosSelected;
+                           ! provider.isAllVideosSelected
+                                ? provider.unselectAllInList(provider.videos)
+                                : provider.selectAllInList(provider.videos);
                           },
                           icon: Icon(
                             provider.isAllVideosSelected
@@ -107,30 +111,34 @@ class _CloudVideosState extends State<CloudVideos> {
                         children: [
                           ListView.builder(
                             padding:
-                            EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
+                                EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
                             itemCount: provider.videos.length,
                             itemBuilder: (
-                                BuildContext context,
-                                int index,
-                                ) {
+                              BuildContext context,
+                              int index,
+                            ) {
                               return InkWell(
                                 onTap: () {
-                                  provider.videos[index].isSelected = !provider.videos[index].isSelected;
+                                  provider.videos[index].isSelected =
+                                      !provider.videos[index].isSelected;
                                   if (provider.videos[index].isSelected) {
                                     print("Called if");
-                                    provider.addToSelectedList =provider.videos[index];
-
+                                    provider.addToSelectedList =
+                                        provider.videos[index];
                                   } else {
                                     print("Called else");
-                                    provider.removeFromSelectedList = provider.videos[index];
+                                    provider.removeFromSelectedList =
+                                        provider.videos[index];
                                   }
                                 },
                                 child: cloudFileCard(
+                                    context: context,
                                     size: provider.videos[index].size,
                                     title: provider.videos[index].key,
                                     icon: AppConstants.videos_icon,
+                                    item: provider.videos[index],
                                     isSelected:
-                                    provider.videos[index].isSelected),
+                                        provider.videos[index].isSelected),
                               );
                             },
                             // separatorBuilder: (BuildContext context, int index) {

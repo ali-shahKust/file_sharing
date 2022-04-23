@@ -4,11 +4,6 @@ import 'dart:ui';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:glassmorphism/glassmorphism.dart';
-import 'package:quick_backup/constants/app_colors.dart';
-import 'package:quick_backup/constants/app_constants.dart';
-import 'package:quick_backup/custom_widgets/app_text_widget.dart';
-import 'package:quick_backup/views/dashboard/dashboard_screen.dart';
-import '../configurations/size_config.dart';
 import '../custom_widgets/custom_dialog.dart';
 import 'custom_theme.dart';
 

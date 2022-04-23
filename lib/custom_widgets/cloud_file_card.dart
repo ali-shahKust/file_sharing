@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:focused_menu/focused_menu.dart';
+import 'package:focused_menu/modals.dart';
+import 'package:quick_backup/custom_widgets/app_text_widget.dart';
+import 'package:quick_backup/data/models/download_model.dart';
 import 'package:quick_backup/utilities/file_manager_utilities.dart';
 
 import '../configurations/size_config.dart';
 import '../constants/app_colors.dart';
+import '../data/models/queue_model.dart';
+import '../views/download/download_screen.dart';
 
-Widget cloudFileCard({icon,title,size,isSelected}){
+Widget cloudFileCard(
+    {required context,
+    icon,
+    title,
+    size,
+    isSelected,
+    required DownloadModel item}) {
   return Container(
     height: SizeConfig.screenHeight! * 0.15,
     color: AppColors.kWhiteColor,
@@ -31,10 +43,59 @@ Widget cloudFileCard({icon,title,size,isSelected}){
                     height: SizeConfig.screenHeight! * 0.022,
                   ),
                 ),
-                title: Text('${title.split('/').last}'),
-                subtitle: Text(
-                  FileManagerUtilities.formatBytes(
-                      int.parse(size), 3),
+                title: PrimaryText(
+                  '${title.split('/').last}',
+                  overflow: TextOverflow.ellipsis,
+                  color: Colors.black,
+                ),
+                subtitle: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                    FileManagerUtilities.formatBytes(int.parse(size), 3),
+                  ),
+                ),
+                trailing: FocusedMenuHolder(
+                  menuWidth: SizeConfig.screenHeight! * 0.24,
+                  blurSize: 3,
+                  blurBackgroundColor: Colors.black54,
+                  openWithTap: true,
+                  menuOffset: 10.0,
+                  bottomOffsetHeight: 80.0,
+                  onPressed: () {
+                    print('menu is tapped.....');
+                  },
+                  menuItems: <FocusedMenuItem>[
+                    FocusedMenuItem(
+                        title: PrimaryText(
+                          "Restore",
+                          color: AppColors.kPrimaryColor,
+                        ),
+                        trailingIcon: Icon(
+                          Icons.restore_sharp,
+                          color: AppColors.kPrimaryColor,
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, DownloadScreen.routeName,
+                              arguments: <QueueModel>[
+                                QueueModel(
+                                    key: item.key,
+                                    name: item.key,
+                                    size: item.size,
+                                    date: item.date,
+                                    status: "pending",
+                                    progress: "pending")
+                              ]);
+                          // Navigator.push(context, MaterialPageRoute(builder: (context)=>ScreenTwo()));
+                        }),
+                    // FocusedMenuItem(
+                    //     trailingIcon: Icon(Icons.share,color: AppColors.kPrimaryColor,),
+                    //     title: PrimaryText("Share",color: AppColors.kPrimaryColor,),
+                    //     onPressed: () {}),
+                  ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(Icons.more_vert),
+                  ),
                 ),
 
                 // subtitle: Text('${app.packageName}'),
@@ -68,18 +129,18 @@ Widget cloudFileCard({icon,title,size,isSelected}){
                 //       key: listitems[index].key,
                 //     );
                 //   }
-                  // provider.changeIsSelected(
-                  //     index, provider.audiosList);
-                  // if (provider.audiosList[index]
-                  //     .isSelected) {
-                  //   provider.addToSelectedList =
-                  //       provider
-                  //           .audiosList[index].file;
-                  // } else {
-                  //   provider.removeFromSelectedList =
-                  //       provider
-                  //           .audiosList[index].file;
-                  // }
+                // provider.changeIsSelected(
+                //     index, provider.audiosList);
+                // if (provider.audiosList[index]
+                //     .isSelected) {
+                //   provider.addToSelectedList =
+                //       provider
+                //           .audiosList[index].file;
+                // } else {
+                //   provider.removeFromSelectedList =
+                //       provider
+                //           .audiosList[index].file;
+                // }
                 // },
               ),
             ),
@@ -87,26 +148,26 @@ Widget cloudFileCard({icon,title,size,isSelected}){
         ),
         isSelected
             ? Positioned(
-          top: SizeConfig.screenHeight! * -0.02,
-          right: 0,
-          child: Container(
-            height: SizeConfig.screenHeight! * 0.1,
-            width: SizeConfig.screenWidth! * 0.07,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.kPrimaryPurpleColor),
-            child: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Icon(
-                  Icons.check,
-                  size: SizeConfig.screenHeight! * 0.02,
-                  color: Colors.white,
-                )),
-          ),
-        )
+                top: SizeConfig.screenHeight! * -0.02,
+                right: 0,
+                child: Container(
+                  height: SizeConfig.screenHeight! * 0.1,
+                  width: SizeConfig.screenWidth! * 0.07,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.kPrimaryPurpleColor),
+                  child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Icon(
+                        Icons.check,
+                        size: SizeConfig.screenHeight! * 0.02,
+                        color: Colors.white,
+                      )),
+                ),
+              )
             : SizedBox(
-          height: 2.0,
-        ),
+                height: 2.0,
+              ),
       ],
     ),
   );
