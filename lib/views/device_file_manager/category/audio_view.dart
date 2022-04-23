@@ -96,7 +96,10 @@ class _AudioViewsState extends State<AudioViews> {
                         IconButton(
                           onPressed: () {
                             provider.changeIsAllAudioSelected();
-                            provider.selectAllInList(provider.audiosList);
+                            // provider.selectAllInList(provider.audiosList);
+                            !provider.isAllAudioSelected
+                                ? provider.unselectAllInList(provider.audiosList)
+                                : provider.selectAllInList(provider.audiosList);
                           },
                           icon: Icon(
                             provider.isAllAudioSelected ? Icons.check_box_outlined : Icons.check_box_outline_blank,
@@ -216,8 +219,8 @@ class _AudioViewsState extends State<AudioViews> {
                                                     arguments: provider.selectedFiles)
                                                 .whenComplete(() {
                                               print('whencomplete call...');
-                                              provider.selectedFiles.clear();
-                                              provider.clearAllSelectedLists();
+                                              // provider.selectedFiles.clear();
+                                              // provider.clearAllSelectedLists();
                                             });
                                           }
                                         },

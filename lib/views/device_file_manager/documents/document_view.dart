@@ -89,32 +89,33 @@ class _DocumentViewsState extends State<DocumentViews> {
                         ),
                         Expanded(
                           flex: 2,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                '${provider.selectedFiles.length} Selected',
-                                style:
-                                TextStyle(fontSize: SizeConfig.screenHeight! * 0.024, color: AppColors.kWhiteColor),
-                              ),
-                              SizedBox(
-                                width: SizeConfig.screenWidth! * 0.3,
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  provider.changeIsAllAudioSelected();
-                                  provider.selectAllInList(provider.audiosList);
-                                },
-                                icon: Icon(
-                                  provider.isAllAudioSelected
-                                      ? Icons.check_box_outlined
-                                      : Icons.check_box_outline_blank,
-                                  color: AppColors.kWhiteColor,
-                                ),
-                              ),
-                            ],
-                          ),
+                          child: SizedBox(),
+                          // child: Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          //   crossAxisAlignment: CrossAxisAlignment.center,
+                          //   children: [
+                          //     Text(
+                          //       '${provider.selectedFiles.length} Selected',
+                          //       style:
+                          //       TextStyle(fontSize: SizeConfig.screenHeight! * 0.024, color: AppColors.kWhiteColor),
+                          //     ),
+                          //     SizedBox(
+                          //       width: SizeConfig.screenWidth! * 0.3,
+                          //     ),
+                          //     IconButton(
+                          //       onPressed: () {
+                          //         provider.changeIsAllAudioSelected();
+                          //         provider.selectAllInList(provider.audiosList);
+                          //       },
+                          //       icon: Icon(
+                          //         provider.isAllAudioSelected
+                          //             ? Icons.check_box_outlined
+                          //             : Icons.check_box_outline_blank,
+                          //         color: AppColors.kWhiteColor,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                         ),
                         Expanded(
                           flex: 17,
@@ -215,8 +216,11 @@ class _DocumentViewsState extends State<DocumentViews> {
                                     IconButton(
                                       onPressed: () {
                                         provider.ChangeDocSelection(type);
+                                        !provider.getDocCurrentSelection(type)
+                                            ? provider.unselectAllInList(FileManagerUtilities.getDocList(type, context))
+                                            : provider.selectAllInList(FileManagerUtilities.getDocList(type, context));
 
-                                        provider.selectAllInList(FileManagerUtilities.getDocList(type, context));
+                                        // provider.selectAllInList(FileManagerUtilities.getDocList(type, context));
                                       },
                                       icon: Icon(
                                         provider.getDocCurrentSelection(type)

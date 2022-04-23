@@ -91,7 +91,7 @@ class CustomListTile extends StatelessWidget {
                           children: [
                             TextSpan(text: subtitleFileLenght + "   ", style: TextStyle(color: AppColors.kGreyColor)),
                             TextSpan(
-                              text: "●  " + subtitleFileSize,
+                              text:title=='Apps'?" ": "●  " + subtitleFileSize,
                               style: TextStyle(fontWeight: FontWeight.bold, color: leadingColorDark),
                             ),
                           ],
