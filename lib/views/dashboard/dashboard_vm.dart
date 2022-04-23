@@ -9,11 +9,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mime_type/mime_type.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:quick_backup/custom_widgets/InfoDialoge.dart';
 import 'package:quick_backup/data/base/base_vm.dart';
 import 'package:quick_backup/data/local_db/database_helper.dart';
 import 'package:quick_backup/custom_widgets/queues_screen.dart';
 import 'package:quick_backup/utilities/pref_provider.dart';
+import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
+import 'package:quick_backup/views/device_file_manager/file_manager_home/core_vm.dart';
+import 'package:quick_backup/views/device_file_manager/file_manager_home/filemanager_home.dart';
 
 import '../../data/models/app_model.dart';
 import '../../data/models/queue_model.dart';
@@ -132,5 +137,69 @@ class DashBoardVm extends BaseVm {
         print(e.toString());
       }
     }
+  }
+   permissionCheck(BuildContext ?parentContext,int ?osVersion,PermissionStatus status){
+   return  showDialog(
+        barrierDismissible: true,
+        context: parentContext!,
+        builder: (context) {
+          return InfoDialoge(
+            headingText: 'Storage Permission Needed',
+            subHeadingText:
+            'This App require storage permission to share and receive files',
+            btnText: 'Ok',
+            onBtnTap: () async {
+              Navigator.pop(context);
+              if (osVersion! >=11) {
+                status = await Permission.manageExternalStorage.status;
+              } else {
+                status = await Permission.storage.status;
+              }
+              // PermissionStatus status = osVersion! >=11? await Permission.manageExternalStorage.status:Permission.storage.status;
+              print('manage external storage permission status is ...$status');
+              if (status.isGranted) {
+                print('i am in premission granted....');
+                // Dialogs.showToast('Permission granted...');
+                Provider.of<CoreVm>(parentContext, listen: false).checkSpace();
+                Provider.of<CategoryVm>(parentContext, listen: false).getDeviceFileManager();
+                Provider.of<CategoryVm>(parentContext, listen: false).fetchAllListLength();
+                Navigator.pushNamed(parentContext, FileManagerHome.routeName);
+              }  if (status.isDenied) {
+                print('I am permission denied.....');
+                PermissionStatus status =osVersion >=11
+                    ? await Permission.manageExternalStorage.request()
+                    : await Permission.storage.request();
+                Provider.of<CoreVm>(parentContext, listen: false).checkSpace();
+                Provider.of<CategoryVm>(parentContext, listen: false).getDeviceFileManager();
+                Provider.of<CategoryVm>(parentContext, listen: false).fetchAllListLength();
+                print(
+                    'manage external storage permission status in denied condition is ...$status');
+                // Dialogs.showToast('Please Grant Storage Permissions');
+                // PermissionStatus status = await Permission.manageExternalStorage.request();
+              }  if (status.isRestricted) {
+                // AppSettings.openAppSettings();
+                print('Restricted permission call');
+                PermissionStatus status = osVersion>=11
+                    ? await Permission.manageExternalStorage.request()
+                    : await Permission.storage.request();
+                print(
+                    'manage external storage permission status in restricted condition is ...$status');
+                // Dialogs.showToast('Please Grant Storage Permissions');
+                // PermissionStatus status = await Permission.manageExternalStorage.request();
+              } else {
+                print('else condition permission call');
+                PermissionStatus status = osVersion >=11
+                    ? await Permission.manageExternalStorage.request()
+                    : await Permission.storage.request();
+
+                print(
+                    'manage external storage permission status in denied condition is ...$status');
+                // Dialogs.showToast('Please Grant Storage Permissions');
+              }
+              // print('I am in no permission granted with status $status');
+              // ShareFilesUtils.requestPermission(context, NewFileManager());
+            },
+          );
+        });
   }
 }

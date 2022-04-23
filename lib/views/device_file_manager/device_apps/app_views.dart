@@ -81,7 +81,10 @@ class AppViews extends StatelessWidget {
                         IconButton(
                           onPressed: () {
                             provider.changeIsAllAppsSelected();
-                            provider.selectAllAppInList(provider.appList);
+                            !provider.isAllAppsSelected
+                                ? provider.unSelectAllAppInList(provider.appList)
+                                : provider.selectAllAppInList(provider.appList);
+                            // provider.selectAllAppInList(provider.appList);
                           },
                           icon: Icon(
                             provider.isAllAppsSelected ? Icons.check_box_outlined : Icons.check_box_outline_blank,
@@ -156,13 +159,13 @@ class AppViews extends StatelessWidget {
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
                                                       SizedBox(
-                                                        height: SizeConfig.screenHeight! * 0.03,
+                                                        height: SizeConfig.screenHeight! * 0.06,
                                                       ),
-                                                      Text(
+                                                      PrimaryText(
                                                         app.appName,
-                                                        style: TextStyle(
                                                             color: AppColors.kBlackColor,
-                                                            fontSize: SizeConfig.screenHeight! * 0.023),
+                                                            fontSize: SizeConfig.screenHeight! * 0.023,
+                                                        overflow: TextOverflow.ellipsis,
                                                       ),
                                                     ],
                                                   ),
@@ -231,7 +234,8 @@ class AppViews extends StatelessWidget {
                                   Navigator.pushNamed(context, QuesScreen.routeName,
                                       arguments: {'files': provider.selectedFiles, "drawer": false}).whenComplete(() {
                                     print('whencomplete call...');
-                                    provider.selectedFiles.clear();
+                                    // provider.selectedFiles.clear();
+                                    // provider.clearAllSelectedLists();
                                   });
                                 }
                               },

@@ -37,12 +37,14 @@ class CategoryVm extends BaseVm {
 
   get imageList => _imageList;
 
-  List<FileMangerModel> appsList = <FileMangerModel>[];
+  // List<FileMangerModel> appsList = <FileMangerModel>[];
   List<File> selectedFiles = <File>[];
   List<File> selectedVideoConversionList = <File>[];
+
   // List<String> imageTabs = <String>[];
   List<FileSystemEntity> audio = <FileSystemEntity>[];
   List<DeviceAppModel> appList = <DeviceAppModel>[];
+
   // List<String> audioTabs = <String>[];
   // List<FileSystemEntity> currentFiles = [];
 
@@ -58,7 +60,6 @@ class CategoryVm extends BaseVm {
   bool _isAllOtherDocSelected = false;
   bool _isDocSelected = false;
 
-
   bool get isDocSelected => _isDocSelected;
 
   void ChangeDocSelection(String type) {
@@ -66,8 +67,7 @@ class CategoryVm extends BaseVm {
       print(' I am pdf');
       if (_isAllPdfSelected == true) {
         this._isAllPdfSelected = false;
-      }
-      else if (_isAllPdfSelected == false) {
+      } else if (_isAllPdfSelected == false) {
         this._isAllPdfSelected = true;
       }
       notifyListeners();
@@ -77,8 +77,7 @@ class CategoryVm extends BaseVm {
 
       if (_isAllPptsSelected == true) {
         this._isAllPptsSelected = false;
-      }
-      else if (_isAllPptsSelected == false) {
+      } else if (_isAllPptsSelected == false) {
         this._isAllPptsSelected = true;
       }
       notifyListeners();
@@ -87,8 +86,7 @@ class CategoryVm extends BaseVm {
       print(' I am doc ');
       if (_isDocSelected == true) {
         this._isDocSelected = false;
-      }
-      else if (_isDocSelected == false) {
+      } else if (_isDocSelected == false) {
         this._isDocSelected = true;
       }
       notifyListeners();
@@ -97,39 +95,32 @@ class CategoryVm extends BaseVm {
       print(' I am other ');
       if (_isAllOtherDocSelected == true) {
         this._isAllOtherDocSelected = false;
-      }
-      else if (_isAllOtherDocSelected == false) {
+      } else if (_isAllOtherDocSelected == false) {
         this._isAllOtherDocSelected = true;
       }
       notifyListeners();
     }
   }
 
-  bool  getDocCurrentSelection(String type){
-
+  bool getDocCurrentSelection(String type) {
     if (type == AppConstants.docCategories[0]) {
       print(' I am pdf');
-     return isAllPdfSelected;
+      return isAllPdfSelected;
     }
     if (type == AppConstants.docCategories[1]) {
       print(' I am ppt ');
 
-     return isAllPptsSelected;
+      return isAllPptsSelected;
     }
     if (type == AppConstants.docCategories[2]) {
       print(' I am doc ');
-     return isDocSelected;
-    }
-    else if (type == AppConstants.docCategories[3]) {
+      return isDocSelected;
+    } else if (type == AppConstants.docCategories[3]) {
       print(' I am other ');
-     return isAllOtherDocSelected;
-    }
-    else
+      return isAllOtherDocSelected;
+    } else
       return isAllPdfSelected;
-
-
   }
-
 
   int sort = 0;
   final isolates = IsolateHandler();
@@ -156,7 +147,7 @@ class CategoryVm extends BaseVm {
     filesLength.add(videosList.length);
     filesLength.add(audiosList.length);
     filesLength.add(filesList.length);
-    filesLength.add(appsList.length);
+    filesLength.add(appList.length);
   }
 
   int get videoIndex => _videoIndex;
@@ -242,7 +233,7 @@ class CategoryVm extends BaseVm {
 
   getImages() async {
     // String type = fileTypeList[1].toLowerCase();
-    double totalSize=0;
+    double totalSize = 0;
     print('get images fun call...');
     setLoading(true);
     _imageList.clear();
@@ -267,14 +258,14 @@ class CategoryVm extends BaseVm {
 
         String mimeType = mime(file.path) ?? '';
         if (mimeType.split('/')[0] == AppConstants.fileTypeList[1]) {
-          totalSize = totalSize+ file.lengthSync();
+          totalSize = totalSize + file.lengthSync();
           FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
           _imageList.add(fm);
           print('image list in function is ${_imageList.length}');
         }
       });
-      setTotalFilesLength(_imageList.length,0);
-      setTotalFilesSizes(FileManagerUtilities.formatBytes(totalSize, 2) , 0);
+      setTotalFilesLength(_imageList.length, 0);
+      setTotalFilesSizes(FileManagerUtilities.formatBytes(totalSize, 2), 0);
       setLoading(false);
       notifyListeners();
 
@@ -283,12 +274,13 @@ class CategoryVm extends BaseVm {
     });
   }
 
-  void setTotalFilesLength(int length,int index){
+  void setTotalFilesLength(int length, int index) {
     List fileCategory = AppConstants.categories;
     fileCategory[index]['noOfFiles'] = '$length Files';
     notifyListeners();
   }
-  void setTotalFilesSizes(String size,int index){
+
+  void setTotalFilesSizes(String size, int index) {
     List fileCategory = AppConstants.categories;
     fileCategory[index]['fileSize'] = '$size';
     notifyListeners();
@@ -296,7 +288,7 @@ class CategoryVm extends BaseVm {
 
   Future<List<FileMangerModel>> getVideos() async {
     print('get video fun call...');
-       double  totalSize =0;
+    double totalSize = 0;
     // print('type in the function is $type');
     // setVideoLoading(true);
     videosList.clear();
@@ -324,7 +316,7 @@ class CategoryVm extends BaseVm {
         String mimeType = mime(file.path) ?? '';
         print('mimeType value in the function is $mimeType');
         if (mimeType.split('/')[0] == AppConstants.fileTypeList[2]) {
-          totalSize = totalSize+ file.lengthSync();
+          totalSize = totalSize + file.lengthSync();
           FileMangerModel fm = FileMangerModel(
             file: file,
             isSelected: false,
@@ -336,7 +328,7 @@ class CategoryVm extends BaseVm {
       });
       print('video list length in provider is ${videosList.length}');
 
-      setTotalFilesLength(videosList.length,1);
+      setTotalFilesLength(videosList.length, 1);
       setTotalFilesSizes(FileManagerUtilities.formatBytes(totalSize, 2), 1);
       // (FileManagerUtilities.formatBytes(totalSize, 3)
       notifyListeners();
@@ -348,7 +340,7 @@ class CategoryVm extends BaseVm {
 
   getAudios() async {
     // setVideoLoading(true);
-    double totalSize =0 ;
+    double totalSize = 0;
     print('get audio fun call...');
 
     audiosList.clear();
@@ -370,7 +362,7 @@ class CategoryVm extends BaseVm {
       files.forEach((file) {
         String mimeType = mime(file.path) ?? '';
         if (mimeType.split('/')[0] == AppConstants.fileTypeList[4]) {
-          totalSize = totalSize+ file.lengthSync();
+          totalSize = totalSize + file.lengthSync();
           // images.add(file);
           FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
           audiosList.add(fm);
@@ -378,8 +370,8 @@ class CategoryVm extends BaseVm {
 
         // notifyListeners();
       });
-     setTotalFilesSizes(FileManagerUtilities.formatBytes(totalSize, 2), 2);
-      setTotalFilesLength(audiosList.length,2);
+      setTotalFilesSizes(FileManagerUtilities.formatBytes(totalSize, 2), 2);
+      setTotalFilesLength(audiosList.length, 2);
       notifyListeners();
       _port.close();
       IsolateNameServer.removePortNameMapping('${isolateName}_2');
@@ -388,7 +380,7 @@ class CategoryVm extends BaseVm {
 
   getTextFile() async {
     print('get files fun call...');
-  double totalSize =0 ;
+    double totalSize = 0;
     setLoading(true);
     pdfList.clear();
     pptList.clear();
@@ -436,7 +428,7 @@ class CategoryVm extends BaseVm {
           FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
           pptList.add(fm);
           // // audio.add(file);
-        } else if(AppConstants.fileTypeList[3] == 'text' && docExtensions.contains(extension(file.path))) {
+        } else if (AppConstants.fileTypeList[3] == 'text' && docExtensions.contains(extension(file.path))) {
           totalSize = totalSize + file.lengthSync();
           FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
           otherDocList.add(fm);
@@ -449,7 +441,7 @@ class CategoryVm extends BaseVm {
         // notifyListeners();
       });
       setTotalFilesSizes(FileManagerUtilities.formatBytes(totalSize, 2), 3);
-      setTotalFilesLength(pdfList.length+pptList.length+docList.length+otherDocList.length,3);
+      setTotalFilesLength(pdfList.length + pptList.length + docList.length + otherDocList.length, 3);
       notifyListeners();
       setLoading(false);
       _port.close();
@@ -518,21 +510,15 @@ class CategoryVm extends BaseVm {
     );
     // print('data in apps object is $apps');
     apps.forEach((file) {
-
       DeviceAppModel appModel = DeviceAppModel(apps: file, isSelected: false);
       // totalSize = totalSize +file.apkFilePath.length.toString();
       appList.add(appModel);
-
     });
     // setTotalFilesSizes(FileManagerUtilities.formatBytes(totalSize, 3), 4);
-    setTotalFilesLength(appList.length,4);
+    setTotalFilesLength(appList.length, 4);
     notifyListeners();
     setLoading(false);
   }
-
-
-
-
 
   static List docExtensions = [
     '.txt',
@@ -553,32 +539,44 @@ class CategoryVm extends BaseVm {
     notifyListeners();
   }
 
-
-
   void selectAllInList(List<FileMangerModel> list) {
+
     list.forEach((element) {
-      if (element.isSelected) {
-        element.isSelected = false;
-        removeFromSelectedList = element.file;
-      } else {
         element.isSelected = true;
         addToSelectedList = element.file;
-      }
+
+    });
+    notifyListeners();
+  }
+  void unselectAllInList(List<FileMangerModel> list) {
+
+    list.forEach((element) {
+        element.isSelected = false;
+        removeFromSelectedList = element.file;
+
+    notifyListeners();
+  });
+  }
+  void selectAllAppInList(List<DeviceAppModel> list) {
+    list.forEach((element) {
+      element.isSelected = true;
+        addToSelectedList = File(element.apps.apkFilePath);
+      // if (element.isSelected) {
+      //   element.isSelected = false;
+      //   // File(provider.appList[index].apps.apkFilePath)
+      //   removeFromSelectedList = File(element.apps.apkFilePath);
+      // } else {
+      //   element.isSelected = true;
+      //   addToSelectedList = File(element.apps.apkFilePath);
+      // }
     });
 
     notifyListeners();
   }
-  void selectAllAppInList(List<DeviceAppModel> list) {
+  void unSelectAllAppInList(List<DeviceAppModel> list) {
     list.forEach((element) {
-      if (element.isSelected) {
-        element.isSelected = false;
-        // File(provider.appList[index].apps.apkFilePath)
-        removeFromSelectedList = File(element.apps.apkFilePath);
-
-      } else {
-        element.isSelected = true;
-        addToSelectedList = File(element.apps.apkFilePath);
-      }
+      element.isSelected = false;
+      removeFromSelectedList = File(element.apps.apkFilePath);
     });
 
     notifyListeners();
@@ -606,6 +604,7 @@ class CategoryVm extends BaseVm {
     unSelectPpt();
     unSelectDoc();
     unSelectOthers();
+    unSelectApps();
   }
 
   // void unSelectApps() {
@@ -615,10 +614,11 @@ class CategoryVm extends BaseVm {
   // }
 
   void unSelectImages() {
-    for (int i = 0; i < _imageList.length; i++) {
-      print('value of isSelected variable is ...${_imageList[i].isSelected}');
-      _imageList[i].isSelected = false;
-    }
+    _isAllImagesSelected = false;
+    // for (int i = 0; i < _imageList.length; i++) {
+    //   print('value of isSelected variable is ...${_imageList[i].isSelected}');
+    //   _imageList[i].isSelected = false;
+    // }
   }
 
   void unSelectVideos() {
@@ -639,31 +639,34 @@ class CategoryVm extends BaseVm {
     }
     notifyListeners();
   }
+
   void unSelectPdf() {
     for (int i = 0; i < pdfList.length; i++) {
       pdfList[i].isSelected = false;
     }
     notifyListeners();
   }
+
   void unSelectPpt() {
     for (int i = 0; i < pptList.length; i++) {
       pptList[i].isSelected = false;
     }
     notifyListeners();
   }
+
   void unSelectDoc() {
     for (int i = 0; i < docList.length; i++) {
       docList[i].isSelected = false;
     }
     notifyListeners();
   }
+
   void unSelectOthers() {
     for (int i = 0; i < otherDocList.length; i++) {
       otherDocList[i].isSelected = false;
     }
     notifyListeners();
   }
-
 
   bool getIsSelectedVal(int index, List<FileMangerModel> list) {
     return list[index].isSelected;
@@ -693,6 +696,13 @@ class CategoryVm extends BaseVm {
     notifyListeners();
   }
 
+  void unSelectApps() {
+    for (int i = 0; i < appList.length; i++) {
+      appList[i].isSelected = false;
+    }
+    notifyListeners();
+  }
+
   void setLoading(value) {
     loading = value;
     notifyListeners();
@@ -718,22 +728,21 @@ class CategoryVm extends BaseVm {
 
   bool get isAllImagesSelected => _isAllImagesSelected;
 
-  void  changeIsAllImagesSelected() {
-    if(_isAllImagesSelected ==true){
-      this._isAllImagesSelected=false;
-    }
-    else if(_isAllImagesSelected ==false){
-      this._isAllImagesSelected=true;
+  void changeIsAllImagesSelected() {
+    if (_isAllImagesSelected == true) {
+      this._isAllImagesSelected = false;
+    } else if (_isAllImagesSelected == false) {
+      this._isAllImagesSelected = true;
     }
   }
+
   bool get isAllVideosSelected => _isAllVideosSelected;
 
   void changeIsAllVideosSelected() {
-    if(_isAllVideosSelected ==true){
-      this._isAllVideosSelected=false;
-    }
-    else if(_isAllVideosSelected ==false){
-      this._isAllVideosSelected=true;
+    if (_isAllVideosSelected == true) {
+      this._isAllVideosSelected = false;
+    } else if (_isAllVideosSelected == false) {
+      this._isAllVideosSelected = true;
     }
     notifyListeners();
   }
@@ -741,23 +750,22 @@ class CategoryVm extends BaseVm {
   bool get isAllAudioSelected => _isAllAudioSelected;
 
   void changeIsAllAudioSelected() {
-    if(_isAllAudioSelected ==true){
-      this._isAllAudioSelected=false;
-    }
-   else if(_isAllAudioSelected ==false){
-      this._isAllAudioSelected=true;
+    if (_isAllAudioSelected == true) {
+      this._isAllAudioSelected = false;
+    } else if (_isAllAudioSelected == false) {
+      this._isAllAudioSelected = true;
     }
     // _isAllAudioSelected ==true?false:true;
     notifyListeners();
   }
+
   bool get isAllAppsSelected => _isAllAppsSelected;
 
   void changeIsAllAppsSelected() {
-    if(_isAllAppsSelected ==true){
-      this._isAllAppsSelected=false;
-    }
-    else if(_isAllAppsSelected ==false){
-      this._isAllAppsSelected=true;
+    if (_isAllAppsSelected == true) {
+      this._isAllAppsSelected = false;
+    } else if (_isAllAppsSelected == false) {
+      this._isAllAppsSelected = true;
     }
     // _isAllAudioSelected ==true?false:true;
     notifyListeners();
@@ -766,11 +774,10 @@ class CategoryVm extends BaseVm {
   bool get isAllFilesSelected => _isAllFilesSelected;
 
   void changeIsAllFilesSelected() {
-    if(_isAllFilesSelected ==true){
-      this._isAllFilesSelected=false;
-    }
-    else if(_isAllFilesSelected ==false){
-      this._isAllFilesSelected=true;
+    if (_isAllFilesSelected == true) {
+      this._isAllFilesSelected = false;
+    } else if (_isAllFilesSelected == false) {
+      this._isAllFilesSelected = true;
     }
     notifyListeners();
   }
@@ -789,24 +796,21 @@ class CategoryVm extends BaseVm {
   bool get isAllPdfSelected => _isAllPdfSelected;
 
   void changeIsAllPdfSelected() {
-    if(_isAllPdfSelected ==true){
-      this._isAllPdfSelected=false;
-    }
-    else if(_isAllPdfSelected ==false){
-      this._isAllPdfSelected=true;
+    if (_isAllPdfSelected == true) {
+      this._isAllPdfSelected = false;
+    } else if (_isAllPdfSelected == false) {
+      this._isAllPdfSelected = true;
     }
     notifyListeners();
-
   }
 
   bool get isAllPptsSelected => _isAllPptsSelected;
 
   void changeIsAllPptsSelected() {
-    if(_isAllPptsSelected ==true){
-      this._isAllPptsSelected=false;
-    }
-    else if(_isAllPptsSelected ==false){
-      this._isAllPptsSelected=true;
+    if (_isAllPptsSelected == true) {
+      this._isAllPptsSelected = false;
+    } else if (_isAllPptsSelected == false) {
+      this._isAllPptsSelected = true;
     }
     notifyListeners();
   }
@@ -814,11 +818,10 @@ class CategoryVm extends BaseVm {
   bool get isAllDocSelected => _isAllDocSelected;
 
   void changeIsAllDocSelected() {
-    if(_isAllDocSelected ==true){
-      this._isAllDocSelected=false;
-    }
-    else if(_isAllDocSelected ==false){
-      this._isAllDocSelected=true;
+    if (_isAllDocSelected == true) {
+      this._isAllDocSelected = false;
+    } else if (_isAllDocSelected == false) {
+      this._isAllDocSelected = true;
     }
     notifyListeners();
     // _isAllDocSelected = value;
@@ -827,11 +830,10 @@ class CategoryVm extends BaseVm {
   bool get isAllOtherDocSelected => _isAllOtherDocSelected;
 
   void changeIsAllOtherDocSelected(bool value) {
-    if(_isAllOtherDocSelected ==true){
-      this._isAllOtherDocSelected=false;
-    }
-    else if(_isAllOtherDocSelected ==false){
-      this._isAllOtherDocSelected=true;
+    if (_isAllOtherDocSelected == true) {
+      this._isAllOtherDocSelected = false;
+    } else if (_isAllOtherDocSelected == false) {
+      this._isAllOtherDocSelected = true;
     }
     notifyListeners();
     // _isAllOtherDocSelected = value;

@@ -160,7 +160,9 @@ class CustomDocumentListTile extends StatelessWidget {
                         Navigator.pushNamed(context, QuesScreen.routeName, arguments: provider.selectedFiles)
                             .whenComplete(() {
                           print('whencomplete call...');
-                          provider.selectedFiles.clear();
+                          // provider.selectedFiles.clear();
+                          // provider.clearAllSelectedLists();
+
                         });
                       }
                     },

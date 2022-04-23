@@ -99,7 +99,9 @@ class _ImagesViewState extends State<ImagesView> with SingleTickerProviderStateM
                             onPressed: () {
                               provider.changeIsAllImagesSelected();
                               print('value of selection var on tap is ${provider.isAllAudioSelected}');
-                              provider.selectAllInList(provider.imageList);
+                              !provider.isAllImagesSelected
+                                  ? provider.unselectAllInList(provider.imageList)
+                                  : provider.selectAllInList(provider.imageList);
                               // provider.selectAllInList(provider.imageList);
                             },
                             icon: Icon(
@@ -111,9 +113,7 @@ class _ImagesViewState extends State<ImagesView> with SingleTickerProviderStateM
                       ),
                     ),
                     provider.loading == true
-                        ? Expanded(
-                      flex: 10,
-                        child: GeneralUtilities.LoadingFileWidget())
+                        ? Expanded(flex: 10, child: GeneralUtilities.LoadingFileWidget())
                         : Container(
                             height: SizeConfig.screenHeight! * 0.82,
                             decoration: BoxDecoration(
@@ -165,7 +165,8 @@ class _ImagesViewState extends State<ImagesView> with SingleTickerProviderStateM
                                                         arguments: {'files': provider.selectedFiles, "drawer": false})
                                                     .whenComplete(() {
                                                   print('whencomplete call...');
-                                                  provider.selectedFiles.clear();
+                                                  // provider.selectedFiles.clear();
+                                                  // provider.clearAllSelectedLists();
                                                 });
                                               }
                                             },

@@ -81,7 +81,7 @@ class AppConstants {
     {
       'title': 'Apps',
       'icon': 'assets/file_manager_assets/filemanager_home_app.svg',
-      'fileSize': '0',
+      'fileSize': '',
       'noOfFiles': '0 files',
       'startColor': Color.fromRGBO(174, 148, 254, 1),
       'endColor': Color.fromRGBO(55, 36, 255, 1),

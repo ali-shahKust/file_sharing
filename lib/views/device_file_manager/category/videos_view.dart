@@ -94,8 +94,12 @@ class _VideosViewState extends State<VideosView> {
                         ),
                         IconButton(
                           onPressed: () {
+
                             provider.changeIsAllVideosSelected();
-                            provider.selectAllInList(provider.videosList);
+                            // provider.selectAllInList(provider.videosList);
+                            !provider.isAllVideosSelected
+                                ? provider.unselectAllInList(provider.videosList)
+                                : provider.selectAllInList(provider.videosList);
                           },
                           icon: Icon(
                             provider.isAllVideosSelected
@@ -143,7 +147,8 @@ class _VideosViewState extends State<VideosView> {
                                   Navigator.pushNamed(context, QuesScreen.routeName, arguments: {'files':provider.selectedFiles,"drawer":false})
                                       .whenComplete(() {
                                     print('whencomplete call...');
-                                    provider.selectedFiles.clear();
+                                    // provider.selectedFiles.clear();
+                                    // provider.clearAllSelectedLists();
                                   });
                                   // Toast('No file Selected', context);
                                 }
