@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 // List<File>? globalImages = [];
 
 class AppConstants {
+  static const String appName = "Quick Backup";
   static const String fileNameInitialText = "scan_and_backup_";
   static const String imagesPath = "assets/images/";
   static const String login_vector = imagesPath + "login_vector.webp";

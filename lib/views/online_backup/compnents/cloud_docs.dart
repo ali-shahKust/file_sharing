@@ -8,6 +8,9 @@ import 'package:quick_backup/views/download/download_screen.dart';
 import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 import '../../../custom_widgets/app_text_widget.dart';
 import 'package:flutter/material.dart';
+
+import '../../../utilities/general_utilities.dart';
+
 class CloudDocs extends StatefulWidget {
   static const routeName = 'cloud_docs';
 
@@ -20,18 +23,48 @@ class _CloudDocsState extends State<CloudDocs> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Consumer<OnlineBackUpVm>(
-      builder: (context, provider, _) {
+      builder: (context, vm, _) {
         return Scaffold(
-          backgroundColor: AppColors.kPrimaryPurpleColor,
           body: SafeArea(
-            child: Container(
+            child:  vm.documents.isEmpty
+                ? Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            size: SizeConfig.screenHeight! * 0.024,
+                            color: Colors.black,
+                          )),
+                      PrimaryText(
+                        "Documents",
+                        fontSize: SizeConfig.screenHeight! * 0.020,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                      SizedBox(
+                        width: 50,
+                      )
+                    ],
+                  ),
+                ),
+                GeneralUtilities.noDataFound(),
+              ],
+            ):Container(
               width: SizeConfig.screenWidth,
               height: SizeConfig.screenHeight,
               decoration: BoxDecoration(
                 color: AppColors.kPrimaryPurpleColor,
                 image: DecorationImage(
                     image:
-                    AssetImage('assets/images/container_background.webp'),
+                        AssetImage('assets/images/container_background.webp'),
                     fit: BoxFit.cover),
 
                 // Image.asset('assets/container_background.svg'),
@@ -71,7 +104,7 @@ class _CloudDocsState extends State<CloudDocs> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          '${provider.selectedFiles.length} Selected',
+                          '${vm.selectedFiles.length} Selected',
                           style: TextStyle(
                               fontSize: SizeConfig.screenHeight! * 0.024,
                               color: AppColors.kWhiteColor),
@@ -81,11 +114,14 @@ class _CloudDocsState extends State<CloudDocs> {
                         ),
                         IconButton(
                           onPressed: () {
-                            provider.isAllDocSelected = !provider.isAllDocSelected;
-                            provider.selectAllInList(provider.documents);
+                            vm.isAllDocSelected =
+                                !vm.isAllDocSelected;
+                            !vm.isAllDocSelected
+                                ? vm.unselectAllInList(vm.documents)
+                                : vm.selectAllInList(vm.documents);
                           },
                           icon: Icon(
-                            provider.isAllDocSelected
+                            vm.isAllDocSelected
                                 ? Icons.check_box_outlined
                                 : Icons.check_box_outline_blank,
                             color: AppColors.kWhiteColor,
@@ -107,30 +143,34 @@ class _CloudDocsState extends State<CloudDocs> {
                         children: [
                           ListView.builder(
                             padding:
-                            EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
-                            itemCount: provider.documents.length,
+                                EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
+                            itemCount: vm.documents.length,
                             itemBuilder: (
-                                BuildContext context,
-                                int index,
-                                ) {
+                              BuildContext context,
+                              int index,
+                            ) {
                               return InkWell(
                                 onTap: () {
-                                  provider.documents[index].isSelected = !provider.documents[index].isSelected;
-                                  if (provider.documents[index].isSelected) {
+                                  vm.documents[index].isSelected =
+                                      !vm.documents[index].isSelected;
+                                  if (vm.documents[index].isSelected) {
                                     print("Called if");
-                                    provider.addToSelectedList =provider.documents[index];
-
+                                    vm.addToSelectedList =
+                                        vm.documents[index];
                                   } else {
                                     print("Called else");
-                                    provider.removeFromSelectedList = provider.documents[index];
+                                    vm.removeFromSelectedList =
+                                        vm.documents[index];
                                   }
                                 },
                                 child: cloudFileCard(
-                                    size: provider.documents[index].size,
-                                    title: provider.documents[index].key,
+                                    context: context,
+                                    size: vm.documents[index].size,
+                                    title: vm.documents[index].key,
                                     icon: AppConstants.document_icon,
+                                    item: vm.documents[index],
                                     isSelected:
-                                    provider.documents[index].isSelected),
+                                        vm.documents[index].isSelected),
                               );
                             },
                             // separatorBuilder: (BuildContext context, int index) {
@@ -138,7 +178,7 @@ class _CloudDocsState extends State<CloudDocs> {
                             // },
                           ),
                           Visibility(
-                            visible: provider.selectedFiles.length > 0
+                            visible: vm.selectedFiles.length > 0
                                 ? true
                                 : false,
                             child: Positioned(
@@ -150,10 +190,10 @@ class _CloudDocsState extends State<CloudDocs> {
                                 width: SizeConfig.screenWidth! * 0.58,
                                 onTap: () async {
                                   //  pd.show(max: 100, msg: 'File Uploading...');
-                                  if (provider.selectedFiles.length > 0) {
+                                  if (vm.selectedFiles.length > 0) {
                                     Navigator.pushNamed(
                                         context, DownloadScreen.routeName,
-                                        arguments: provider.selectedFiles);
+                                        arguments: vm.selectedFiles);
                                   }
                                 },
                                 btnColor: AppColors.kGreyColor,

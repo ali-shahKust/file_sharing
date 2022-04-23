@@ -6,6 +6,7 @@ import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+import 'package:quick_backup/constants/app_constants.dart';
 import 'package:quick_backup/data/base/base_vm.dart';
 import 'package:quick_backup/data/models/queue_model.dart';
 import 'package:quick_backup/utilities/pref_provider.dart';
@@ -66,7 +67,7 @@ class DownloadVm extends BaseVm {
     final documentsDir = "/storage/emulated/0";
     for (int i = 0; i < files.length; i++) {
       final filepath = documentsDir +
-          "/Backupfiles/" +
+          "/${AppConstants.appName}/" +
           '/${files[i].key!.replaceAll("${Provider.of<PreferencesProvider>(context,listen: false).userCognito}/", "")}';
       final file = File(filepath);
       bool fileExists = await file.exists();
