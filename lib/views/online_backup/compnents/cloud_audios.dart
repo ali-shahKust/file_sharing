@@ -8,6 +8,7 @@ import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/views/download/download_screen.dart';
 import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 import '../../../custom_widgets/app_text_widget.dart';
+import '../../../utilities/general_utilities.dart';
 
 class CloudAudios extends StatefulWidget {
   static const routeName = 'cloud_audios';
@@ -21,11 +22,41 @@ class _CloudAudiosState extends State<CloudAudios> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Consumer<OnlineBackUpVm>(
-      builder: (context, provider, _) {
+      builder: (context, vm, _) {
         return Scaffold(
-          backgroundColor: AppColors.kPrimaryPurpleColor,
           body: SafeArea(
-            child: Container(
+            child: vm.audios.isEmpty
+                ? Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            size: SizeConfig.screenHeight! * 0.024,
+                            color: Colors.black,
+                          )),
+                      PrimaryText(
+                        "Audios",
+                        fontSize: SizeConfig.screenHeight! * 0.020,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                      SizedBox(
+                        width: 50,
+                      )
+                    ],
+                  ),
+                ),
+                GeneralUtilities.noDataFound(),
+              ],
+            ):Container(
               width: SizeConfig.screenWidth,
               height: SizeConfig.screenHeight,
               decoration: BoxDecoration(
@@ -72,7 +103,7 @@ class _CloudAudiosState extends State<CloudAudios> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          '${provider.selectedFiles.length} Selected',
+                          '${vm.selectedFiles.length} Selected',
                           style: TextStyle(
                               fontSize: SizeConfig.screenHeight! * 0.024,
                               color: AppColors.kWhiteColor),
@@ -82,14 +113,14 @@ class _CloudAudiosState extends State<CloudAudios> {
                         ),
                         IconButton(
                           onPressed: () {
-                            provider.isAllAudioSelected =
-                                !provider.isAllAudioSelected;
-                            !provider.isAllAudioSelected
-                                ? provider.unselectAllInList(provider.audios)
-                                : provider.selectAllInList(provider.audios);
+                            vm.isAllAudioSelected =
+                                !vm.isAllAudioSelected;
+                            !vm.isAllAudioSelected
+                                ? vm.unselectAllInList(vm.audios)
+                                : vm.selectAllInList(vm.audios);
                           },
                           icon: Icon(
-                            provider.isAllAudioSelected
+                            vm.isAllAudioSelected
                                 ? Icons.check_box_outlined
                                 : Icons.check_box_outline_blank,
                             color: AppColors.kWhiteColor,
@@ -112,33 +143,33 @@ class _CloudAudiosState extends State<CloudAudios> {
                           ListView.builder(
                             padding:
                                 EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
-                            itemCount: provider.audios.length,
+                            itemCount: vm.audios.length,
                             itemBuilder: (
                               BuildContext context,
                               int index,
                             ) {
                               return InkWell(
                                 onTap: () {
-                                  provider.audios[index].isSelected =
-                                      !provider.audios[index].isSelected;
-                                  if (provider.audios[index].isSelected) {
+                                  vm.audios[index].isSelected =
+                                      !vm.audios[index].isSelected;
+                                  if (vm.audios[index].isSelected) {
                                     print("Called if");
-                                    provider.addToSelectedList =
-                                        provider.audios[index];
+                                    vm.addToSelectedList =
+                                        vm.audios[index];
                                   } else {
                                     print("Called else");
-                                    provider.removeFromSelectedList =
-                                        provider.audios[index];
+                                    vm.removeFromSelectedList =
+                                        vm.audios[index];
                                   }
                                 },
                                 child: cloudFileCard(
                                     context: context,
-                                    size: provider.audios[index].size,
-                                    title: provider.audios[index].key,
+                                    size: vm.audios[index].size,
+                                    title: vm.audios[index].key,
                                     icon: AppConstants.audio_icon,
-                                    item: provider.audios[index],
+                                    item: vm.audios[index],
                                     isSelected:
-                                        provider.audios[index].isSelected),
+                                        vm.audios[index].isSelected),
                               );
                             },
                             // separatorBuilder: (BuildContext context, int index) {
@@ -146,7 +177,7 @@ class _CloudAudiosState extends State<CloudAudios> {
                             // },
                           ),
                           Visibility(
-                            visible: provider.selectedFiles.length > 0
+                            visible: vm.selectedFiles.length > 0
                                 ? true
                                 : false,
                             child: Positioned(
@@ -158,10 +189,10 @@ class _CloudAudiosState extends State<CloudAudios> {
                                 width: SizeConfig.screenWidth! * 0.58,
                                 onTap: () async {
                                   //  pd.show(max: 100, msg: 'File Uploading...');
-                                  if (provider.selectedFiles.length > 0) {
+                                  if (vm.selectedFiles.length > 0) {
                                     Navigator.pushNamed(
                                         context, DownloadScreen.routeName,
-                                        arguments: provider.selectedFiles);
+                                        arguments: vm.selectedFiles);
                                   }
                                 },
                                 btnColor: AppColors.kGreyColor,

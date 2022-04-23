@@ -8,6 +8,7 @@ import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/views/download/download_screen.dart';
 import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 import '../../../custom_widgets/app_text_widget.dart';
+import '../../../utilities/general_utilities.dart';
 
 class CloudApps extends StatefulWidget {
   static const routeName = 'cloud_audios';
@@ -21,11 +22,41 @@ class _CloudAppsState extends State<CloudApps> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Consumer<OnlineBackUpVm>(
-      builder: (context, provider, _) {
+      builder: (context, vm, _) {
         return Scaffold(
-          backgroundColor: AppColors.kPrimaryPurpleColor,
           body: SafeArea(
-            child: Container(
+            child: vm.apps.isEmpty
+                ? Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            size: SizeConfig.screenHeight! * 0.024,
+                            color: Colors.black,
+                          )),
+                      PrimaryText(
+                        "Application",
+                        fontSize: SizeConfig.screenHeight! * 0.020,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                      SizedBox(
+                        width: 50,
+                      )
+                    ],
+                  ),
+                ),
+                GeneralUtilities.noDataFound(),
+              ],
+            ):Container(
               width: SizeConfig.screenWidth,
               height: SizeConfig.screenHeight,
               decoration: BoxDecoration(
@@ -72,7 +103,7 @@ class _CloudAppsState extends State<CloudApps> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          '${provider.selectedFiles.length} Selected',
+                          '${vm.selectedFiles.length} Selected',
                           style: TextStyle(
                               fontSize: SizeConfig.screenHeight! * 0.024,
                               color: AppColors.kWhiteColor),
@@ -82,14 +113,14 @@ class _CloudAppsState extends State<CloudApps> {
                         ),
                         IconButton(
                           onPressed: () {
-                            provider.isAllAppsSelected =
-                                !provider.isAllAppsSelected;
-                            !provider.isAllAppsSelected
-                                ? provider.unselectAllInList(provider.apps)
-                                : provider.selectAllInList(provider.apps);
+                            vm.isAllAppsSelected =
+                                !vm.isAllAppsSelected;
+                            !vm.isAllAppsSelected
+                                ? vm.unselectAllInList(vm.apps)
+                                : vm.selectAllInList(vm.apps);
                           },
                           icon: Icon(
-                            provider.isAllAppsSelected
+                            vm.isAllAppsSelected
                                 ? Icons.check_box_outlined
                                 : Icons.check_box_outline_blank,
                             color: AppColors.kWhiteColor,
@@ -112,32 +143,32 @@ class _CloudAppsState extends State<CloudApps> {
                           ListView.builder(
                             padding:
                                 EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
-                            itemCount: provider.apps.length,
+                            itemCount: vm.apps.length,
                             itemBuilder: (
                               BuildContext context,
                               int index,
                             ) {
                               return InkWell(
                                 onTap: () {
-                                  provider.apps[index].isSelected =
-                                      !provider.apps[index].isSelected;
-                                  if (provider.apps[index].isSelected) {
+                                  vm.apps[index].isSelected =
+                                      !vm.apps[index].isSelected;
+                                  if (vm.apps[index].isSelected) {
                                     print("Called if");
-                                    provider.addToSelectedList =
-                                        provider.apps[index];
+                                    vm.addToSelectedList =
+                                        vm.apps[index];
                                   } else {
                                     print("Called else");
-                                    provider.removeFromSelectedList =
-                                        provider.apps[index];
+                                    vm.removeFromSelectedList =
+                                        vm.apps[index];
                                   }
                                 },
                                 child: cloudFileCard(
                                     context: context,
-                                    size: provider.apps[index].size,
-                                    title: provider.apps[index].key,
+                                    size: vm.apps[index].size,
+                                    title: vm.apps[index].key,
                                     icon: AppConstants.apps_icon,
-                                    isSelected: provider.apps[index].isSelected,
-                                    item: provider.apps[index]),
+                                    isSelected: vm.apps[index].isSelected,
+                                    item: vm.apps[index]),
                               );
                             },
                             // separatorBuilder: (BuildContext context, int index) {
@@ -145,7 +176,7 @@ class _CloudAppsState extends State<CloudApps> {
                             // },
                           ),
                           Visibility(
-                            visible: provider.selectedFiles.length > 0
+                            visible: vm.selectedFiles.length > 0
                                 ? true
                                 : false,
                             child: Positioned(
@@ -157,10 +188,10 @@ class _CloudAppsState extends State<CloudApps> {
                                 width: SizeConfig.screenWidth! * 0.58,
                                 onTap: () async {
                                   //  pd.show(max: 100, msg: 'File Uploading...');
-                                  if (provider.selectedFiles.length > 0) {
+                                  if (vm.selectedFiles.length > 0) {
                                     Navigator.pushNamed(
                                         context, DownloadScreen.routeName,
-                                        arguments: provider.selectedFiles);
+                                        arguments: vm.selectedFiles);
                                   }
                                 },
                                 btnColor: AppColors.kGreyColor,

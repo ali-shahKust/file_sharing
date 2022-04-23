@@ -8,6 +8,7 @@ import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/views/download/download_screen.dart';
 import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 import '../../../custom_widgets/app_text_widget.dart';
+import '../../../utilities/general_utilities.dart';
 
 class CloudImages extends StatefulWidget {
   static const routeName = 'cloud_images';
@@ -24,11 +25,41 @@ class _CloudImagesState extends State<CloudImages> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Consumer<OnlineBackUpVm>(
-      builder: (context, provider, _) {
+      builder: (context, vm, _) {
         return Scaffold(
-          backgroundColor: AppColors.kPrimaryPurpleColor,
           body: SafeArea(
-            child: Container(
+            child: vm.images.isEmpty
+                ? Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            size: SizeConfig.screenHeight! * 0.024,
+                            color: Colors.black,
+                          )),
+                      PrimaryText(
+                        "Images",
+                        fontSize: SizeConfig.screenHeight! * 0.020,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                      SizedBox(
+                        width: 50,
+                      )
+                    ],
+                  ),
+                ),
+                GeneralUtilities.noDataFound(),
+              ],
+            ):Container(
               width: SizeConfig.screenWidth,
               height: SizeConfig.screenHeight,
               decoration: BoxDecoration(
@@ -75,7 +106,7 @@ class _CloudImagesState extends State<CloudImages> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          '${provider.selectedFiles.length} Selected',
+                          '${vm.selectedFiles.length} Selected',
                           style: TextStyle(
                               fontSize: SizeConfig.screenHeight! * 0.024,
                               color: AppColors.kWhiteColor),
@@ -85,13 +116,13 @@ class _CloudImagesState extends State<CloudImages> {
                         ),
                         IconButton(
                           onPressed: () {
-                            provider.isAllImagesSelected =
-                                !provider.isAllImagesSelected;
-                            !provider.isAllImagesSelected
-                                ? provider.unselectAllInList(provider.images)
-                                : provider.selectAllInList(provider.images);                          },
+                            vm.isAllImagesSelected =
+                                !vm.isAllImagesSelected;
+                            !vm.isAllImagesSelected
+                                ? vm.unselectAllInList(vm.images)
+                                : vm.selectAllInList(vm.images);                          },
                           icon: Icon(
-                            provider.isAllImagesSelected
+                            vm.isAllImagesSelected
                                 ? Icons.check_box_outlined
                                 : Icons.check_box_outline_blank,
                             color: AppColors.kWhiteColor,
@@ -114,33 +145,33 @@ class _CloudImagesState extends State<CloudImages> {
                           ListView.builder(
                             padding:
                                 EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
-                            itemCount: provider.images.length,
+                            itemCount: vm.images.length,
                             itemBuilder: (
                               BuildContext context,
                               int index,
                             ) {
                               return InkWell(
                                 onTap: () {
-                                  provider.images[index].isSelected =
-                                      !provider.images[index].isSelected;
-                                  if (provider.images[index].isSelected) {
+                                  vm.images[index].isSelected =
+                                      !vm.images[index].isSelected;
+                                  if (vm.images[index].isSelected) {
                                     print("Called if");
-                                    provider.addToSelectedList =
-                                        provider.images[index];
+                                    vm.addToSelectedList =
+                                        vm.images[index];
                                   } else {
                                     print("Called else");
-                                    provider.removeFromSelectedList =
-                                        provider.images[index];
+                                    vm.removeFromSelectedList =
+                                        vm.images[index];
                                   }
                                 },
                                 child: cloudFileCard(
                                     context: context,
-                                    size: provider.images[index].size,
-                                    title: provider.images[index].key,
-                                    item: provider.images[index],
+                                    size: vm.images[index].size,
+                                    title: vm.images[index].key,
+                                    item: vm.images[index],
                                     icon: AppConstants.images_icon,
                                     isSelected:
-                                        provider.images[index].isSelected),
+                                        vm.images[index].isSelected),
                               );
                             },
                             // separatorBuilder: (BuildContext context, int index) {
@@ -148,7 +179,7 @@ class _CloudImagesState extends State<CloudImages> {
                             // },
                           ),
                           Visibility(
-                            visible: provider.selectedFiles.length > 0
+                            visible: vm.selectedFiles.length > 0
                                 ? true
                                 : false,
                             child: Positioned(
@@ -160,10 +191,10 @@ class _CloudImagesState extends State<CloudImages> {
                                 width: SizeConfig.screenWidth! * 0.58,
                                 onTap: () async {
                                   //  pd.show(max: 100, msg: 'File Uploading...');
-                                  if (provider.selectedFiles.length > 0) {
+                                  if (vm.selectedFiles.length > 0) {
                                     Navigator.pushNamed(
                                         context, DownloadScreen.routeName,
-                                        arguments: provider.selectedFiles);
+                                        arguments: vm.selectedFiles);
                                   }
                                 },
                                 btnColor: AppColors.kGreyColor,

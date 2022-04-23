@@ -192,7 +192,10 @@ class _DownloadScreenState extends State<DownloadScreen> {
                           radius: 178.0,
                           lineWidth: 13.0,
                           animation: false,
-                          percent:
+                          percent:vm.queue.length==1?double.parse(vm
+                              .queue[0]!
+                              .progress) /
+                              100:
                           (completed / vm.queue.length).isNaN
                               ? 0.0
                               : completed / vm.queue.length,
@@ -201,7 +204,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                             MainAxisAlignment.center,
                             children: [
                               PrimaryText(
-                                "${((completed / vm.queue.length) * 100)
+                                vm.queue.length==1?"${vm.queue[0]!.progress}%":"${((completed / vm.queue.length) * 100)
                                     .toStringAsFixed(0)}%",
                                 fontSize: 34,
                                 fontWeight: FontWeight.w700,
@@ -248,7 +251,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                   AppConstants.send_file),
                               PrimaryText(
                                 "Downloading ${vm.queue.length}" +
-                                    "${vm.queue.length == 1 ? "File":"Files"}",
+                                    "${vm.queue.length == 1 ? " File ":" Files "}",
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                               )
