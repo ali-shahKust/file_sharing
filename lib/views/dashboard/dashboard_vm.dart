@@ -76,7 +76,7 @@ class DashBoardVm extends BaseVm {
   }
 
 
-  uploadFile(List<File> file,context) async {
+  Future<void>uploadFile(List<File> file,context) async {
     queue.clear();
     completed = 0;
     for (var element in file) {

@@ -2,10 +2,8 @@ import 'dart:io';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/constants/app_constants.dart';
@@ -17,11 +15,9 @@ import 'package:quick_backup/utilities/i_utills.dart';
 import 'package:quick_backup/custom_widgets/primary_text.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_backup/views/dashboard/dashboard_vm.dart';
-import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
-import 'package:quick_backup/views/device_file_manager/file_manager_home/core_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/filemanager_home.dart';
 import 'package:quick_backup/views/local_backup/backup_files.dart';
-import 'package:quick_backup/views/online_backup/cloud_docs_screen.dart';
+import 'package:quick_backup/views/online_backup/cloud_items_screen.dart';
 
 class DashBoardScreen extends StatefulWidget {
   static const routeName = 'dash_board';
@@ -36,7 +32,10 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
   final _advancedDrawerController = AdvancedDrawerController();
   final _controller = AdvancedDrawerController();
+  Future<bool> _onWillPop() async {
 
+    return (iUtills().exitPopUp(context,'dashboard')) ?? false;
+  }
   @override
   void initState() {
     checkVersion();
@@ -68,8 +67,10 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     double height = SizeConfig.screenHeight!;
     double width = SizeConfig.screenWidth!;
     parentContext = context;
-    return Consumer<DashBoardVm>(
-      builder: (context, vm, _) => AdvancedDrawer(
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Consumer<DashBoardVm>(
+        builder: (context, vm, _) => AdvancedDrawer(
         backdropColor: AppColors.kPrimaryColor,
         controller: _advancedDrawerController,
         animationCurve: Curves.easeInOut,
@@ -90,58 +91,56 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
           // ],
           borderRadius: const BorderRadius.all(Radius.circular(16)),
         ),
-        drawer: DrawerWidgetItems(),
-        child: Scaffold(
-          body: SizedBox(
-            width: getScreenWidth(context),
-            height: getScreenHeight(context),
-            child: Stack(
-              children: [
-                SizedBox(
-                    width: getScreenWidth(context),
-                    height: getScreenHeight(context),
-                    child: Image.asset(
-                      AppConstants.home_screen_background,
-                      fit: BoxFit.cover,
-                    )),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 58.0, horizontal: 12),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: InkWell(
-                        onTap: () {
-                          _advancedDrawerController.showDrawer();
-                        },
-                        child: SvgPicture.asset(AppConstants.drawer_icon)),
+          drawer: DrawerWidgetItems(),
+          child: Scaffold(
+            body: SizedBox(
+              width: getScreenWidth(context),
+              height: getScreenHeight(context),
+              child: Stack(
+                children: [
+                  SizedBox(
+                      width: getScreenWidth(context),
+                      height: getScreenHeight(context),
+                      child: Image.asset(
+                        AppConstants.home_screen_background,
+                        fit: BoxFit.cover,
+                      )),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 58.0, horizontal: 12),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: InkWell(
+                          onTap: () {
+                            _advancedDrawerController.showDrawer();
+
+                          },
+                          child: SvgPicture.asset(AppConstants.drawer_icon)),
+                    ),
                   ),
-                ),
-                Align(
-                    alignment: Alignment.bottomCenter,
-                    child: iUtills().upperRoundedContainer(context, width, height * 0.476,
-                        color: AppColors.kPrimaryColor,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 22.0, horizontal: 22),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  PrimaryText(
-                                    "Files Backup",
-                                    fontSize: 26,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
-                                  SvgPicture.asset(AppConstants.cloud_icon)
-                                ],
-                              ),
-                              InkWell(
-                                onTap: () async {
-                                  PermissionStatus status = osVersion == '11'
-                                      ? await Permission.manageExternalStorage.status
-                                      : await Permission.storage.status;
-                                  print('storage permission status is ${status.index}');
+                  Align(
+                      alignment: Alignment.bottomCenter,
+                      child: iUtills().upperRoundedContainer(
+                          context, width, height * 0.476,color: AppColors.kPrimaryColor,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 22.0, horizontal: 22),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    PrimaryText(
+                                      "Files Backup",
+                                      fontSize: 26,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                    ),
+                                    SvgPicture.asset(AppConstants.cloud_icon)
+                                  ],
+                                ),
+                                InkWell(
 
                                   if (!status.isGranted) {
                                     showDialog(

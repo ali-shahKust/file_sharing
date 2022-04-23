@@ -11,6 +11,7 @@ import 'package:quick_backup/utilities/i_utills.dart';
 import 'package:quick_backup/views/download/download_screen.dart';
 import 'package:quick_backup/views/online_backup/compnents/cloud_apps.dart';
 import 'package:quick_backup/views/online_backup/compnents/cloud_audios.dart';
+import 'package:quick_backup/views/online_backup/compnents/cloud_docs.dart';
 import 'package:quick_backup/views/online_backup/compnents/cloud_images.dart';
 import 'package:quick_backup/views/online_backup/compnents/cloud_videos.dart';
 import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
@@ -18,14 +19,14 @@ import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 import '../../constants/app_colors.dart';
 import '../../custom_widgets/custom_list_tile.dart';
 
-class CloudDocsScreen extends StatefulWidget {
-  static const routeName = 'pics';
+class CloudItemsScreen extends StatefulWidget {
+  static const routeName = 'cloud_items';
 
   @override
-  State<CloudDocsScreen> createState() => _CloudDocsScreenState();
+  State<CloudItemsScreen> createState() => _CloudItemsScreenState();
 }
 
-class _CloudDocsScreenState extends State<CloudDocsScreen> {
+class _CloudItemsScreenState extends State<CloudItemsScreen> {
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -193,7 +194,7 @@ class _CloudDocsScreenState extends State<CloudDocsScreen> {
                                 InkWell(
                                   onTap: () {
                                     Navigator.pushNamed(
-                                        context, CloudDocsScreen.routeName);
+                                        context, CloudDocs.routeName);
                                   },
                                   child: customTile(
                                       AppConstants.document_icon,
