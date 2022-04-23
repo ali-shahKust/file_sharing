@@ -216,7 +216,7 @@ class _AudioViewsState extends State<AudioViews> {
                                           //  pd.show(max: 100, msg: 'File Uploading...');
                                           if (provider.selectedFiles.length > 0) {
                                             Navigator.pushNamed(context, QuesScreen.routeName,
-                                                    arguments: provider.selectedFiles)
+                                                    arguments: {'files': provider.selectedFiles, "drawer": false})
                                                 .whenComplete(() {
                                               print('whencomplete call...');
                                               // provider.selectedFiles.clear();

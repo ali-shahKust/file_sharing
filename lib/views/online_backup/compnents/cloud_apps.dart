@@ -11,7 +11,7 @@ import '../../../custom_widgets/app_text_widget.dart';
 import '../../../utilities/general_utilities.dart';
 
 class CloudApps extends StatefulWidget {
-  static const routeName = 'cloud_audios';
+  static const routeName = 'cloud_app';
 
   @override
   State<CloudApps> createState() => _CloudAppsState();
