@@ -19,7 +19,7 @@ import '../../constants/app_colors.dart';
 import '../../custom_widgets/custom_list_tile.dart';
 
 class CloudDocsScreen extends StatefulWidget {
-  static const routeName = 'pics';
+  static const routeName = 'cloud_doc';
 
   @override
   State<CloudDocsScreen> createState() => _CloudDocsScreenState();

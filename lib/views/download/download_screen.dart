@@ -42,7 +42,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
 
   Future<bool> _onWillPop() async {
     Provider.of<OnlineBackUpVm>(context, listen: false).clearAllSelection();
-    return (await Provider.of<DownloadVm>(context,listen: false).queue.isEmpty?true:iUtills().exitPopUp(context)) ?? false;
+    return (await Provider.of<DownloadVm>(context,listen: false).queue.isEmpty?true:iUtills().exitPopUp(context,'download')) ?? false;
   }
 
   @override
@@ -111,7 +111,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                             children: [
                               IconButton(
                                   onPressed: () {
-                                    iUtills().exitPopUp(context);
+                                    iUtills().exitPopUp(context,'download');
                                   },
                                   icon: Icon(
                                     Icons.arrow_back_ios,

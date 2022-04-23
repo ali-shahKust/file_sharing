@@ -30,7 +30,8 @@ class AppConstants {
   static const String username_background = imagesPath+"username_background.webp";
   static const String exit_logo = imagesPath+"exit_logo.webp";
   static String allow_space = "10 GB";
-
+  static const double padding =20;
+  static const double avatarRadius =45;
   String pdfNamePrefix = 'S&B_${DateTime.now().microsecondsSinceEpoch}';
   static const kDefaultPadding = 20.0;
 

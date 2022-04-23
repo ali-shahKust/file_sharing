@@ -9,6 +9,7 @@ import 'package:quick_backup/constants/app_constants.dart';
 import 'package:quick_backup/custom_widgets/app_text_widget.dart';
 import 'package:quick_backup/views/dashboard/dashboard_screen.dart';
 import '../configurations/size_config.dart';
+import '../custom_widgets/custom_dialog.dart';
 import 'custom_theme.dart';
 
 class iUtills {
@@ -100,86 +101,17 @@ class iUtills {
   }
 
 
-  exitPopUp(context) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-            child: Dialog(
-              insetPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 100),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(15.0))),
-              child: Container(
-                width: SizeConfig.screenWidth,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    SizedBox(
-                      height: SizeConfig.screenHeight! * 0.03,
-                    ),
-                    Image.asset(
-                      AppConstants.exit_logo,
-                      width: SizeConfig.screenWidth! * 0.5,
-                    ),
-                    SizedBox(
-                      height: SizeConfig.screenHeight! * 0.03,
-                    ),
-                    PrimaryText("Are your Sure you want to go back?"),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                          height: SizeConfig.screenHeight! * 0.057,
-                          width: SizeConfig.screenWidth! * 0.3,
-                          margin: const EdgeInsets.all(15.0),
-                          padding: const EdgeInsets.all(3.0),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50.0),
-                              border: Border.all(
-                                  color: AppColors.kPrimaryColor)),
-                          child: Center(
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: PrimaryText(
-                                  'Cancel',
-                                      color: AppColors.kPrimaryColor,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: SizeConfig.screenHeight! * 0.025,
-                                ),
-                              )),
-                        ),
-                gradientButton(
-                  height: SizeConfig.screenHeight! * 0.057,
-                  width: SizeConfig.screenWidth! * 0.3,
-                  child: Center(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false);
-                        },
-                        child: PrimaryText(
-                          'Yes',
-                          color: AppColors.kWhiteColor,
-                          fontWeight: FontWeight.normal,
-                          fontSize: SizeConfig.screenHeight! * 0.025,
-                        ),
-                      )),
-                ),
-                        SizedBox(
-                          height: SizeConfig.screenHeight! * 0.17,
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
+  exitPopUp(context,screen) {
+    return   showDialog(context: context,
+        builder: (BuildContext context){
+          return CustomDialogBox(
+            title: "Do you want to go back ?",
+            descriptions: "",
+            text: "Yes",
+            screen:screen ,
           );
-        });
+        }
+    );;
   }
 }
 

@@ -18,6 +18,8 @@ import 'package:quick_backup/utilities/general_utilities.dart';
 import 'package:quick_backup/utilities/i_utills.dart';
 import 'package:quick_backup/views/dashboard/dashboard_vm.dart';
 
+import 'custom_dialog.dart';
+
 class QuesScreen extends StatefulWidget {
   static const routeName = 'queue_screen';
   Map map;
@@ -41,7 +43,8 @@ class _QuesScreenState extends State<QuesScreen> {
   }
 
   Future<bool> _onWillPop() async {
-    return (await Provider.of<DashBoardVm>(context,listen: false).queue.isEmpty?true:iUtills().exitPopUp(context)) ?? false;
+
+    return (await Provider.of<DashBoardVm>(context,listen: false).queue.isEmpty?true:iUtills().exitPopUp(context,'queue')) ?? false;
   }
 
   @override
@@ -110,7 +113,7 @@ class _QuesScreenState extends State<QuesScreen> {
                                       children: [
                                         IconButton(
                                             onPressed: () {
-                                              iUtills().exitPopUp(context);
+                                              iUtills().exitPopUp(context,'queue');
                                             },
                                             icon: Icon(
                                               Icons.arrow_back_ios,
