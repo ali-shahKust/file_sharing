@@ -34,6 +34,7 @@ class CustomDocumentListTile extends StatelessWidget {
         : Stack(
             children: [
               ListView.separated(
+                physics: BouncingScrollPhysics(),
                 padding: EdgeInsets.only(left: 10),
                 itemCount: list.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -125,16 +126,16 @@ class CustomDocumentListTile extends StatelessWidget {
                           ),
                           fileModel.isSelected
                               ? Container(
-                                height: SizeConfig.screenHeight! * 0.1,
-                                width: SizeConfig.screenWidth! * 0.06,
-                                decoration:
-                                    BoxDecoration(shape: BoxShape.circle, color: AppColors.kPrimaryPurpleColor),
-                                child: Icon(
-                                  Icons.check,
-                                  size: SizeConfig.screenHeight! * 0.02,
-                                  color: Colors.white,
-                                ),
-                              )
+                                  height: SizeConfig.screenHeight! * 0.1,
+                                  width: SizeConfig.screenWidth! * 0.06,
+                                  decoration:
+                                      BoxDecoration(shape: BoxShape.circle, color: AppColors.kPrimaryPurpleColor),
+                                  child: Icon(
+                                    Icons.check,
+                                    size: SizeConfig.screenHeight! * 0.02,
+                                    color: Colors.white,
+                                  ),
+                                )
                               : SizedBox(),
                         ],
                       ),
@@ -145,125 +146,34 @@ class CustomDocumentListTile extends StatelessWidget {
                   return CustomDivider();
                 },
               ),
-              Visibility(
-                visible: provider.selectedFiles.length > 0 ? true : false,
-                child: Positioned(
-                  bottom: SizeConfig.screenHeight! * 0.012,
-                  left: SizeConfig.screenWidth! * 0.005,
-                  right: SizeConfig.screenWidth! * 0.005,
-                  child: BackupButton(
-                    text: '${AppStrings.backup}',
-                    width: SizeConfig.screenWidth! * 0.58,
-                    onTap: () async {
-                      //  pd.show(max: 100, msg: 'File Uploading...');
-                      if (provider.selectedFiles.length > 0) {
-                        Navigator.pushNamed(context, QuesScreen.routeName, arguments: provider.selectedFiles)
-                            .whenComplete(() {
-                          print('whencomplete call...');
-                          // provider.selectedFiles.clear();
-                          // provider.clearAllSelectedLists();
-
-                        });
-                      }
-                    },
-                    btnColor: AppColors.kGreyColor,
-                    padding: SizeConfig.screenHeight! * 0.02,
-                  ),
-                ),
-              ),
+              // Visibility(
+              //   visible: provider.selectedFiles.length > 0 ? true : false,
+              //   child: Positioned(
+              //     bottom: SizeConfig.screenHeight! * 0.012,
+              //     left: SizeConfig.screenWidth! * 0.005,
+              //     right: SizeConfig.screenWidth! * 0.005,
+              //     child: BackupButton(
+              //       text: '${AppStrings.backup}  (${provider.selectedFiles.length})',
+              //       width: SizeConfig.screenWidth! * 0.58,
+              //       onTap: () async {
+              //         //  pd.show(max: 100, msg: 'File Uploading...');
+              //         if (provider.selectedFiles.length > 0) {
+              //           Navigator.pushNamed(context, QuesScreen.routeName, arguments: provider.selectedFiles)
+              //               .whenComplete(() {
+              //             print('whencomplete call...');
+              //             // provider.selectedFiles.clear();
+              //             // provider.clearAllSelectedLists();
+              //           });
+              //         }
+              //       },
+              //       btnColor: AppColors.kGreyColor,
+              //       padding: SizeConfig.screenHeight! * 0.02,
+              //     ),
+              //   ),
+              // ),
             ],
           );
 
-    // return Padding(
-    //   padding:
-    //       EdgeInsets.symmetric(horizontal: SizeConfig.screenWidth! * 0.015, vertical: SizeConfig.screenHeight! * 0.014),
-    //   child: InkWell(
-    //     onTap: onTap,
-    //     child: Row(
-    //       crossAxisAlignment: CrossAxisAlignment.center,
-    //       mainAxisAlignment: MainAxisAlignment.center,
-    //       children: <Widget>[
-    //         Container(
-    //             padding: EdgeInsets.all(SizeConfig.screenHeight! * 0.032),
-    //             decoration: BoxDecoration(
-    //               borderRadius: BorderRadius.circular(20),
-    //               gradient: LinearGradient(
-    //                 begin: Alignment.topLeft,
-    //                 end: Alignment.bottomRight,
-    //                 stops: [0.04, 0.4],
-    //                 colors: [
-    //                   type == AppConstants.docCategories[0]
-    //                       ? AppConstants.documnetCategories[0]['startColor']
-    //                       : type == AppConstants.docCategories[1]
-    //                           ? AppConstants.documnetCategories[1]['startColor']
-    //                           : type == AppConstants.docCategories[2]
-    //                               ? AppConstants.documnetCategories[2]['startColor']
-    //                               : AppConstants.documnetCategories[3]['startColor'],
-    //                   type == AppConstants.docCategories[0]
-    //                       ? AppConstants.documnetCategories[0]['endColor']
-    //                       : type == AppConstants.docCategories[1]
-    //                           ? AppConstants.documnetCategories[1]['endColor']
-    //                           : type == AppConstants.docCategories[2]
-    //                               ? AppConstants.documnetCategories[2]['endColor']
-    //                               : AppConstants.documnetCategories[3]['endColor'],
-    //                 ],
-    //               ),
-    //             ),
-    //             height: SizeConfig.screenHeight! * 0.1,
-    //             width: SizeConfig.screenWidth! * 0.2,
-    //             // fixed width and height
-    //             // SizeConfig.screenHeight!*0.05
-    //             child: FileManagerUtilities.getLogoFromExtension(type)),
-    //         // child: SvgPicture.asset(
-    //         //   leadingIcon,
-    //         //   // height: 70,
-    //         //   // width: 20,
-    //         //   fit: BoxFit.contain,
-    //         // )),
-    //         // CircleAvatar(
-    //         //   radius: 20,
-    //         //   backgroundImage: AssetImage('assets/avatar1.jpg'),
-    //         // ),
-    //         Expanded(
-    //           flex: 14,
-    //           child: Padding(
-    //             padding: EdgeInsets.only(left: SizeConfig.screenWidth! * 0.05),
-    //             child: Container(
-    //               color: Colors.transparent,
-    //               child: Column(
-    //                 crossAxisAlignment: CrossAxisAlignment.start,
-    //                 mainAxisAlignment: MainAxisAlignment.center,
-    //                 children: <Widget>[
-    //                   Text(
-    //                     title,
-    //                     style: TextStyle(
-    //                         color: AppColors.kBlackColor,
-    //                         fontSize: SizeConfig.screenHeight! * 0.02,
-    //                         fontWeight: FontWeight.normal),
-    //                   ),
-    //                   SizedBox(
-    //                     height: SizeConfig.screenHeight! * 0.012,
-    //                   ),
-    //                   RichText(
-    //                     textScaleFactor: 1.2,
-    //                     text: TextSpan(
-    //                       style: DefaultTextStyle.of(context).style,
-    //                       children: [
-    //                         TextSpan(text: subtitleFileLenght + "   ", style: TextStyle(color: AppColors.kGreyColor)),
-    //                       ],
-    //                     ),
-    //                   ),
-    //                 ],
-    //               ),
-    //             ),
-    //           ),
-    //         ),
-    //         isSelected
-    //             ? Expanded(flex: 1, child: SvgPicture.asset('assets/file_manager_assets/filemanager_home_forward.svg'))
-    //             : SizedBox(),
-    //       ],
-    //     ),
-    //   ),
-    // );
+
   }
 }

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_constants.dart';
 import 'package:quick_backup/custom_widgets/app_text_widget.dart';
+import 'package:quick_backup/custom_widgets/custom_appbar.dart';
 import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
 import 'package:quick_backup/utilities/file_manager_utilities.dart';
 import 'package:quick_backup/utilities/i_utills.dart';
@@ -62,9 +63,7 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
             width: SizeConfig.screenWidth,
             height: SizeConfig.screenHeight,
             decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(AppConstants.transfer_background),
-                    fit: BoxFit.cover),
+                image: DecorationImage(image: AssetImage(AppConstants.transfer_background), fit: BoxFit.cover),
                 gradient: LinearGradient(colors: [
                   Color(0xff7266F8),
                   Color(0xff110D44),
@@ -74,40 +73,45 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
                 ], begin: Alignment.topCenter, end: Alignment.bottomRight)),
             child: Stack(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            vm.clearAllSelection();
-                          },
-                          icon: Icon(
-                            Icons.arrow_back_ios,
-                            size: SizeConfig.screenHeight! * 0.024,
-                            color: Colors.white,
-                          )),
-                      PrimaryText(
-                        "Cloud Document",
-                        fontSize: SizeConfig.screenHeight! * 0.020,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      SizedBox(
-                        width: 50,
-                      )
-                    ],
-                  ),
-                ),
+                CustomAppBar(
+                    title: 'Cloud Document',
+                    onTap: () {
+                      Navigator.pop(context);
+                      vm.clearAllSelection();
+                    }),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 8.0),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       IconButton(
+                //           onPressed: () {
+                //             Navigator.pop(context);
+                //             vm.clearAllSelection();
+                //           },
+                //           icon: Icon(
+                //             Icons.arrow_back_ios,
+                //             size: SizeConfig.screenHeight! * 0.024,
+                //             color: Colors.white,
+                //           )),
+                //       PrimaryText(
+                //         "Cloud Document",
+                //         fontSize: SizeConfig.screenHeight! * 0.020,
+                //         fontWeight: FontWeight.w500,
+                //       ),
+                //       SizedBox(
+                //         width: 50,
+                //       )
+                //     ],
+                //   ),
+                // ),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 22),
+                        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 22),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -148,69 +152,48 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
                           ],
                         ),
                       ),
-                      iUtills().upperRoundedContainer(
-                          context,
-                          SizeConfig.screenWidth,
-                          SizeConfig.screenHeight! * 0.475,
+                      iUtills().upperRoundedContainer(context, SizeConfig.screenWidth, SizeConfig.screenHeight! * 0.475,
                           color: AppColors.kWhiteColor,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 18.0, horizontal: 22),
+                            padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 22),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 InkWell(
                                   onTap: () {
-                                    Navigator.pushNamed(
-                                        context, CloudImages.routeName,
-                                        arguments: "Images");
+                                    Navigator.pushNamed(context, CloudImages.routeName, arguments: "Images");
                                   },
                                   child: customTile(
-                                      AppConstants.images_icon,
-                                      "Images",
-                                      vm.images.length.toString() + " files "),
+                                      AppConstants.images_icon, "Images", vm.images.length.toString() + " files "),
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    Navigator.pushNamed(
-                                        context, CloudVideos.routeName);
+                                    Navigator.pushNamed(context, CloudVideos.routeName);
                                   },
                                   child: customTile(
-                                      AppConstants.videos_icon,
-                                      "Videos",
-                                      vm.videos.length.toString() + " files "),
+                                      AppConstants.videos_icon, "Videos", vm.videos.length.toString() + " files "),
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    Navigator.pushNamed(
-                                        context, CloudAudios.routeName);
+                                    Navigator.pushNamed(context, CloudAudios.routeName);
                                   },
                                   child: customTile(
-                                      AppConstants.audio_icon,
-                                      "Audios",
-                                      vm.audios.length.toString() + " files "),
+                                      AppConstants.audio_icon, "Audios", vm.audios.length.toString() + " files "),
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    Navigator.pushNamed(
-                                        context, CloudDocs.routeName);
+                                    Navigator.pushNamed(context, CloudDocs.routeName);
                                   },
-                                  child: customTile(
-                                      AppConstants.document_icon,
-                                      "Documents",
-                                      vm.documents.length.toString() +
-                                          " files "),
+                                  child: customTile(AppConstants.document_icon, "Documents",
+                                      vm.documents.length.toString() + " files "),
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    Navigator.pushNamed(
-                                        context, CloudApps.routeName);
+                                    Navigator.pushNamed(context, CloudApps.routeName);
                                   },
-                                  child: customTile(
-                                      AppConstants.apps_icon,
-                                      "Apps",
-                                      vm.apps.length.toString() + " files "),
+                                  child:
+                                      customTile(AppConstants.apps_icon, "Apps", vm.apps.length.toString() + " files "),
                                 ),
                               ],
                             ),

@@ -4,6 +4,7 @@ import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/constants/app_constants.dart';
 import 'package:quick_backup/custom_widgets/cloud_file_card.dart';
+import 'package:quick_backup/custom_widgets/custom_appbar.dart';
 import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/views/download/download_screen.dart';
 import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
@@ -28,32 +29,38 @@ class _CloudAppsState extends State<CloudApps> {
             child: vm.apps.isEmpty
                 ? Stack(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: Icon(
-                            Icons.arrow_back_ios,
-                            size: SizeConfig.screenHeight! * 0.024,
-                            color: Colors.black,
-                          )),
-                      PrimaryText(
-                        "Application",
-                        fontSize: SizeConfig.screenHeight! * 0.020,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                      ),
-                      SizedBox(
-                        width: 50,
-                      )
-                    ],
-                  ),
-                ),
+                CustomAppBar(
+                    title: 'Apps',
+                    onTap: () {
+                      Navigator.pop(context);
+
+                    }),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 8.0),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       IconButton(
+                //           onPressed: () {
+                //             Navigator.pop(context);
+                //           },
+                //           icon: Icon(
+                //             Icons.arrow_back_ios,
+                //             size: SizeConfig.screenHeight! * 0.024,
+                //             color: Colors.black,
+                //           )),
+                //       PrimaryText(
+                //         "Application",
+                //         fontSize: SizeConfig.screenHeight! * 0.020,
+                //         fontWeight: FontWeight.w500,
+                //         color: Colors.black,
+                //       ),
+                //       SizedBox(
+                //         width: 50,
+                //       )
+                //     ],
+                //   ),
+                // ),
                 GeneralUtilities.noDataFound(),
               ],
             ):Container(
@@ -71,31 +78,37 @@ class _CloudAppsState extends State<CloudApps> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(
-                              Icons.arrow_back_ios,
-                              size: SizeConfig.screenHeight! * 0.024,
-                              color: Colors.white,
-                            )),
-                        PrimaryText(
-                          "Applications",
-                          fontSize: SizeConfig.screenHeight! * 0.020,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        SizedBox(
-                          width: 50,
-                        )
-                      ],
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 8.0),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       IconButton(
+                  //           onPressed: () {
+                  //             Navigator.pop(context);
+                  //           },
+                  //           icon: Icon(
+                  //             Icons.arrow_back_ios,
+                  //             size: SizeConfig.screenHeight! * 0.024,
+                  //             color: Colors.white,
+                  //           )),
+                  //       PrimaryText(
+                  //         "Apps",
+                  //         fontSize: SizeConfig.screenHeight! * 0.020,
+                  //         fontWeight: FontWeight.w500,
+                  //       ),
+                  //       SizedBox(
+                  //         width: 50,
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
+                  CustomAppBar(
+                      title: 'Apps',
+                      onTap: () {
+                        Navigator.pop(context);
+
+                      }),
                   Expanded(
                     flex: 2,
                     child: Row(

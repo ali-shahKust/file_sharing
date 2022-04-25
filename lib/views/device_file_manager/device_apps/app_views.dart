@@ -9,6 +9,7 @@ import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/constants/app_strings.dart';
 import 'package:quick_backup/custom_widgets/app_text_widget.dart';
+import 'package:quick_backup/custom_widgets/custom_appbar.dart';
 import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
 import 'package:quick_backup/custom_widgets/queues_screen.dart';
@@ -16,9 +17,22 @@ import 'package:quick_backup/data/models/app_model.dart';
 import 'package:quick_backup/utilities/general_utilities.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 
-class AppViews extends StatelessWidget {
+class AppViews extends StatefulWidget {
   static const routeName = 'apps';
 
+
+  @override
+  State<AppViews> createState() => _AppViewsState();
+}
+
+class _AppViewsState extends State<AppViews> {
+  Color ? randomColor;
+  @override
+  void initState() {
+   randomColor =  AppColors
+       .avatarBgColors[GeneralUtilities.getRandomNumber(0, 7)];
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -40,31 +54,12 @@ class AppViews extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: SizeConfig.screenHeight! * 0.02),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(
-                              Icons.arrow_back_ios,
-                              size: SizeConfig.screenHeight! * 0.024,
-                              color: Colors.white,
-                            )),
-                        PrimaryText(
-                          "Apps",
-                          fontSize: SizeConfig.screenHeight! * 0.028,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        SizedBox(
-                          width: SizeConfig.screenWidth! * 0.050,
-                        )
-                      ],
-                    ),
-                  ),
+                  CustomAppBar(
+                      title: 'Apps',
+                      onTap: () {
+                        Navigator.pop(context);
+                        //
+                      }),
                   Expanded(
                     flex: 2,
                     child: Row(
@@ -109,6 +104,7 @@ class AppViews extends StatelessWidget {
                           child: provider.loading == true
                               ? GeneralUtilities.LoadingFileWidget()
                               : GridView.builder(
+                              physics: BouncingScrollPhysics(),
                                   addAutomaticKeepAlives: false,
                                   addRepaintBoundaries: false,
                                   reverse: false,
@@ -124,6 +120,7 @@ class AppViews extends StatelessWidget {
 
                                     return GestureDetector(
                                       onTap: () {
+                                        print('item tap.....');
                                         provider.changeIsSelectedApp(index, provider.appList);
                                         if (provider.appList[index].isSelected) {
                                           provider.addToSelectedList = File(provider.appList[index].apps.apkFilePath);
@@ -142,11 +139,7 @@ class AppViews extends StatelessWidget {
                                                 decoration: BoxDecoration(
                                                     color: AppColors.kAppsCardLighColor,
                                                     border: Border.all(
-                                                      // AppColors.avatarBgColors[GeneralUtilities.getRandomNumber(0, 7)],
-                                                      //                                               borderRadius: BorderRadius.circular(50),
-                                                      //                                             ),
-                                                      color: AppColors
-                                                          .avatarBgColors[GeneralUtilities.getRandomNumber(0, 7)],
+                                                      color:AppColors.kPrimaryPurpleColor.withOpacity(0.3),
                                                       width: 1.5,
                                                     ),
                                                     borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -163,8 +156,8 @@ class AppViews extends StatelessWidget {
                                                       ),
                                                       PrimaryText(
                                                         app.appName,
-                                                            color: AppColors.kBlackColor,
-                                                            fontSize: SizeConfig.screenHeight! * 0.023,
+                                                        color: AppColors.kBlackColor,
+                                                        fontSize: SizeConfig.screenHeight! * 0.023,
                                                         overflow: TextOverflow.ellipsis,
                                                       ),
                                                     ],
@@ -179,40 +172,40 @@ class AppViews extends StatelessWidget {
                                                 height: SizeConfig.screenHeight! * 0.1,
                                                 width: SizeConfig.screenWidth! * 0.22,
                                                 decoration: BoxDecoration(
-                                                  color:
-                                                      AppColors.avatarBgColors[GeneralUtilities.getRandomNumber(0, 7)],
+                                                  // color:
+                                                  color:AppColors.kPrimaryPurpleColor.withOpacity(0.3),
                                                   borderRadius: BorderRadius.circular(50),
                                                 ),
                                                 child: Center(
                                                   child: app is ApplicationWithIcon
                                                       ? Image.memory(app.icon,
-                                                          height: SizeConfig.screenHeight! * 0.13,
-                                                          width: SizeConfig.screenWidth! * 0.13)
+                                                      height: SizeConfig.screenHeight! * 0.13,
+                                                      width: SizeConfig.screenWidth! * 0.13)
                                                       : null,
                                                 ),
                                               ),
                                             ),
                                             provider.appList[index].isSelected
                                                 ? Positioned(
-                                                    top: SizeConfig.screenHeight! * -0.002,
-                                                    right: 0,
-                                                    child: Container(
-                                                      height: SizeConfig.screenHeight! * 0.1,
-                                                      width: SizeConfig.screenWidth! * 0.07,
-                                                      decoration: BoxDecoration(
-                                                          shape: BoxShape.circle, color: AppColors.kPrimaryPurpleColor),
-                                                      child: Padding(
-                                                          padding: EdgeInsets.all(SizeConfig.screenHeight! * 0.005),
-                                                          child: Icon(
-                                                            Icons.check,
-                                                            size: SizeConfig.screenHeight! * 0.02,
-                                                            color: Colors.white,
-                                                          )),
-                                                    ),
-                                                  )
+                                              top: SizeConfig.screenHeight! * -0.002,
+                                              right: 0,
+                                              child: Container(
+                                                height: SizeConfig.screenHeight! * 0.1,
+                                                width: SizeConfig.screenWidth! * 0.07,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle, color: AppColors.kPrimaryPurpleColor),
+                                                child: Padding(
+                                                    padding: EdgeInsets.all(SizeConfig.screenHeight! * 0.005),
+                                                    child: Icon(
+                                                      Icons.check,
+                                                      size: SizeConfig.screenHeight! * 0.02,
+                                                      color: Colors.white,
+                                                    )),
+                                              ),
+                                            )
                                                 : SizedBox(
-                                                    height: 2.0,
-                                                  ),
+                                              height: 2.0,
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -226,7 +219,7 @@ class AppViews extends StatelessWidget {
                             left: SizeConfig.screenWidth! * 0.005,
                             right: SizeConfig.screenWidth! * 0.005,
                             child: BackupButton(
-                              text: '${AppStrings.backup}',
+                              text: '${AppStrings.backup}  (${provider.selectedFiles.length})',
                               width: SizeConfig.screenWidth! * 0.58,
                               onTap: () async {
                                 //  pd.show(max: 100, msg: 'File Uploading...');

@@ -162,7 +162,7 @@ class DashBoardVm extends BaseVm {
                 // Dialogs.showToast('Permission granted...');
                 Provider.of<CoreVm>(parentContext, listen: false).checkSpace();
                 Provider.of<CategoryVm>(parentContext, listen: false).getDeviceFileManager();
-                Provider.of<CategoryVm>(parentContext, listen: false).fetchAllListLength();
+                // Provider.of<CategoryVm>(parentContext, listen: false).fetchAllListLength();
                 Navigator.pushNamed(parentContext, FileManagerHome.routeName);
               }  if (status.isDenied) {
                 print('I am permission denied.....');
@@ -171,7 +171,7 @@ class DashBoardVm extends BaseVm {
                     : await Permission.storage.request();
                 Provider.of<CoreVm>(parentContext, listen: false).checkSpace();
                 Provider.of<CategoryVm>(parentContext, listen: false).getDeviceFileManager();
-                Provider.of<CategoryVm>(parentContext, listen: false).fetchAllListLength();
+                // Provider.of<CategoryVm>(parentContext, listen: false).fetchAllListLength();
                 print(
                     'manage external storage permission status in denied condition is ...$status');
                 // Dialogs.showToast('Please Grant Storage Permissions');

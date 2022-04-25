@@ -75,6 +75,10 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           initialRoute: SplashScreen.routeName,
           onGenerateRoute: (settings) => generateRoute(settings),
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            fontFamily: 'AvenirNextLTPro',
+          ),
         ));
   }
 }

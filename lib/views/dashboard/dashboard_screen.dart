@@ -48,7 +48,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       SchedulerBinding.instance!.addPostFrameCallback((_) {
         Provider.of<CoreVm>(context, listen: false).checkSpace();
         Provider.of<CategoryVm>(context, listen: false).getDeviceFileManager();
-        Provider.of<CategoryVm>(context, listen: false).fetchAllListLength();
+        // Provider.of<CategoryVm>(context, listen: false).fetchAllListLength();
         // Provider.of<DocumentVm>(context, listen: false).getTextFile();
       });
     });

@@ -7,6 +7,7 @@ import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/constants/app_strings.dart';
 import 'package:quick_backup/custom_widgets/app_text_widget.dart';
+import 'package:quick_backup/custom_widgets/custom_appbar.dart';
 import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/data/models/file_model.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
@@ -53,31 +54,12 @@ class _VideosViewState extends State<VideosView> {
               ),
               child: Column(
                 children: [
-                  Padding(
-                    padding:  EdgeInsets.only(top: SizeConfig.screenHeight!*0.02),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(
-                              Icons.arrow_back_ios,
-                              size: SizeConfig.screenHeight! * 0.024,
-                              color: Colors.white,
-                            )),
-                        PrimaryText(
-                          "Videos",
-                          fontSize: SizeConfig.screenHeight! * 0.028,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        SizedBox(
-                          width: SizeConfig.screenWidth!*0.050,
-                        )
-                      ],
-                    ),
-                  ),
+                  CustomAppBar(
+                      title: 'Videos',
+                      onTap: () {
+                        Navigator.pop(context);
+                        //
+                      }),
 
                   Expanded(
                     flex: 1,
@@ -138,7 +120,7 @@ class _VideosViewState extends State<VideosView> {
                             left: SizeConfig.screenWidth! * 0.005,
                             right: SizeConfig.screenWidth! * 0.005,
                             child: BackupButton(
-                              text: '${AppStrings.backup}',
+                              text: '${AppStrings.backup}  (${provider.selectedFiles.length})',
                               width: SizeConfig.screenWidth! * 0.58,
                               onTap: () async {
                                 //  pd.show(max: 100, msg: 'File Uploading...');
@@ -197,6 +179,7 @@ class PagewiseGridViewExample extends StatelessWidget {
   Widget build(BuildContext context) {
     print('I am in pagewise build function...');
     return PagewiseGridView.count(
+        physics: BouncingScrollPhysics(),
         pageSize: PAGE_SIZE,
         crossAxisCount: 3,
         mainAxisSpacing: 4.0,
