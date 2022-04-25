@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:quick_backup/custom_widgets/InfoDialoge.dart';
 import 'package:quick_backup/data/base/base_vm.dart';
 import 'package:quick_backup/data/local_db/database_helper.dart';
-import 'package:quick_backup/custom_widgets/upload_screen.dart';
+import 'package:quick_backup/custom_widgets/queues_screen.dart';
 import 'package:quick_backup/utilities/pref_provider.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/core_vm.dart';
@@ -86,7 +86,7 @@ class DashBoardVm extends BaseVm {
     completed = 0;
     await Future.delayed(Duration(seconds: 2));
     for (var element in file) {
-      String filename = element.path.split('/').last;
+      String filename =  GeneralUtilities.getFileName(element.path);
       String date = element.statSync().modified.toString();
       queue.add(QueueModel(
           id: null,
@@ -100,7 +100,7 @@ class DashBoardVm extends BaseVm {
     }
     isLoading = false;
     for (int i = 0; i < file.length; i++) {
-      String filename = file[i].path.split('/').last;
+      String filename =  GeneralUtilities.getFileName(file[i].path);
       String _folderkey = mime(filename)!.split('/').first;
       if(mime(filename)!.split('/').first == "application"){
         if(mime(filename)!.split('/').last == "vnd.android.package-archive"){
@@ -171,7 +171,7 @@ class DashBoardVm extends BaseVm {
                 // Dialogs.showToast('Permission granted...');
                 Provider.of<CoreVm>(parentContext, listen: false).checkSpace();
                 Provider.of<CategoryVm>(parentContext, listen: false).getDeviceFileManager();
-                Provider.of<CategoryVm>(parentContext, listen: false).fetchAllListLength();
+                // Provider.of<CategoryVm>(parentContext, listen: false).fetchAllListLength();
                 Navigator.pushNamed(parentContext, FileManagerHome.routeName);
               }  if (status.isDenied) {
                 print('I am permission denied.....');
@@ -180,7 +180,7 @@ class DashBoardVm extends BaseVm {
                     : await Permission.storage.request();
                 Provider.of<CoreVm>(parentContext, listen: false).checkSpace();
                 Provider.of<CategoryVm>(parentContext, listen: false).getDeviceFileManager();
-                Provider.of<CategoryVm>(parentContext, listen: false).fetchAllListLength();
+                // Provider.of<CategoryVm>(parentContext, listen: false).fetchAllListLength();
                 print(
                     'manage external storage permission status in denied condition is ...$status');
                 // Dialogs.showToast('Please Grant Storage Permissions');

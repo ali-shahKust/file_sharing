@@ -7,6 +7,7 @@ import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/constants/app_strings.dart';
 import 'package:quick_backup/custom_widgets/app_text_widget.dart';
+import 'package:quick_backup/custom_widgets/custom_appbar.dart';
 import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
 import 'package:quick_backup/custom_widgets/upload_screen.dart';
@@ -55,31 +56,37 @@ class _AudioViewsState extends State<AudioViews> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: SizeConfig.screenHeight! * 0.02),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(
-                              Icons.arrow_back_ios,
-                              size: SizeConfig.screenHeight! * 0.024,
-                              color: Colors.white,
-                            )),
-                        PrimaryText(
-                          "Audios",
-                          fontSize: SizeConfig.screenHeight! * 0.028,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        SizedBox(
-                          width: SizeConfig.screenWidth! * 0.050,
-                        )
-                      ],
-                    ),
-                  ),
+                  CustomAppBar(
+                      title: 'Audios',
+                      onTap: () {
+                        Navigator.pop(context);
+                        //
+                      }),
+                  // Padding(
+                  //   padding: EdgeInsets.only(top: SizeConfig.screenHeight! * 0.02),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       IconButton(
+                  //           onPressed: () {
+                  //             Navigator.pop(context);
+                  //           },
+                  //           icon: Icon(
+                  //             Icons.arrow_back_ios,
+                  //             size: SizeConfig.screenHeight! * 0.024,
+                  //             color: Colors.white,
+                  //           )),
+                  //       PrimaryText(
+                  //         "Audios",
+                  //         fontSize: SizeConfig.screenHeight! * 0.028,
+                  //         fontWeight: FontWeight.w500,
+                  //       ),
+                  //       SizedBox(
+                  //         width: SizeConfig.screenWidth! * 0.050,
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
                   Expanded(
                     flex: 2,
                     child: Row(

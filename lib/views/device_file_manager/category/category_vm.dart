@@ -142,13 +142,13 @@ class CategoryVm extends BaseVm {
     notifyListeners();
   }
 
-  fetchAllListLength() {
-    filesLength.add(_imageList.length);
-    filesLength.add(videosList.length);
-    filesLength.add(audiosList.length);
-    filesLength.add(filesList.length);
-    filesLength.add(appList.length);
-  }
+  // fetchAllListLength() {
+  //   filesLength.add(_imageList.length);
+  //   filesLength.add(videosList.length);
+  //   filesLength.add(audiosList.length);
+  //   filesLength.add(filesList.length);
+  //   filesLength.add(appList.length);
+  // }
 
   int get videoIndex => _videoIndex;
 
@@ -672,10 +672,6 @@ class CategoryVm extends BaseVm {
     return list[index].isSelected;
   }
 
-  void isSelectedVal(bool val, FileMangerModel obj) {
-    obj.isSelected = val;
-    notifyListeners();
-  }
 
 // Specific for Device app  "Model Change"..............
   void changeIsSelectedApp(int index, List<DeviceAppModel> list) {
@@ -687,14 +683,14 @@ class CategoryVm extends BaseVm {
     notifyListeners();
   }
 
-  bool getIsSelectedAppVal(int index, List<DeviceAppModel> list) {
-    return list[index].isSelected;
-  }
+  // bool getIsSelectedAppVal(int index, List<DeviceAppModel> list) {
+  //   return list[index].isSelected;
+  // }
 
-  void isSelectedAppVal(bool val, DeviceAppModel obj) {
-    obj.isSelected = val;
-    notifyListeners();
-  }
+  // void isSelectedAppVal(bool val, DeviceAppModel obj) {
+  //   obj.isSelected = val;
+  //   notifyListeners();
+  // }
 
   void unSelectApps() {
     for (int i = 0; i < appList.length; i++) {

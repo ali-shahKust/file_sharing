@@ -78,6 +78,10 @@ class _MyAppState extends State<MyApp> {
             pageTransitionsTheme: const PageTransitionsTheme(builders: {TargetPlatform.android: CupertinoPageTransitionsBuilder(),}),
           ),
           onGenerateRoute: (settings) => generateRoute(settings),
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            fontFamily: 'AvenirNextLTPro',
+          ),
         ));
   }
 }

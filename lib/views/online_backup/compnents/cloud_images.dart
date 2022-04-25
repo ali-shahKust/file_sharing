@@ -4,6 +4,7 @@ import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/constants/app_constants.dart';
 import 'package:quick_backup/custom_widgets/cloud_file_card.dart';
+import 'package:quick_backup/custom_widgets/custom_appbar.dart';
 import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/views/download/download_screen.dart';
 import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
@@ -31,32 +32,38 @@ class _CloudImagesState extends State<CloudImages> {
             child: vm.images.isEmpty
                 ? Stack(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: Icon(
-                            Icons.arrow_back_ios,
-                            size: SizeConfig.screenHeight! * 0.024,
-                            color: Colors.black,
-                          )),
-                      PrimaryText(
-                        "Images",
-                        fontSize: SizeConfig.screenHeight! * 0.020,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                      ),
-                      SizedBox(
-                        width: 50,
-                      )
-                    ],
-                  ),
-                ),
+                CustomAppBar(
+                    title: 'Images',
+                    onTap: () {
+                      Navigator.pop(context);
+
+                    }),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 8.0),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       IconButton(
+                //           onPressed: () {
+                //             Navigator.pop(context);
+                //           },
+                //           icon: Icon(
+                //             Icons.arrow_back_ios,
+                //             size: SizeConfig.screenHeight! * 0.024,
+                //             color: Colors.black,
+                //           )),
+                //       PrimaryText(
+                //         "Images",
+                //         fontSize: SizeConfig.screenHeight! * 0.020,
+                //         fontWeight: FontWeight.w500,
+                //         color: Colors.black,
+                //       ),
+                //       SizedBox(
+                //         width: 50,
+                //       )
+                //     ],
+                //   ),
+                // ),
                 GeneralUtilities.noDataFound(),
               ],
             ):Container(
@@ -74,31 +81,38 @@ class _CloudImagesState extends State<CloudImages> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(
-                              Icons.arrow_back_ios,
-                              size: SizeConfig.screenHeight! * 0.024,
-                              color: Colors.white,
-                            )),
-                        PrimaryText(
-                          widget.title,
-                          fontSize: SizeConfig.screenHeight! * 0.020,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        SizedBox(
-                          width: 50,
-                        )
-                      ],
-                    ),
-                  ),
+                  CustomAppBar(
+                      title: 'Images',
+                      onTap: () {
+                        Navigator.pop(context);
+
+                      }),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 8.0),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       IconButton(
+                  //           onPressed: () {
+                  //             Navigator.pop(context);
+                  //           },
+                  //           icon: Icon(
+                  //             Icons.arrow_back_ios,
+                  //             size: SizeConfig.screenHeight! * 0.024,
+                  //             color: Colors.white,
+                  //           )),
+                  //       PrimaryText(
+                  //         widget.title,
+                  //         fontSize: SizeConfig.screenHeight! * 0.020,
+                  //         fontWeight: FontWeight.w500,
+                  //       ),
+                  //       SizedBox(
+                  //         width: 50,
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
+
                   Expanded(
                     flex: 2,
                     child: Row(

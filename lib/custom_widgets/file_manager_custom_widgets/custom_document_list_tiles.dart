@@ -34,6 +34,7 @@ class CustomDocumentListTile extends StatelessWidget {
         : Stack(
             children: [
               ListView.separated(
+                physics: BouncingScrollPhysics(),
                 padding: EdgeInsets.only(left: 10),
                 itemCount: list.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -125,16 +126,16 @@ class CustomDocumentListTile extends StatelessWidget {
                           ),
                           fileModel.isSelected
                               ? Container(
-                                height: SizeConfig.screenHeight! * 0.1,
-                                width: SizeConfig.screenWidth! * 0.06,
-                                decoration:
-                                    BoxDecoration(shape: BoxShape.circle, color: AppColors.kPrimaryPurpleColor),
-                                child: Icon(
-                                  Icons.check,
-                                  size: SizeConfig.screenHeight! * 0.02,
-                                  color: Colors.white,
-                                ),
-                              )
+                                  height: SizeConfig.screenHeight! * 0.1,
+                                  width: SizeConfig.screenWidth! * 0.06,
+                                  decoration:
+                                      BoxDecoration(shape: BoxShape.circle, color: AppColors.kPrimaryPurpleColor),
+                                  child: Icon(
+                                    Icons.check,
+                                    size: SizeConfig.screenHeight! * 0.02,
+                                    color: Colors.white,
+                                  ),
+                                )
                               : SizedBox(),
                         ],
                       ),
