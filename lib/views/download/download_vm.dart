@@ -11,14 +11,26 @@ import 'package:quick_backup/data/base/base_vm.dart';
 import 'package:quick_backup/data/models/queue_model.dart';
 import 'package:quick_backup/utilities/pref_provider.dart';
 
-import '../../data/models/app_model.dart';
 import '../dashboard/dashboard_vm.dart';
 
 class DownloadVm extends BaseVm {
-  var queue = GetIt.I.get<AppModel>().queue;
+
+  DownloadVm(){
+    loader();
+  }
+  List<QueueModel?> queue=[];
+
 
   StreamSubscription? subscription;
+  bool _isLoading = false;
 
+
+  bool get isLoading => _isLoading;
+
+  set isLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
 
   bool _connectionLost = false;
 
@@ -28,7 +40,10 @@ class DownloadVm extends BaseVm {
     _connectionLost = value;
     notifyListeners();
   }
-
+  loader()async {
+    await Future.delayed(Duration(seconds: 2));
+    isLoading = false;
+  }
   checkConnection() async {
     subscription = Connectivity()
         .onConnectivityChanged
@@ -50,20 +65,9 @@ class DownloadVm extends BaseVm {
       List<QueueModel> files,context
       ) async {
     queue.clear();
-    // for (var data in files) {
-    //   String key =
-    //   data['key'].replaceAll("${Provider.of<PreferencesProvider>(context,listen: false).userCognito}/", "");
-    //   String date = data['date'].toString();
-    //
-    //   queue.addAll(QueueModel(
-    //       id: null,
-    //       name: key,
-    //       date: date,
-    //       size: data['size'].toString(),
-    //       status: "pending",
-    //       progress: "pending"));
-    // }
+    await Future.delayed(Duration(seconds: 2));
     queue.addAll(files);
+    isLoading = false;
     final documentsDir = "/storage/emulated/0";
     for (int i = 0; i < files.length; i++) {
       final filepath = documentsDir +
@@ -81,7 +85,9 @@ class DownloadVm extends BaseVm {
                 queue[i]!.progress =
                     (progress.getFractionCompleted() * 100).round().toString();
                 queue[i]!.id = i;
-                print("PROGRESS: ${queue[i]!.progress}");
+                queue[i]!.path = file.path;
+
+                print("File Path: ${queue[i]!.path}");
                 if ((progress.getFractionCompleted() * 100).round() == 100) {
                   completed = i + 1;
                 }
@@ -95,6 +101,8 @@ class DownloadVm extends BaseVm {
       } else {
         queue[i]!.progress = "Exist already";
         queue[i]!.id = i;
+        queue[i]!.path = file.path;
+
         print("PROGRESS: ${queue[i]!.progress}");
         completed = i + 1;
         await Future.delayed(Duration.zero);

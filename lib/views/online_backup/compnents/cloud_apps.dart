@@ -141,6 +141,8 @@ class _CloudAppsState extends State<CloudApps> {
                       child: Stack(
                         children: [
                           ListView.builder(
+                            physics: BouncingScrollPhysics(),
+
                             padding:
                                 EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
                             itemCount: vm.apps.length,
@@ -191,7 +193,7 @@ class _CloudAppsState extends State<CloudApps> {
                                   if (vm.selectedFiles.length > 0) {
                                     Navigator.pushNamed(
                                         context, DownloadScreen.routeName,
-                                        arguments: vm.selectedFiles);
+                                        arguments: {'files':vm.selectedFiles,"drawer":false},);
                                   }
                                 },
                                 btnColor: AppColors.kGreyColor,

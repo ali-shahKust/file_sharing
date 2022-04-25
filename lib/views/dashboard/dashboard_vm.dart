@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:quick_backup/custom_widgets/InfoDialoge.dart';
 import 'package:quick_backup/data/base/base_vm.dart';
 import 'package:quick_backup/data/local_db/database_helper.dart';
-import 'package:quick_backup/custom_widgets/queues_screen.dart';
+import 'package:quick_backup/custom_widgets/upload_screen.dart';
 import 'package:quick_backup/utilities/pref_provider.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/core_vm.dart';
@@ -26,15 +26,26 @@ import '../../data/models/queue_model.dart';
 int completed = 0;
 
 class DashBoardVm extends BaseVm {
-  var queue = GetIt.I.get<AppModel>().queue;
 
+  DashBoardVm(){
+    loader();
+  }
+  List<QueueModel?> queue=[];
   List<File> _files = [];
   StreamSubscription? subscription;
   var dbHelper = GetIt.I.get<DatabaseHelper>();
 
   List<File> get files => _files;
   bool _connectionLost = false;
+  bool _isLoading = true;
 
+
+  bool get isLoading => _isLoading;
+
+  set isLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
   bool get connectionLost => _connectionLost;
 
   set connectionLost(bool value) {
@@ -47,7 +58,10 @@ class DashBoardVm extends BaseVm {
     _files = value;
     notifyListeners();
   }
-
+  loader()async {
+    await Future.delayed(Duration(seconds: 2));
+    isLoading = false;
+  }
 
   checkConnection() async {
     subscription = Connectivity()
@@ -65,29 +79,15 @@ class DashBoardVm extends BaseVm {
       }
     });
   }
-  pickFile({context}) async {
-
-    var mfile = await FilePicker.platform.pickFiles(allowMultiple: true);
-
-    if (mfile != null && mfile.files.isNotEmpty) {
-      files.clear();
-      files = mfile.paths.map((path) => File(path!)).toList();
-
-      // uploadFile(context, files);
-      Navigator.pushNamed(context, QuesScreen.routeName,arguments: {"files":files,"drawer":false});
-      // Navigator.push(context, MaterialPageRoute(builder: (context)=>QuesScreen(files: files,),fullscreenDialog: true));
-
-    }
-  }
-
-
   Future<void>uploadFile(List<File> file,context) async {
+
     queue.clear();
+
     completed = 0;
+    await Future.delayed(Duration(seconds: 2));
     for (var element in file) {
       String filename = element.path.split('/').last;
       String date = element.statSync().modified.toString();
-
       queue.add(QueueModel(
           id: null,
           name: filename,
@@ -98,10 +98,19 @@ class DashBoardVm extends BaseVm {
           status: "pending",
           progress: "pending"));
     }
-
+    isLoading = false;
     for (int i = 0; i < file.length; i++) {
       String filename = file[i].path.split('/').last;
       String _folderkey = mime(filename)!.split('/').first;
+      if(mime(filename)!.split('/').first == "application"){
+        if(mime(filename)!.split('/').last == "vnd.android.package-archive"){
+          _folderkey = "application";
+        }else {
+          _folderkey = 'document';
+        }
+      }else {
+        _folderkey = mime(filename)!.split('/').first;
+      }
       print("MIME IS ${_folderkey}");
       String fileKey = _folderkey +"/" + filename;
       try {

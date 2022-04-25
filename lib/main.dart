@@ -74,6 +74,9 @@ class _MyAppState extends State<MyApp> {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           initialRoute: SplashScreen.routeName,
+          theme: ThemeData(
+            pageTransitionsTheme: const PageTransitionsTheme(builders: {TargetPlatform.android: CupertinoPageTransitionsBuilder(),}),
+          ),
           onGenerateRoute: (settings) => generateRoute(settings),
         ));
   }

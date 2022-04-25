@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mime_type/mime_type.dart';
+import 'package:open_file/open_file.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/constants/app_constants.dart';
 import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
+import 'package:quick_backup/custom_widgets/loading_widget.dart';
 import 'package:quick_backup/data/extension.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_backup/data/models/queue_model.dart';
@@ -22,10 +24,10 @@ import '../dashboard/dashboard_vm.dart';
 
 class DownloadScreen extends StatefulWidget {
   static const routeName = 'download_screen';
-  List<QueueModel> files;
+  Map map;
 
 
-  DownloadScreen({required this.files});
+  DownloadScreen({required this.map});
 
   @override
   State<DownloadScreen> createState() => _DownloadScreenState();
@@ -35,56 +37,63 @@ class _DownloadScreenState extends State<DownloadScreen> {
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      Provider.of<DownloadVm>(context, listen: false).downloadFile(
-          widget.files, context).then((value) {
-        if (completed ==
-            Provider
-                .of<DownloadVm>(context, listen: false)
-                .queue
-                .length) {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      PrimaryText(
-                        "All Files Downloaded Successfully.",
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
-                      SizedBox(
-                        height: SizeConfig.screenHeight! * 0.053,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          completed = 0;
-                          Provider
-                              .of<DashBoardVm>(context, listen: false)
-                              .queue
-                              .clear();
-                          Navigator.pushNamedAndRemoveUntil(context,
-                              DashBoardScreen.routeName, (route) => false);
-                        },
-                        child: iUtills().gradientButton(
-                            width: SizeConfig.screenWidth! * 0.253,
-                            height: SizeConfig.screenHeight! * 0.053,
-                            child: Center(
-                                child: PrimaryText(
-                                  "OK",
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                ))),
-                      )
-                    ],
-                  ),
-                );
-              });
-        }
-      });
-      print("MY arguments are :${widget.files.length}");
+      if (widget.map['files'] != null && !widget.map['drawer']){
+        Provider.of<DownloadVm>(context, listen: false).downloadFile(
+
+            widget.map['files'], context).then((value) {
+          if (completed ==
+              Provider
+                  .of<DownloadVm>(context, listen: false)
+                  .queue
+                  .length) {
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        PrimaryText(
+                          "All Files Downloaded Successfully.",
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                        SizedBox(
+                          height: SizeConfig.screenHeight! * 0.053,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            completed = 0;
+                            Provider
+                                .of<DashBoardVm>(context, listen: false)
+                                .queue
+                                .clear();
+                            Provider
+                                .of<OnlineBackUpVm>(context, listen: false)
+                                .selectedFiles
+                                .clear();
+                            Navigator.pushNamedAndRemoveUntil(context,
+                                DashBoardScreen.routeName, (route) => false);
+                          },
+                          child: iUtills().gradientButton(
+                              width: SizeConfig.screenWidth! * 0.253,
+                              height: SizeConfig.screenHeight! * 0.053,
+                              child: Center(
+                                  child: PrimaryText(
+                                    "OK",
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                  ))),
+                        )
+                      ],
+                    ),
+                  );
+                });
+          }
+        });
+      }
     });
     super.initState();
   }
@@ -103,10 +112,12 @@ class _DownloadScreenState extends State<DownloadScreen> {
         onWillPop: _onWillPop,
         child: Consumer<DownloadVm>(builder: (context, vm, _)
     {
-      print("RESULT XX: ${(completed / vm.queue.length).isNaN}");
       return SafeArea(
         child: Scaffold(
-          body: vm.connectionLost
+          body: vm.isLoading
+              ? const Center(
+            child: LoadingWidget(),
+          ): vm.connectionLost
               ? const Center(
             child: Text("Connection lost"),
           )
@@ -249,7 +260,12 @@ class _DownloadScreenState extends State<DownloadScreen> {
                             children: [
                               SvgPicture.asset(
                                   AppConstants.send_file),
-                              PrimaryText(
+                             completed == vm.queue.length? PrimaryText(
+                               "Downloaded ${vm.queue.length}" +
+                                   "${vm.queue.length == 1 ? " File ":" Files "}",
+                               fontSize: 18,
+                               fontWeight: FontWeight.w600,
+                             ):PrimaryText(
                                 "Downloading ${vm.queue.length}" +
                                     "${vm.queue.length == 1 ? " File ":" Files "}",
                                 fontSize: 18,
@@ -272,11 +288,19 @@ class _DownloadScreenState extends State<DownloadScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ListView.separated(
+                        physics: BouncingScrollPhysics(),
                         itemCount: vm.queue.length,
                         itemBuilder: (context, index) {
-                          String type = mime(vm.queue[index]!.name)!
-                              .split("/")
-                              .first;
+                          String type ="";
+                          if(mime(vm.queue[index]!.name)!.split('/').first == "application"){
+                            if(mime(vm.queue[index]!.name)!.split('/').last == "vnd.android.package-archive"){
+                              type = "application";
+                            }else {
+                              type = 'document';
+                            }
+                          }else {
+                            type = mime(vm.queue[index]!.name)!.split('/').first;
+                          }
                           print(
                               "PROGRESS Report :${vm.queue[index]!.progress}");
                           String size =
@@ -340,7 +364,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                     PrimaryText(
                                       size,
                                       fontSize: 14,
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w600,
                                       color: Color(0xffAFAFAF),
                                     ),
                                     PrimaryText(
@@ -348,7 +372,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                           vm.queue[index]!.date)
                                           .toddMMMMyyyy(),
                                       fontSize: 14,
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w600,
                                       color: Color(0xffAFAFAF),
                                     ),
                                   ],
@@ -356,7 +380,26 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                 SizedBox(
                                   width: 5,
                                 ),
-                                CircularPercentIndicator(
+                                vm.queue[index]!.progress=="100"||vm.queue[index]!.progress=="Exist already"?InkWell(
+                                  onTap: (){ OpenFile.open(vm.queue[index]!.path);},
+                                  child: PrimaryText("Open",color: type == "video"
+                                      ? AppColors.kButtonSecondColor
+                                      : type == "audio"
+                                      ? AppColors
+                                      .kAudioPinkColor
+                                      : type == "image"
+                                      ? AppColors
+                                      .kImagePeachColor
+                                      : type == "document"
+                                      ? AppColors
+                                      .kDocGreenColor
+                                      : type == "application"
+                                      ? AppColors
+                                      .kPrimaryDarkBlackColor
+                                      : AppColors
+                                      .kPrimaryColor,      fontSize: 12,
+                                    fontWeight: FontWeight.w700,),
+                                ):CircularPercentIndicator(
                                   radius: 34.0,
                                   lineWidth: 3.0,
                                   animation: false,
@@ -380,12 +423,12 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                         "Exist already",
                                         fontSize: 4,
                                         color: Colors.black54,
-                                        fontWeight: FontWeight.w300,
+                                        fontWeight: FontWeight.w700,
                                       ) : PrimaryText(
                                         "${vm.queue[index]!.progress}%",
                                         fontSize: 6,
                                         color: Colors.black54,
-                                        fontWeight: FontWeight.w300,
+                                        fontWeight: FontWeight.w600,
                                       ),
                                     ],
                                   ),

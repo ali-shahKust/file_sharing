@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:quick_backup/custom_widgets/queues_screen.dart';
+import 'package:quick_backup/custom_widgets/upload_screen.dart';
 import 'package:quick_backup/data/models/queue_model.dart';
 import 'package:quick_backup/views/device_file_manager/category/audio_view.dart';
 import 'package:quick_backup/views/device_file_manager/category/images_view.dart';
@@ -34,15 +34,15 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => DashBoardScreen());
     case BackupFilesScreen.routeName:
       return MaterialPageRoute(builder: (context) => BackupFilesScreen());
-    case QuesScreen.routeName:
+    case UploadingScreen.routeName:
       return MaterialPageRoute(
-          builder: (context) => QuesScreen(
+          builder: (context) => UploadingScreen(
                 map: settings.arguments as Map,
               ));
     case DownloadScreen.routeName:
       return MaterialPageRoute(
           builder: (context) =>
-              DownloadScreen(files: settings.arguments as List<QueueModel>));
+              DownloadScreen(map: settings.arguments as Map));
     case CloudItemsScreen.routeName:
       return MaterialPageRoute(builder: (context) => CloudItemsScreen());
     case FileManagerHome.routeName:

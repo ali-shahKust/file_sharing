@@ -114,7 +114,6 @@ class OnlineBackUpVm extends BaseVm {
   set videos(List<DownloadModel> value) {
     _videos = value;
     notifyListeners();
-
   }
 
   List<DownloadModel> get audios => _audios;
@@ -122,7 +121,6 @@ class OnlineBackUpVm extends BaseVm {
   set audios(List<DownloadModel> value) {
     _audios = value;
     notifyListeners();
-
   }
 
   List<DownloadModel> get documents => _documents;
@@ -130,7 +128,6 @@ class OnlineBackUpVm extends BaseVm {
   set documents(List<DownloadModel> value) {
     _documents = value;
     notifyListeners();
-
   }
 
   List<DownloadModel> get apps => _apps;
@@ -138,7 +135,6 @@ class OnlineBackUpVm extends BaseVm {
   set apps(List<DownloadModel> value) {
     _apps = value;
     notifyListeners();
-
   }
 
   List get pics => _pics;
@@ -146,7 +142,6 @@ class OnlineBackUpVm extends BaseVm {
   set pics(List value) {
     _pics = value;
     notifyListeners();
-
   }
 
   List<QueueModel> get selectedFiles => _selectedFiles;
@@ -163,6 +158,7 @@ class OnlineBackUpVm extends BaseVm {
       videos.clear();
       images.clear();
       documents.clear();
+      apps.clear();
       usedSpace = 0;
       final ListResult result = await Amplify.Storage.list(
         options: ListOptions(accessLevel: StorageAccessLevel.protected),
@@ -202,13 +198,23 @@ class OnlineBackUpVm extends BaseVm {
               date: items[i].lastModified.toString(),
               size: items[i].size.toString(),
               isSelected: false));
-        } else {
-          apps.add(DownloadModel(
-              url: result.url,
-              key: items[i].key,
-              date: items[i].lastModified.toString(),
-              size: items[i].size.toString(),
-              isSelected: false));
+        } else if (mime(items[i].key)!.split("/").first == "application") {
+          print("mime type ${(mime(items[i].key))}");
+          if (mime(items[i].key)!.split("/").last == "vnd.android.package-archive") {
+            apps.add(DownloadModel(
+                url: result.url,
+                key: items[i].key,
+                date: items[i].lastModified.toString(),
+                size: items[i].size.toString(),
+                isSelected: false));
+          } else {
+            documents.add(DownloadModel(
+                url: result.url,
+                key: items[i].key,
+                date: items[i].lastModified.toString(),
+                size: items[i].size.toString(),
+                isSelected: false));
+          }
         }
         usedSpace += items[i].size!;
 
@@ -235,27 +241,35 @@ class OnlineBackUpVm extends BaseVm {
     notifyListeners();
   }
 
-  set addToSelectedList(DownloadModel file ) {
+  set addToSelectedList(DownloadModel file) {
     print('file to add in the list from app screen is $file');
-    this.selectedFiles.add(QueueModel(key:file.key,name: file.key, size: file.size, date: file.date, status: "pending", progress: "pending"));
+    this.selectedFiles.add(QueueModel(
+        key: file.key,
+        name: file.key,
+        size: file.size,
+        date: file.date,
+        status: "pending",
+        progress: "pending"));
     notifyListeners();
   }
+
   void selectAllInList(List<DownloadModel> list) {
     list.forEach((element) {
       element.isSelected = true;
       addToSelectedList = element;
-
     });
     notifyListeners();
   }
+
   void unselectAllInList(List<DownloadModel> list) {
     list.forEach((element) {
-        element.isSelected = false;
-        removeFromSelectedList = element;
+      element.isSelected = false;
+      removeFromSelectedList = element;
     });
     notifyListeners();
   }
-  clearAllSelection(){
+
+  clearAllSelection() {
     selectedFiles.clear();
     _isAllAppsSelected = false;
     _isAllAudioSelected = false;

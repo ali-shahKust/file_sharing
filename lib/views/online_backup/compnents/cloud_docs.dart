@@ -142,6 +142,8 @@ class _CloudDocsState extends State<CloudDocs> {
                       child: Stack(
                         children: [
                           ListView.builder(
+                            physics: BouncingScrollPhysics(),
+
                             padding:
                                 EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
                             itemCount: vm.documents.length,
@@ -192,8 +194,8 @@ class _CloudDocsState extends State<CloudDocs> {
                                   //  pd.show(max: 100, msg: 'File Uploading...');
                                   if (vm.selectedFiles.length > 0) {
                                     Navigator.pushNamed(
-                                        context, DownloadScreen.routeName,
-                                        arguments: vm.selectedFiles);
+                                      context, DownloadScreen.routeName,
+                                      arguments: {'files':vm.selectedFiles,"drawer":false},);
                                   }
                                 },
                                 btnColor: AppColors.kGreyColor,

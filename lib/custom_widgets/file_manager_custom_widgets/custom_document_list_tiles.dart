@@ -9,7 +9,7 @@ import 'package:quick_backup/constants/app_strings.dart';
 import 'package:quick_backup/constants/app_style.dart';
 import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
-import 'package:quick_backup/custom_widgets/queues_screen.dart';
+import 'package:quick_backup/custom_widgets/upload_screen.dart';
 import 'package:quick_backup/data/models/file_model.dart';
 import 'package:quick_backup/utilities/file_manager_utilities.dart';
 import 'package:quick_backup/utilities/general_utilities.dart';
@@ -157,7 +157,7 @@ class CustomDocumentListTile extends StatelessWidget {
                     onTap: () async {
                       //  pd.show(max: 100, msg: 'File Uploading...');
                       if (provider.selectedFiles.length > 0) {
-                        Navigator.pushNamed(context, QuesScreen.routeName, arguments: {'files': provider.selectedFiles, "drawer": false})
+                        Navigator.pushNamed(context, UploadingScreen.routeName, arguments: {'files': provider.selectedFiles, "drawer": false})
                             .whenComplete(() {
                           print('whencomplete call...');
                           // provider.selectedFiles.clear();

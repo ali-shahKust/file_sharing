@@ -10,7 +10,7 @@ import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/constants/app_strings.dart';
 import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
-import 'package:quick_backup/custom_widgets/queues_screen.dart';
+import 'package:quick_backup/custom_widgets/upload_screen.dart';
 import 'package:quick_backup/data/models/file_model.dart';
 import 'package:quick_backup/utilities/general_utilities.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
@@ -161,7 +161,7 @@ class _ImagesViewState extends State<ImagesView> with SingleTickerProviderStateM
                                             onTap: () async {
                                               //  pd.show(max: 100, msg: 'File Uploading...');
                                               if (provider.selectedFiles.length > 0) {
-                                                Navigator.pushNamed(context, QuesScreen.routeName,
+                                                Navigator.pushNamed(context, UploadingScreen.routeName,
                                                         arguments: {'files': provider.selectedFiles, "drawer": false})
                                                     .whenComplete(() {
                                                   print('whencomplete call...');

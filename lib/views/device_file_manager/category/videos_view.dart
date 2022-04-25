@@ -12,7 +12,7 @@ import 'package:quick_backup/data/models/file_model.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
-import '../../../custom_widgets/queues_screen.dart';
+import '../../../custom_widgets/upload_screen.dart';
 
 class VideosView extends StatefulWidget {
   static const routeName = 'videos';
@@ -144,7 +144,7 @@ class _VideosViewState extends State<VideosView> {
                                 //  pd.show(max: 100, msg: 'File Uploading...');
                                 if (provider.selectedFiles.length > 0) {
                                   print('Button pressed.');
-                                  Navigator.pushNamed(context, QuesScreen.routeName, arguments: {'files':provider.selectedFiles,"drawer":false})
+                                  Navigator.pushNamed(context, UploadingScreen.routeName, arguments: {'files':provider.selectedFiles,"drawer":false})
                                       .whenComplete(() {
                                     print('whencomplete call...');
                                     // provider.selectedFiles.clear();
