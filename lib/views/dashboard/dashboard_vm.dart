@@ -15,6 +15,7 @@ import 'package:quick_backup/custom_widgets/InfoDialoge.dart';
 import 'package:quick_backup/data/base/base_vm.dart';
 import 'package:quick_backup/data/local_db/database_helper.dart';
 import 'package:quick_backup/custom_widgets/queues_screen.dart';
+import 'package:quick_backup/utilities/general_utilities.dart';
 import 'package:quick_backup/utilities/pref_provider.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/core_vm.dart';
@@ -85,7 +86,7 @@ class DashBoardVm extends BaseVm {
     queue.clear();
     completed = 0;
     for (var element in file) {
-      String filename = element.path.split('/').last;
+      String filename =  GeneralUtilities.getFileName(element.path);
       String date = element.statSync().modified.toString();
 
       queue.add(QueueModel(
@@ -100,7 +101,7 @@ class DashBoardVm extends BaseVm {
     }
 
     for (int i = 0; i < file.length; i++) {
-      String filename = file[i].path.split('/').last;
+      String filename =  GeneralUtilities.getFileName(file[i].path);
       String _folderkey = mime(filename)!.split('/').first;
       print("MIME IS ${_folderkey}");
       String fileKey = _folderkey +"/" + filename;

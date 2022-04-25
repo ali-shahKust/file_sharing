@@ -84,4 +84,22 @@ class GeneralUtilities {
     debugPrint("$randomNumber is in the range of $min and $max");
     return randomNumber;
   }
+  // static String getFileName(String fileKey) {
+  //   var fileName = fileKey.split('/');
+  //   if(fileName!=null){
+  //     if(fileName.contains('base.apk')){
+  //       var  appFileName = fileName[fileName.length-2].split('-').first+'.apk';
+  //       print('final app name is $appFileName');
+  //       return appFileName;
+  //     }
+  //     else{
+  //       return fileName.last;
+  //     }
+  //
+  //   }
+  //   else{
+  //     return fileKey;
+  //   }
+  //
+  // }
 }
