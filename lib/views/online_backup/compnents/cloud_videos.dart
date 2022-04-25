@@ -166,31 +166,33 @@ class _CloudVideosState extends State<CloudVideos> {
                             //   return CustomDivider();
                             // },
                           ),
-                          Visibility(
-                            visible: vm.selectedFiles.length > 0
-                                ? true
-                                : false,
-                            child: Positioned(
-                              bottom: SizeConfig.screenHeight! * 0.012,
-                              left: SizeConfig.screenWidth! * 0.005,
-                              right: SizeConfig.screenWidth! * 0.005,
-                              child: BackupButton(
-                                text: 'Recover Now',
-                                width: SizeConfig.screenWidth! * 0.58,
-                                onTap: () async {
-                                  //  pd.show(max: 100, msg: 'File Uploading...');
-                                  if (vm.selectedFiles.length > 0) {
-                                    Navigator.pushNamed(
-                                      context, DownloadScreen.routeName,
-                                      arguments: {'files':vm.selectedFiles,"drawer":false},);
-                                  }
-                                },
-                                btnColor: AppColors.kGreyColor,
-                                padding: SizeConfig.screenHeight! * 0.02,
-                              ),
-                            ),
-                          ),
+
                         ],
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: vm.selectedFiles.length > 0 ? true : false,
+                    child: Expanded(
+                      flex: 3,
+                      child: Container(
+                        color: Colors.white,
+                        // width: SizeConfig.screenWidth!*1,
+                        // height: SizeConfig.screenHeight!*0.1,
+                        child: BackupButton(
+                          text: 'Recover Now',
+                          width: SizeConfig.screenWidth! * 0.58,
+                          onTap: () async {
+                            //  pd.show(max: 100, msg: 'File Uploading...');
+                            if (vm.selectedFiles.length > 0) {
+                              Navigator.pushNamed(
+                                context, DownloadScreen.routeName,
+                                arguments: {'files':vm.selectedFiles,"drawer":false},);
+                            }
+                          },
+                          btnColor: AppColors.kGreyColor,
+                          padding: SizeConfig.screenHeight! * 0.02,
+                        ),
                       ),
                     ),
                   ),

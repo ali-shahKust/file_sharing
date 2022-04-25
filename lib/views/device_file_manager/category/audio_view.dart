@@ -210,35 +210,39 @@ class _AudioViewsState extends State<AudioViews> {
                                     //   return CustomDivider();
                                     // },
                                   ),
-                                  Visibility(
-                                    visible: provider.selectedFiles.length > 0 ? true : false,
-                                    child: Positioned(
-                                      bottom: SizeConfig.screenHeight! * 0.012,
-                                      left: SizeConfig.screenWidth! * 0.005,
-                                      right: SizeConfig.screenWidth! * 0.005,
-                                      child: BackupButton(
-                                        text: '${AppStrings.backup}',
-                                        width: SizeConfig.screenWidth! * 0.58,
-                                        onTap: () async {
-                                          //  pd.show(max: 100, msg: 'File Uploading...');
-                                          if (provider.selectedFiles.length > 0) {
-                                            Navigator.pushNamed(context, UploadingScreen.routeName,
-                                                    arguments: {'files': provider.selectedFiles, "drawer": false})
-                                                .whenComplete(() {
-                                              print('whencomplete call...');
-                                              // provider.selectedFiles.clear();
-                                              // provider.clearAllSelectedLists();
-                                            });
-                                          }
-                                        },
-                                        btnColor: AppColors.kGreyColor,
-                                        padding: SizeConfig.screenHeight! * 0.02,
-                                      ),
-                                    ),
-                                  ),
+
                                 ],
                               ),
                             ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: provider.selectedFiles.length > 0 ? true : false,
+                    child: Expanded(
+                      flex: 3,
+                      child: Container(
+                        color: Colors.white,
+                        // width: SizeConfig.screenWidth!*1,
+                        // height: SizeConfig.screenHeight!*0.1,
+                        child: BackupButton(
+                          text: '${AppStrings.backup}  (${provider.selectedFiles.length})',
+                          width: SizeConfig.screenWidth! * 0.58,
+                          onTap: () async {
+                            //  pd.show(max: 100, msg: 'File Uploading...');
+                            if (provider.selectedFiles.length > 0) {
+                              Navigator.pushNamed(context, UploadingScreen.routeName,
+                                  arguments: {'files': provider.selectedFiles, "drawer": false})
+                                  .whenComplete(() {
+                                print('whencomplete call...');
+                                // provider.selectedFiles.clear();
+                                // provider.clearAllSelectedLists();
+                              });
+                            }
+                          },
+                          btnColor: AppColors.kGreyColor,
+                          padding: SizeConfig.screenHeight! * 0.02,
+                        ),
+                      ),
                     ),
                   ),
                 ],

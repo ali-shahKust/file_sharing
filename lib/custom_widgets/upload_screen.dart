@@ -41,7 +41,7 @@ class _UploadingScreenState extends State<UploadingScreen> {
         Provider.of<DashBoardVm>(context, listen: false)
             .uploadFile(widget.map['files'], context)
             .then((value) {
-          if (completed ==
+          if (completed!=0 && completed ==
               Provider.of<DashBoardVm>(context, listen: false).queue.length) {
             showDialog(
               barrierDismissible: false,

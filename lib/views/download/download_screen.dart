@@ -94,7 +94,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
           }
         });
       }else {
-        if (completed ==
+        if (completed!=0 &&completed ==
             Provider
                 .of<DownloadVm>(context, listen: false)
                 .queue

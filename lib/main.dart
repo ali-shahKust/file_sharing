@@ -75,13 +75,10 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           initialRoute: SplashScreen.routeName,
           theme: ThemeData(
+            fontFamily: 'AvenirNextLTPro',
             pageTransitionsTheme: const PageTransitionsTheme(builders: {TargetPlatform.android: CupertinoPageTransitionsBuilder(),}),
           ),
           onGenerateRoute: (settings) => generateRoute(settings),
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            fontFamily: 'AvenirNextLTPro',
-          ),
         ));
   }
 }

@@ -45,14 +45,17 @@ class DrawerWidgetItems extends StatelessWidget {
                   child: Row(
                     children: [
                       Badge(
+
                         showBadge:
-                        Provider.of<AppModel>(context).queue.length == 0
+                        Provider.of<DashBoardVm>(context).queue.length == 0
                                 ? false
                                 : true,
                         badgeContent: PrimaryText(
-                          '${Provider.of<AppModel>(context).queue.length}',
-                          color: AppColors.kAvatarRed,
+                          '${Provider.of<DashBoardVm>(context).queue.length}',
+                          color: AppColors.kWhiteColor,
+                          fontSize: 12,
                         ),
+                        badgeColor: AppColors.kPrimaryColor,
                         child: Icon(
                           Icons.list,
                           color: Colors.white,
@@ -81,13 +84,16 @@ class DrawerWidgetItems extends StatelessWidget {
                   children: [
                     Badge(
                       showBadge:
-                      Provider.of<AppModel>(context).downloadQueue.length == 0
+                      Provider.of<DownloadVm>(context).queue.length == 0
                               ? false
                               : true,
                       badgeContent: PrimaryText(
-                        '${Provider.of<AppModel>(context).downloadQueue.length}',
-                        color: AppColors.kAvatarRed,
+                        '${Provider.of<DownloadVm>(context).queue.length}',
+                        color: AppColors.kWhiteColor,
+                        fontSize: 12,
+
                       ),
+                      badgeColor: AppColors.kPrimaryColor,
                       child: Icon(
                         Icons.list,
                         color: Colors.white,

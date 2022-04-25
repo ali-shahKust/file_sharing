@@ -15,7 +15,6 @@ import 'package:quick_backup/data/models/queue_model.dart';
 import '../../utilities/pref_provider.dart';
 
 class OnlineBackUpVm extends BaseVm {
-  var queue = GetIt.I.get<AppModel>().queue;
   List _pics = [];
   List<DownloadModel> _images = [];
   List<DownloadModel> _videos = [];

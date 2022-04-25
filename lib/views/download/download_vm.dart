@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_backup/constants/app_constants.dart';
@@ -12,7 +13,12 @@ import 'package:quick_backup/data/models/app_model.dart';
 import 'package:quick_backup/data/models/queue_model.dart';
 import 'package:quick_backup/utilities/pref_provider.dart';
 
+import '../../configurations/size_config.dart';
+import '../../custom_widgets/app_text_widget.dart';
+import '../../utilities/i_utills.dart';
+import '../dashboard/dashboard_screen.dart';
 import '../dashboard/dashboard_vm.dart';
+import '../online_backup/online_backup_vm.dart';
 
 class DownloadVm extends BaseVm {
 
@@ -23,7 +29,7 @@ class DownloadVm extends BaseVm {
 
 
   StreamSubscription? subscription;
-  bool _isLoading = false;
+  bool _isLoading = true;
 
 
   bool get isLoading => _isLoading;
@@ -42,6 +48,7 @@ class DownloadVm extends BaseVm {
     notifyListeners();
   }
   loader()async {
+    isLoading = true;
     await Future.delayed(Duration(seconds: 2));
     isLoading = false;
   }
@@ -75,6 +82,8 @@ class DownloadVm extends BaseVm {
           "/${AppConstants.appName}/" +
           '/${files[i].key!.replaceAll("${Provider.of<PreferencesProvider>(context,listen: false).userCognito}/", "")}';
       final file = File(filepath);
+
+      print("File path is ${files[i].key}");
       bool fileExists = await file.exists();
       if (!fileExists) {
         try {
@@ -87,8 +96,6 @@ class DownloadVm extends BaseVm {
                     (progress.getFractionCompleted() * 100).round().toString();
                 queue[i]!.id = i;
                 queue[i]!.path = file.path;
-
-                print("File Path: ${queue[i]!.path}");
                 if ((progress.getFractionCompleted() * 100).round() == 100) {
                   completed = i + 1;
                 }
@@ -111,5 +118,6 @@ class DownloadVm extends BaseVm {
         print("File Already Exist");
       }
     }
+
   }
 }
