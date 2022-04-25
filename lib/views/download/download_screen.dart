@@ -93,6 +93,58 @@ class _DownloadScreenState extends State<DownloadScreen> {
                 });
           }
         });
+      }else {
+        if (completed ==
+            Provider
+                .of<DownloadVm>(context, listen: false)
+                .queue
+                .length) {
+          showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      PrimaryText(
+                        "All Files Downloaded Successfully.",
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
+                      SizedBox(
+                        height: SizeConfig.screenHeight! * 0.053,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          completed = 0;
+                          Provider
+                              .of<DashBoardVm>(context, listen: false)
+                              .queue
+                              .clear();
+                          Provider
+                              .of<OnlineBackUpVm>(context, listen: false)
+                              .selectedFiles
+                              .clear();
+                          Navigator.pushNamedAndRemoveUntil(context,
+                              DashBoardScreen.routeName, (route) => false);
+                        },
+                        child: iUtills().gradientButton(
+                            width: SizeConfig.screenWidth! * 0.253,
+                            height: SizeConfig.screenHeight! * 0.053,
+                            child: Center(
+                                child: PrimaryText(
+                                  "OK",
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ))),
+                      )
+                    ],
+                  ),
+                );
+              });
+        }
       }
     });
     super.initState();

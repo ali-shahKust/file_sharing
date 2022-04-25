@@ -13,6 +13,7 @@ class AppModel extends BaseVm  {
 
 
    List<QueueModel?> _queue=[];
+   List<QueueModel?> _downloadQueue=[];
 
   StreamSubscription? subscription;
 
@@ -21,6 +22,14 @@ class AppModel extends BaseVm  {
 
   set queue( List<QueueModel?> value) {
     _queue = value;
+    notifyListeners();
+  }
+
+
+   List<QueueModel?> get downloadQueue => _downloadQueue;
+
+  set downloadQueue(List<QueueModel?> value) {
+    _downloadQueue = value;
     notifyListeners();
   }
 

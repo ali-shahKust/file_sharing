@@ -30,7 +30,7 @@ class DashBoardVm extends BaseVm {
   DashBoardVm(){
     loader();
   }
-  List<QueueModel?> queue=[];
+  var queue = GetIt.I.get<AppModel>().queue;
   List<File> _files = [];
   StreamSubscription? subscription;
   var dbHelper = GetIt.I.get<DatabaseHelper>();

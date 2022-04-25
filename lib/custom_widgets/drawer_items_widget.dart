@@ -4,6 +4,7 @@ import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/custom_widgets/app_text_widget.dart';
 import 'package:quick_backup/custom_widgets/bages/badge.dart';
 import 'package:quick_backup/custom_widgets/upload_screen.dart';
+import 'package:quick_backup/data/models/app_model.dart';
 import 'package:quick_backup/views/dashboard/dashboard_vm.dart';
 import 'package:quick_backup/views/download/download_screen.dart';
 import 'package:quick_backup/views/download/download_vm.dart';
@@ -45,11 +46,11 @@ class DrawerWidgetItems extends StatelessWidget {
                     children: [
                       Badge(
                         showBadge:
-                            Provider.of<DashBoardVm>(context).queue.length == 0
+                        Provider.of<AppModel>(context).queue.length == 0
                                 ? false
                                 : true,
                         badgeContent: PrimaryText(
-                          '${Provider.of<DashBoardVm>(context).queue.length}',
+                          '${Provider.of<AppModel>(context).queue.length}',
                           color: AppColors.kAvatarRed,
                         ),
                         child: Icon(
@@ -80,11 +81,11 @@ class DrawerWidgetItems extends StatelessWidget {
                   children: [
                     Badge(
                       showBadge:
-                          Provider.of<DashBoardVm>(context).queue.length == 0
+                      Provider.of<AppModel>(context).downloadQueue.length == 0
                               ? false
                               : true,
                       badgeContent: PrimaryText(
-                        '${Provider.of<DashBoardVm>(context).queue.length}',
+                        '${Provider.of<AppModel>(context).downloadQueue.length}',
                         color: AppColors.kAvatarRed,
                       ),
                       child: Icon(
