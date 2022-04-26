@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:open_file/open_file.dart';
@@ -10,14 +9,12 @@ import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_d
 import 'package:quick_backup/custom_widgets/loading_widget.dart';
 import 'package:quick_backup/data/extension.dart';
 import 'package:provider/provider.dart';
-import 'package:quick_backup/data/models/queue_model.dart';
 import 'package:quick_backup/utilities/file_manager_utilities.dart';
 import 'package:quick_backup/views/dashboard/dashboard_screen.dart';
 import 'package:quick_backup/views/download/download_vm.dart';
 import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 import '../../configurations/size_config.dart';
 import '../../custom_widgets/app_text_widget.dart';
-import '../../utilities/custom_theme.dart';
 import '../../utilities/general_utilities.dart';
 import '../../utilities/i_utills.dart';
 import '../dashboard/dashboard_vm.dart';
@@ -41,7 +38,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
         Provider.of<DownloadVm>(context, listen: false).downloadFile(
 
             widget.map['files'], context).then((value) {
-          if (completed ==
+          if (Provider.of<DownloadVm>(context, listen: false).completed ==
               Provider
                   .of<DownloadVm>(context, listen: false)
                   .queue
@@ -65,7 +62,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                         ),
                         InkWell(
                           onTap: () {
-                            completed = 0;
+                            Provider.of<DownloadVm>(context, listen: false).completed = 0;
                             Provider
                                 .of<DashBoardVm>(context, listen: false)
                                 .queue
@@ -94,7 +91,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
           }
         });
       }else {
-        if (completed!=0 &&completed ==
+        if ( Provider.of<DownloadVm>(context, listen: false).completed!=0 && Provider.of<DownloadVm>(context, listen: false).completed ==
             Provider
                 .of<DownloadVm>(context, listen: false)
                 .queue
@@ -118,7 +115,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                       ),
                       InkWell(
                         onTap: () {
-                          completed = 0;
+                          Provider.of<DownloadVm>(context, listen: false).completed = 0;
                           Provider
                               .of<DashBoardVm>(context, listen: false)
                               .queue
@@ -259,21 +256,21 @@ class _DownloadScreenState extends State<DownloadScreen> {
                               .queue[0]!
                               .progress) /
                               100:
-                          (completed / vm.queue.length).isNaN
+                          (vm.completed / vm.queue.length).isNaN
                               ? 0.0
-                              : completed / vm.queue.length,
+                              : vm.completed / vm.queue.length,
                           center: Column(
                             mainAxisAlignment:
                             MainAxisAlignment.center,
                             children: [
                               PrimaryText(
-                                vm.queue.length==1?"${vm.queue[0]!.progress}%":"${((completed / vm.queue.length) * 100)
+                                vm.queue.length==1?"${vm.queue[0]!.progress}%":"${((vm.completed / vm.queue.length) * 100)
                                     .toStringAsFixed(0)}%",
                                 fontSize: 34,
                                 fontWeight: FontWeight.w700,
                               ),
                               PrimaryText(
-                                "Completed",
+                                "vm.completed",
                                 fontSize: 17,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -312,7 +309,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                             children: [
                               SvgPicture.asset(
                                   AppConstants.send_file),
-                             completed == vm.queue.length? PrimaryText(
+                             vm.completed == vm.queue.length? PrimaryText(
                                "Downloaded ${vm.queue.length}" +
                                    "${vm.queue.length == 1 ? " File ":" Files "}",
                                fontSize: 18,

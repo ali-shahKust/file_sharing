@@ -145,6 +145,11 @@ class DashBoardVm extends BaseVm {
       } catch (e) {
         print(e.toString());
       }
+      if(completed!=0 && completed==queue.length){
+        queue.clear();
+        completed = 0;
+        notifyListeners();
+      }
     }
   }
    permissionCheck(BuildContext ?parentContext,int ?osVersion,PermissionStatus status){
