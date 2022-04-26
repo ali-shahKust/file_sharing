@@ -26,7 +26,7 @@ class DownloadVm extends BaseVm {
     loader();
   }
   var queue = GetIt.I.get<AppModel>().downloadQueue;
-
+  int completed= 0;
 
   StreamSubscription? subscription;
   bool _isLoading = true;
@@ -72,6 +72,7 @@ class DownloadVm extends BaseVm {
   Future<void> downloadFile(
       List<QueueModel> files,context
       ) async {
+    completed = 0;
     queue.clear();
     await Future.delayed(Duration(seconds: 2));
     queue.addAll(files);
@@ -79,7 +80,7 @@ class DownloadVm extends BaseVm {
     final documentsDir = "/storage/emulated/0";
     for (int i = 0; i < files.length; i++) {
       final filepath = documentsDir +
-          "/${AppConstants.appName}/" +
+          "/${AppConstants.appName}" +
           '/${files[i].key!.replaceAll("${Provider.of<PreferencesProvider>(context,listen: false).userCognito}/", "")}';
       final file = File(filepath);
 
@@ -116,6 +117,11 @@ class DownloadVm extends BaseVm {
         await Future.delayed(Duration.zero);
         notifyListeners();
         print("File Already Exist");
+      }
+      if(completed!=0 && completed==queue.length){
+        queue.clear();
+        completed = 0;
+        notifyListeners();
       }
     }
 

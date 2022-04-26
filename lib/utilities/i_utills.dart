@@ -88,7 +88,7 @@ class iUtills {
     return Flushbar(
       title: "Success",
       message: "Username updated successfully.",
-      duration: Duration(seconds: 3),
+      duration: Duration(seconds:2),
       backgroundGradient: LinearGradient(colors: [  Color(0xffFFA37C),
         Color(0xffFE7940),
         Color(0xffFF9A70),]),

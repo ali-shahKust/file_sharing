@@ -128,12 +128,9 @@ class _FileManagerHomeState extends State<FileManagerHome> {
   @override
   void initState() {
     super.initState();
-
     SchedulerBinding.instance!.addPostFrameCallback((_) {
-
       Provider.of<CategoryVm>(context, listen: false).selectedFiles.clear();
       Provider.of<CategoryVm>(context, listen: false).clearAllSelectedLists();
-
       // Provider.of<DocumentVm>(context, listen: false).getTextFile();
     });
   }
