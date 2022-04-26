@@ -43,21 +43,6 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
 
       return Scaffold(
         backgroundColor: AppColors.kPrimaryPurpleColor,
-        // bottomNavigationBar: BottomAppBar(
-        //   child: ElevatedButton(
-        //     onPressed: () async {
-        //       bool granted = await Permission.manageExternalStorage.isGranted;
-        //       if (granted) {
-        //         print("Files ${vm.pics.length}");
-        //         await Navigator.pushNamed(context, DownloadScreen.routeName,
-        //             arguments: vm.pics);
-        //       } else {
-        //         await Permission.manageExternalStorage.request();
-        //       }
-        //     },
-        //     child: const Text("Restore all"),
-        //   ),
-        // ),
         body: SafeArea(
           child: Container(
             width: SizeConfig.screenWidth,
@@ -214,12 +199,12 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
       children: [
         SvgPicture.asset(
           icon,
-          width: 32,
-          height: 32,
+          width: SizeConfig.screenWidth!*0.05,
+          height: SizeConfig.screenHeight!*0.04,
           fit: BoxFit.fill,
         ),
         SizedBox(
-          width: 20,
+          width: SizeConfig.screenWidth!*0.04 ,
         ),
         Column(
           children: [
