@@ -11,13 +11,7 @@ import '../constants/app_colors.dart';
 import '../data/models/queue_model.dart';
 import '../views/download/download_screen.dart';
 
-Widget cloudFileCard(
-    {required context,
-    icon,
-    title,
-    size,
-    isSelected,
-    required DownloadModel item}) {
+Widget cloudFileCard({required context, icon, title, size, isSelected, required DownloadModel item}) {
   return Container(
     height: SizeConfig.screenHeight! * 0.15,
     color: AppColors.kWhiteColor,
@@ -56,11 +50,11 @@ Widget cloudFileCard(
                 ),
                 trailing: FocusedMenuHolder(
                   menuWidth: SizeConfig.screenHeight! * 0.24,
-                  blurSize: 3,
+                  blurSize: 0.3,
                   blurBackgroundColor: Colors.black54,
                   openWithTap: true,
-                  menuOffset: 10.0,
-                  bottomOffsetHeight: 80.0,
+                  menuOffset: 5.0,
+                  bottomOffsetHeight: 60.0,
                   onPressed: () {
                     print('menu is tapped.....');
                   },
@@ -68,23 +62,23 @@ Widget cloudFileCard(
                     FocusedMenuItem(
                         title: PrimaryText(
                           "Restore",
-                          color: AppColors.kPrimaryColor,
+                          fontSize: SizeConfig.screenHeight! * 0.02,
+                          color: AppColors.kPrimaryPurpleColor,
                         ),
                         trailingIcon: Icon(
                           Icons.restore_sharp,
-                          color: AppColors.kPrimaryColor,
+                          color: AppColors.kPrimaryPurpleColor,
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, DownloadScreen.routeName,
-                              arguments: <QueueModel>[
-                                QueueModel(
-                                    key: item.key,
-                                    name: item.key,
-                                    size: item.size,
-                                    date: item.date,
-                                    status: "pending",
-                                    progress: "pending")
-                              ]);
+                          Navigator.pushNamed(context, DownloadScreen.routeName, arguments: <QueueModel>[
+                            QueueModel(
+                                key: item.key,
+                                name: item.key,
+                                size: item.size,
+                                date: item.date,
+                                status: "pending",
+                                progress: "pending")
+                          ]);
                           // Navigator.push(context, MaterialPageRoute(builder: (context)=>ScreenTwo()));
                         }),
                     // FocusedMenuItem(
@@ -153,9 +147,7 @@ Widget cloudFileCard(
                 child: Container(
                   height: SizeConfig.screenHeight! * 0.1,
                   width: SizeConfig.screenWidth! * 0.07,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.kPrimaryPurpleColor),
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.kPrimaryPurpleColor),
                   child: Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Icon(
