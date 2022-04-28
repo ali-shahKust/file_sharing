@@ -38,32 +38,7 @@ class _CloudImagesState extends State<CloudImages> {
                       Navigator.pop(context);
 
                     }),
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 8.0),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       IconButton(
-                //           onPressed: () {
-                //             Navigator.pop(context);
-                //           },
-                //           icon: Icon(
-                //             Icons.arrow_back_ios,
-                //             size: SizeConfig.screenHeight! * 0.024,
-                //             color: Colors.black,
-                //           )),
-                //       PrimaryText(
-                //         "Images",
-                //         fontSize: SizeConfig.screenHeight! * 0.020,
-                //         fontWeight: FontWeight.w500,
-                //         color: Colors.black,
-                //       ),
-                //       SizedBox(
-                //         width: 50,
-                //       )
-                //     ],
-                //   ),
-                // ),
+
                 GeneralUtilities.noDataFound(),
               ],
             ):Container(
@@ -87,32 +62,6 @@ class _CloudImagesState extends State<CloudImages> {
                         Navigator.pop(context);
 
                       }),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(top: 8.0),
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //     children: [
-                  //       IconButton(
-                  //           onPressed: () {
-                  //             Navigator.pop(context);
-                  //           },
-                  //           icon: Icon(
-                  //             Icons.arrow_back_ios,
-                  //             size: SizeConfig.screenHeight! * 0.024,
-                  //             color: Colors.white,
-                  //           )),
-                  //       PrimaryText(
-                  //         widget.title,
-                  //         fontSize: SizeConfig.screenHeight! * 0.020,
-                  //         fontWeight: FontWeight.w500,
-                  //       ),
-                  //       SizedBox(
-                  //         width: 50,
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
-
                   Expanded(
                     flex: 2,
                     child: Row(
@@ -154,43 +103,47 @@ class _CloudImagesState extends State<CloudImages> {
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(30),
                               topRight: Radius.circular(30))),
-                      child: Stack(
-                        children: [
-                          ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                      child: Column(
 
-                            padding:
-                                EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
-                            itemCount: vm.images.length,
-                            itemBuilder: (
-                              BuildContext context,
-                              int index,
-                            ) {
-                              return InkWell(
-                                onTap: () {
-                                  vm.images[index].isSelected =
-                                      !vm.images[index].isSelected;
-                                  if (vm.images[index].isSelected) {
-                                    vm.addToSelectedList =
-                                        vm.images[index];
-                                  } else {
-                                    vm.removeFromSelectedList =
-                                        vm.images[index];
-                                  }
-                                },
-                                child: cloudFileCard(
-                                    context: context,
-                                    size: vm.images[index].size,
-                                    title: vm.images[index].key,
-                                    item: vm.images[index],
-                                    icon: AppConstants.images_icon,
-                                    isSelected:
-                                        vm.images[index].isSelected),
-                              );
-                            },
-                            // separatorBuilder: (BuildContext context, int index) {
-                            //   return CustomDivider();
-                            // },
+                        children: [
+                          SizedBox(height: SizeConfig.screenHeight!*0.02,),
+                          Expanded(
+                            child: ListView.builder(
+                              physics: BouncingScrollPhysics(),
+
+                              padding:
+                                  EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
+                              itemCount: vm.images.length,
+                              itemBuilder: (
+                                BuildContext context,
+                                int index,
+                              ) {
+                                return InkWell(
+                                  onTap: () {
+                                    vm.images[index].isSelected =
+                                        !vm.images[index].isSelected;
+                                    if (vm.images[index].isSelected) {
+                                      vm.addToSelectedList =
+                                          vm.images[index];
+                                    } else {
+                                      vm.removeFromSelectedList =
+                                          vm.images[index];
+                                    }
+                                  },
+                                  child: cloudFileCard(
+                                      context: context,
+                                      size: vm.images[index].size,
+                                      title: vm.images[index].key,
+                                      item: vm.images[index],
+                                      icon: AppConstants.images_icon,
+                                      isSelected:
+                                          vm.images[index].isSelected),
+                                );
+                              },
+                              // separatorBuilder: (BuildContext context, int index) {
+                              //   return CustomDivider();
+                              // },
+                            ),
                           ),
 
                         ],

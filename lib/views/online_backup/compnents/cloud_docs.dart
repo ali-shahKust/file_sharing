@@ -36,32 +36,6 @@ class _CloudDocsState extends State<CloudDocs> {
                       Navigator.pop(context);
 
                     }),
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 8.0),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       IconButton(
-                //           onPressed: () {
-                //             Navigator.pop(context);
-                //           },
-                //           icon: Icon(
-                //             Icons.arrow_back_ios,
-                //             size: SizeConfig.screenHeight! * 0.024,
-                //             color: Colors.black,
-                //           )),
-                //       PrimaryText(
-                //         "",
-                //         fontSize: SizeConfig.screenHeight! * 0.020,
-                //         fontWeight: FontWeight.w500,
-                //         color: Colors.black,
-                //       ),
-                //       SizedBox(
-                //         width: 50,
-                //       )
-                //     ],
-                //   ),
-                // ),
                 GeneralUtilities.noDataFound(),
               ],
             ):Container(
@@ -152,43 +126,43 @@ class _CloudDocsState extends State<CloudDocs> {
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(30),
                               topRight: Radius.circular(30))),
-                      child: Stack(
+                      child: Column(
                         children: [
-                          ListView.builder(
-                            physics: BouncingScrollPhysics(),
+                          SizedBox(height: SizeConfig.screenHeight!*0.02,),
+                          Expanded(
+                            child: ListView.builder(
+                              physics: BouncingScrollPhysics(),
 
-                            padding:
-                                EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
-                            itemCount: vm.documents.length,
-                            itemBuilder: (
-                              BuildContext context,
-                              int index,
-                            ) {
-                              return InkWell(
-                                onTap: () {
-                                  vm.documents[index].isSelected =
-                                      !vm.documents[index].isSelected;
-                                  if (vm.documents[index].isSelected) {
-                                    vm.addToSelectedList =
-                                        vm.documents[index];
-                                  } else {
-                                    vm.removeFromSelectedList =
-                                        vm.documents[index];
-                                  }
-                                },
-                                child: cloudFileCard(
-                                    context: context,
-                                    size: vm.documents[index].size,
-                                    title: vm.documents[index].key,
-                                    icon: AppConstants.document_icon,
-                                    item: vm.documents[index],
-                                    isSelected:
-                                        vm.documents[index].isSelected),
-                              );
-                            },
-                            // separatorBuilder: (BuildContext context, int index) {
-                            //   return CustomDivider();
-                            // },
+                              padding:
+                                  EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
+                              itemCount: vm.documents.length,
+                              itemBuilder: (
+                                BuildContext context,
+                                int index,
+                              ) {
+                                return InkWell(
+                                  onTap: () {
+                                    vm.documents[index].isSelected =
+                                        !vm.documents[index].isSelected;
+                                    if (vm.documents[index].isSelected) {
+                                      vm.addToSelectedList =
+                                          vm.documents[index];
+                                    } else {
+                                      vm.removeFromSelectedList =
+                                          vm.documents[index];
+                                    }
+                                  },
+                                  child: cloudFileCard(
+                                      context: context,
+                                      size: vm.documents[index].size,
+                                      title: vm.documents[index].key,
+                                      icon: AppConstants.document_icon,
+                                      item: vm.documents[index],
+                                      isSelected:
+                                          vm.documents[index].isSelected),
+                                );
+                              },
+                            ),
                           ),
 
                         ],

@@ -28,7 +28,6 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return Consumer<LoginVm>(builder: (context, vm, _) {
@@ -48,7 +47,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: height * 0.54,
                   color: AppColors.kShadedWhiteColor,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 22),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 18.0, horizontal: 22),
                     child: SizedBox(
                       width: width,
                       height: height * 0.36,
@@ -59,16 +59,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 50),
+                  padding:  EdgeInsets.symmetric(
+                      horizontal: SizeConfig.screenWidth!*0.05, vertical: SizeConfig.screenHeight!*0.050),
                   child: Column(
                     children: [
                       iUtills().roundedContainer(context,
                           child: InkWell(
-                            onTap: vm.isLoading
-                                ? null
-                                : () {
-                                    vm.loginWithGoogle(context);
-                                  },
+                            onTap: vm.isLoading?null:() {
+                              vm.loginWithGoogle(context);
+                            },
                             child: Column(
                               children: [
                                 Container(
@@ -81,30 +80,25 @@ class _LoginScreenState extends State<LoginScreen> {
                                     Color(0xff2BA24C).withOpacity(0.2),
                                     Color(0xff3C7CED).withOpacity(0.2),
                                   ])),
-                                  child: vm.isLoading
-                                      ? Center(
-                                          child: SpinKitCircle(
-                                            color: AppColors.kPrimaryColor,
-                                          ),
-                                        )
-                                      : Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            SvgPicture.asset(AppConstants.google_g),
-                                            PrimaryText(
-                                              "Login with Google",
-                                              color: AppColors.kBlackColor,
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.w500,
-                                            )
-                                          ],
-                                        ),
+                                  child: vm.isLoading?Center(child: SpinKitCircle(color: AppColors.kPrimaryColor,),):Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      SvgPicture.asset(AppConstants.google_g),
+                                      PrimaryText(
+                                        "Login with Google",
+                                        color: AppColors.kBlackColor,
+                                        fontSize: SizeConfig.screenHeight!*0.022,
+                                        fontWeight: FontWeight.w500,
+                                      )
+                                    ],
+                                  ),
                                 ),
                                 Align(
                                   alignment: Alignment.bottomCenter,
                                   child: Container(
                                     width: width,
-                                    height: 6,
+                                    height: SizeConfig.screenHeight!*0.007,
                                     decoration: BoxDecoration(
                                         gradient: LinearGradient(colors: [
                                       Color(0xffE43E2B),
@@ -164,9 +158,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                     Color(0xff5D50E4).withOpacity(0.2),
                                   ])),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      SvgPicture.asset(AppConstants.person_icon),
+                                      SvgPicture.asset(
+                                          AppConstants.person_icon),
                                       PrimaryText(
                                         "Login with Guest User",
                                         color: AppColors.kBlackColor,

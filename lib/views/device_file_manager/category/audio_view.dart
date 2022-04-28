@@ -91,109 +91,112 @@ class _AudioViewsState extends State<AudioViews> {
                       ],
                     ),
                   ),
-                  Visibility(
-                    visible: provider.audiosList.isNotEmpty,
-                    replacement: Center(child: Text('No Files Found')),
-                    child: Expanded(
-                      flex: 17,
-                      child: provider.loading == true
-                          ? GeneralUtilities.LoadingFileWidget()
-                          : Container(
-                            // height: SizeConfig.screenHeight! * 0.82,
-                            decoration: BoxDecoration(
-                                color: AppColors.kWhiteColor,
-                                borderRadius:
-                                    BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-                            child: Column(
-                              children: [
-                                SizedBox(height: SizeConfig.screenHeight!*0.02,),
-                                Expanded(
-                                  child: ListView.builder(
-                                    padding: EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
-                                    itemCount: provider.audiosList.length,
-                                    itemBuilder: (BuildContext context, int index) {
-                                      return Container(
-                                        height: SizeConfig.screenHeight! * 0.15,
-                                        color: AppColors.kWhiteColor,
-                                        child: Stack(
-                                          children: [
-                                            Center(
-                                              child: SizedBox(
-                                                height: SizeConfig.screenHeight! * 0.11,
-                                                child: Card(
-                                                  color: AppColors.kListTileLightGreyColor,
-                                                  shape: RoundedRectangleBorder(
-                                                    // side: BorderSide(color: Colors.white70, width: 1),
-                                                    borderRadius: BorderRadius.circular(12),
-                                                  ),
-                                                  // margin: EdgeInsets.only(top: 10),
-                                                  elevation: 0.0,
-                                                  child: ListTile(
-                                                    minVerticalPadding: SizeConfig.screenHeight! * 0.035,
-                                                    leading: CircleAvatar(
-                                                      backgroundColor: AppColors.kPrimaryPurpleColor,
-                                                      child: SvgPicture.asset(
-                                                        'assets/images/audio_icon.svg',
-                                                        height: SizeConfig.screenHeight! * 0.022,
+                  provider.loading == true
+                      ? Expanded(flex: 10, child: GeneralUtilities.LoadingFileWidget())
+                      : Expanded(
+                          flex: 17,
+                          child: provider.loading == true
+                              ? GeneralUtilities.LoadingFileWidget()
+                              : Container(
+                                  // height: SizeConfig.screenHeight! * 0.82,
+                                  decoration: BoxDecoration(
+                                      color: AppColors.kWhiteColor,
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: SizeConfig.screenHeight! * 0.02,
+                                      ),
+                                      Expanded(
+                                        child: ListView.builder(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: SizeConfig.screenWidth! * 0.02,
+                                              vertical: SizeConfig.screenHeight! * 0.0010),
+                                          itemCount: provider.audiosList.length,
+                                          itemBuilder: (BuildContext context, int index) {
+                                            return Container(
+                                              height: SizeConfig.screenHeight! * 0.13,
+                                              color: AppColors.kWhiteColor,
+                                              child: Stack(
+                                                children: [
+                                                  Center(
+                                                    child: SizedBox(
+                                                      height: SizeConfig.screenHeight! * 0.11,
+                                                      child: Card(
+                                                        color: AppColors.kListTileLightGreyColor,
+                                                        shape: RoundedRectangleBorder(
+                                                          // side: BorderSide(color: Colors.white70, width: 1),
+                                                          borderRadius: BorderRadius.circular(12),
+                                                        ),
+                                                        // margin: EdgeInsets.only(top: 10),
+                                                        elevation: 0.0,
+                                                        child: ListTile(
+                                                          minVerticalPadding: SizeConfig.screenHeight! * 0.020,
+                                                          leading: CircleAvatar(
+                                                            backgroundColor: AppColors.kPrimaryPurpleColor,
+                                                            child: SvgPicture.asset(
+                                                              'assets/images/audio_icon.svg',
+                                                              height: SizeConfig.screenHeight! * 0.022,
+                                                            ),
+                                                          ),
+                                                          title: Text(
+                                                              '${provider.audiosList[index].file.path.split('/').last}'),
+                                                          subtitle: Text(
+                                                            FileManagerUtilities.formatBytes(
+                                                                provider.audiosList[index].file.lengthSync(), 3),
+                                                          ),
+
+                                                          // subtitle: Text('${app.packageName}'),
+                                                          onTap: () {
+                                                            provider.changeIsSelected(index, provider.audiosList);
+                                                            if (provider.audiosList[index].isSelected) {
+                                                              provider.addToSelectedList =
+                                                                  provider.audiosList[index].file;
+                                                            } else {
+                                                              provider.removeFromSelectedList =
+                                                                  provider.audiosList[index].file;
+                                                            }
+                                                          },
+                                                        ),
                                                       ),
                                                     ),
-                                                    title: Text(
-                                                        '${provider.audiosList[index].file.path.split('/').last}'),
-                                                    subtitle: Text(
-                                                      FileManagerUtilities.formatBytes(
-                                                          provider.audiosList[index].file.lengthSync(), 3),
-                                                    ),
-
-                                                    // subtitle: Text('${app.packageName}'),
-                                                    onTap: () {
-                                                      provider.changeIsSelected(index, provider.audiosList);
-                                                      if (provider.audiosList[index].isSelected) {
-                                                        provider.addToSelectedList = provider.audiosList[index].file;
-                                                      } else {
-                                                        provider.removeFromSelectedList =
-                                                            provider.audiosList[index].file;
-                                                      }
-                                                    },
                                                   ),
-                                                ),
+                                                  provider.audiosList[index].isSelected
+                                                      ? Positioned(
+                                                          top: SizeConfig.screenHeight! * -0.02,
+                                                          right: 0,
+                                                          child: Container(
+                                                            height: SizeConfig.screenHeight! * 0.1,
+                                                            width: SizeConfig.screenWidth! * 0.07,
+                                                            decoration: BoxDecoration(
+                                                                shape: BoxShape.circle,
+                                                                color: AppColors.kPrimaryPurpleColor),
+                                                            child: Padding(
+                                                                padding: const EdgeInsets.all(5.0),
+                                                                child: Icon(
+                                                                  Icons.check,
+                                                                  size: SizeConfig.screenHeight! * 0.02,
+                                                                  color: Colors.white,
+                                                                )),
+                                                          ),
+                                                        )
+                                                      : SizedBox(
+                                                          height: 2.0,
+                                                        ),
+                                                ],
                                               ),
-                                            ),
-                                            provider.audiosList[index].isSelected
-                                                ? Positioned(
-                                                    top: SizeConfig.screenHeight! * -0.02,
-                                                    right: 0,
-                                                    child: Container(
-                                                      height: SizeConfig.screenHeight! * 0.1,
-                                                      width: SizeConfig.screenWidth! * 0.07,
-                                                      decoration: BoxDecoration(
-                                                          shape: BoxShape.circle,
-                                                          color: AppColors.kPrimaryPurpleColor),
-                                                      child: Padding(
-                                                          padding: const EdgeInsets.all(5.0),
-                                                          child: Icon(
-                                                            Icons.check,
-                                                            size: SizeConfig.screenHeight! * 0.02,
-                                                            color: Colors.white,
-                                                          )),
-                                                    ),
-                                                  )
-                                                : SizedBox(
-                                                    height: 2.0,
-                                                  ),
-                                          ],
+                                            );
+                                          },
+                                          // separatorBuilder: (BuildContext context, int index) {
+                                          //   return CustomDivider();
+                                          // },
                                         ),
-                                      );
-                                    },
-                                    // separatorBuilder: (BuildContext context, int index) {
-                                    //   return CustomDivider();
-                                    // },
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                    ),
-                  ),
+                        ),
                   Visibility(
                     visible: provider.selectedFiles.length > 0 ? true : false,
                     child: Expanded(

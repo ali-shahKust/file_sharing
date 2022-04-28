@@ -34,32 +34,6 @@ class _CloudVideosState extends State<CloudVideos> {
                       Navigator.pop(context);
 
                     }),
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 8.0),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       IconButton(
-                //           onPressed: () {
-                //             Navigator.pop(context);
-                //           },
-                //           icon: Icon(
-                //             Icons.arrow_back_ios,
-                //             size: SizeConfig.screenHeight! * 0.024,
-                //             color: Colors.black,
-                //           )),
-                //       PrimaryText(
-                //         "Videos",
-                //         fontSize: SizeConfig.screenHeight! * 0.020,
-                //         fontWeight: FontWeight.w500,
-                //         color: Colors.black,
-                //       ),
-                //       SizedBox(
-                //         width: 50,
-                //       )
-                //     ],
-                //   ),
-                // ),
 
                 GeneralUtilities.noDataFound(),
               ],
@@ -126,43 +100,44 @@ class _CloudVideosState extends State<CloudVideos> {
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(30),
                               topRight: Radius.circular(30))),
-                      child: Stack(
+                      child: Column(
                         children: [
-                          ListView.builder(
-                            physics: BouncingScrollPhysics(),
-                            padding:
-                                EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
-                            itemCount: vm.videos.length,
-                            itemBuilder: (
-                              BuildContext context,
-                              int index,
-                            ) {
-                              return InkWell(
-                                onTap: () {
-                                  vm.videos[index].isSelected =
-                                      !vm.videos[index].isSelected;
-                                  if (vm.videos[index].isSelected) {
-                                    vm.addToSelectedList =
-                                        vm.videos[index];
-                                  } else {
-                                    vm.removeFromSelectedList =
-                                        vm.videos[index];
-                                  }
-                                },
-                                child: cloudFileCard(
-                                    context: context,
-                                    size: vm.videos[index].size,
-                                    title: vm.videos[index].key,
-                                    icon: AppConstants.videos_icon,
-                                    item: vm.videos[index],
-                                    isSelected:
-                                        vm.videos[index].isSelected),
-                              );
-                            },
-                            // separatorBuilder: (BuildContext context, int index) {
-                            //   return CustomDivider();
-                            // },
+                          SizedBox(height: SizeConfig.screenHeight!*0.02,),
+                          Expanded(
+                            child: ListView.builder(
+                              physics: BouncingScrollPhysics(),
+                              padding:
+                                  EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
+                              itemCount: vm.videos.length,
+                              itemBuilder: (
+                                BuildContext context,
+                                int index,
+                              ) {
+                                return InkWell(
+                                  onTap: () {
+                                    vm.videos[index].isSelected =
+                                        !vm.videos[index].isSelected;
+                                    if (vm.videos[index].isSelected) {
+                                      vm.addToSelectedList =
+                                          vm.videos[index];
+                                    } else {
+                                      vm.removeFromSelectedList =
+                                          vm.videos[index];
+                                    }
+                                  },
+                                  child: cloudFileCard(
+                                      context: context,
+                                      size: vm.videos[index].size,
+                                      title: vm.videos[index].key,
+                                      icon: AppConstants.videos_icon,
+                                      item: vm.videos[index],
+                                      isSelected:
+                                          vm.videos[index].isSelected),
+                                );
+                              },
+                            ),
                           ),
+
                         ],
                       ),
                     ),

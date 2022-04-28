@@ -18,8 +18,8 @@ class iUtills {
             BoxShadow(
                 color: Colors.white,
                 spreadRadius: 1,
-                offset: Offset(0.2, 0.3),
-                blurRadius: 1.5)
+                offset: Offset(0.2, 0.2),
+                blurRadius: 1)
           ],
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(48), topRight: Radius.circular(48)),

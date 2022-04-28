@@ -76,31 +76,6 @@ class _CloudAppsState extends State<CloudApps> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Padding(
-                        //   padding: const EdgeInsets.only(top: 8.0),
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //     children: [
-                        //       IconButton(
-                        //           onPressed: () {
-                        //             Navigator.pop(context);
-                        //           },
-                        //           icon: Icon(
-                        //             Icons.arrow_back_ios,
-                        //             size: SizeConfig.screenHeight! * 0.024,
-                        //             color: Colors.white,
-                        //           )),
-                        //       PrimaryText(
-                        //         "Apps",
-                        //         fontSize: SizeConfig.screenHeight! * 0.020,
-                        //         fontWeight: FontWeight.w500,
-                        //       ),
-                        //       SizedBox(
-                        //         width: 50,
-                        //       )
-                        //     ],
-                        //   ),
-                        // ),
                         CustomAppBar(
                             title: 'Apps',
                             onTap: () {
@@ -141,10 +116,12 @@ class _CloudAppsState extends State<CloudApps> {
                                 color: AppColors.kWhiteColor,
                                 borderRadius:
                                     BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-                            child: Stack(
+                            child: Column(
                               children: [
-                                ListView.builder(
-                                  physics: BouncingScrollPhysics(),
+                                SizedBox(height: SizeConfig.screenHeight!*0.02,),
+                                Expanded(
+                                  child: ListView.builder(
+                                    physics: BouncingScrollPhysics(),
 
                                   padding: EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
                                   itemCount: vm.apps.length,
@@ -170,6 +147,7 @@ class _CloudAppsState extends State<CloudApps> {
                                           item: vm.apps[index]),
                                     );
                                   },
+
                                   // separatorBuilder: (BuildContext context, int index) {
                                   //   return CustomDivider();
                                   // },

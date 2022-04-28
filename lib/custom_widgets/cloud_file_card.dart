@@ -13,7 +13,7 @@ import '../views/download/download_screen.dart';
 
 Widget cloudFileCard({required context, icon, title, size, isSelected, required DownloadModel item}) {
   return Container(
-    height: SizeConfig.screenHeight! * 0.15,
+    height: SizeConfig.screenHeight! * 0.13,
     color: AppColors.kWhiteColor,
     child: Stack(
       children: [

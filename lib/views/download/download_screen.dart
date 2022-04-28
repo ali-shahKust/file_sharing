@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:open_file/open_file.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/constants/app_constants.dart';
-import 'package:quick_backup/custom_widgets/custom_appbar.dart';
 import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
 import 'package:quick_backup/custom_widgets/loading_widget.dart';
 import 'package:quick_backup/data/extension.dart';
 import 'package:provider/provider.dart';
+import 'package:quick_backup/data/models/queue_model.dart';
 import 'package:quick_backup/utilities/file_manager_utilities.dart';
 import 'package:quick_backup/views/dashboard/dashboard_screen.dart';
-import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 import 'package:quick_backup/views/download/download_vm.dart';
 import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 import '../../configurations/size_config.dart';
 import '../../custom_widgets/app_text_widget.dart';
+import '../../utilities/custom_theme.dart';
 import '../../utilities/general_utilities.dart';
 import '../../utilities/i_utills.dart';
 import '../dashboard/dashboard_vm.dart';
@@ -24,6 +25,7 @@ import '../dashboard/dashboard_vm.dart';
 class DownloadScreen extends StatefulWidget {
   static const routeName = 'download_screen';
   Map map;
+
 
   DownloadScreen({required this.map});
 
@@ -37,7 +39,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (widget.map['files'] != null && !widget.map['drawer']) {
         Provider.of<DownloadVm>(context, listen: false).downloadFile(widget.map['files'], context).then((value) {
-          if (Provider.of<DownloadVm>(context, listen: false).completed == Provider.of<DownloadVm>(context, listen: false).queue.length) {
+          if (completed == Provider.of<DownloadVm>(context, listen: false).queue.length) {
             showDialog(
                 barrierDismissible: false,
                 context: context,
@@ -48,7 +50,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                       children: [
                         PrimaryText(
                           "All Files Downloaded Successfully.",
-                          fontSize: 18,
+                          fontSize: SizeConfig.screenHeight! * 0.02,
                           fontWeight: FontWeight.w400,
                           color: Colors.black,
                         ),
@@ -57,7 +59,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                         ),
                         InkWell(
                           onTap: () {
-                            Provider.of<DownloadVm>(context, listen: false).completed = 0;
+                            completed = 0;
                             Provider.of<DashBoardVm>(context, listen: false).queue.clear();
                             Provider.of<OnlineBackUpVm>(context, listen: false).selectedFiles.clear();
                             Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false);
@@ -67,10 +69,10 @@ class _DownloadScreenState extends State<DownloadScreen> {
                               height: SizeConfig.screenHeight! * 0.053,
                               child: Center(
                                   child: PrimaryText(
-                                "OK",
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                              ))),
+                                    "OK",
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                  ))),
                         )
                       ],
                     ),
@@ -200,8 +202,8 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                         },
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 90.0,
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: SizeConfig.screenHeight! * 0.06,
                                         ).copyWith(bottom: 0),
                                         child: CircularPercentIndicator(
                                           radius: 178.0,
@@ -436,4 +438,5 @@ class _DownloadScreenState extends State<DownloadScreen> {
       }),
     );
   }
-}
+
+  }

@@ -35,32 +35,6 @@ class _CloudAudiosState extends State<CloudAudios> {
                       Navigator.pop(context);
 
                     }),
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 8.0),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       IconButton(
-                //           onPressed: () {
-                //             Navigator.pop(context);
-                //           },
-                //           icon: Icon(
-                //             Icons.arrow_back_ios,
-                //             size: SizeConfig.screenHeight! * 0.024,
-                //             color: Colors.black,
-                //           )),
-                //       PrimaryText(
-                //         "Audios",
-                //         fontSize: SizeConfig.screenHeight! * 0.020,
-                //         fontWeight: FontWeight.w500,
-                //         color: Colors.black,
-                //       ),
-                //       SizedBox(
-                //         width: 50,
-                //       )
-                //     ],
-                //   ),
-                // ),
                 GeneralUtilities.noDataFound(),
               ],
             ):Container(
@@ -73,7 +47,6 @@ class _CloudAudiosState extends State<CloudAudios> {
                         AssetImage('assets/images/container_background.webp'),
                     fit: BoxFit.cover),
 
-                // Image.asset('assets/container_background.svg'),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,31 +57,6 @@ class _CloudAudiosState extends State<CloudAudios> {
                         Navigator.pop(context);
 
                       }),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(top: 8.0),
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //     children: [
-                  //       IconButton(
-                  //           onPressed: () {
-                  //             Navigator.pop(context);
-                  //           },
-                  //           icon: Icon(
-                  //             Icons.arrow_back_ios,
-                  //             size: SizeConfig.screenHeight! * 0.024,
-                  //             color: Colors.white,
-                  //           )),
-                  //       PrimaryText(
-                  //         "Audios",
-                  //         fontSize: SizeConfig.screenHeight! * 0.020,
-                  //         fontWeight: FontWeight.w500,
-                  //       ),
-                  //       SizedBox(
-                  //         width: 50,
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
                   Expanded(
                     flex: 2,
                     child: Row(
@@ -151,9 +99,11 @@ class _CloudAudiosState extends State<CloudAudios> {
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(30),
                               topRight: Radius.circular(30))),
-                      child: Stack(
+                      child: Column(
                         children: [
-                          ListView.builder(
+                          SizedBox(height: SizeConfig.screenHeight!*0.02,),
+                          Expanded(
+                            child: ListView.builder(
                             physics: BouncingScrollPhysics(),
                             padding:
                                 EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
@@ -187,7 +137,7 @@ class _CloudAudiosState extends State<CloudAudios> {
                             // separatorBuilder: (BuildContext context, int index) {
                             //   return CustomDivider();
                             // },
-                          ),
+                            )),
 
                         ],
                       ),
