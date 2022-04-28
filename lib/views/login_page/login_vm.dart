@@ -36,8 +36,6 @@ class LoginVm extends BaseVm {
     await AuthService.configureAmplify().whenComplete(() {
       repo.signInWithGoogle().then((value) async {
         if (value != null) {
-          print("AWS Token $value");
-
           PreferenceUtilities.setUserCognitoToPrefs(value, context);
           PreferenceUtilities.setUserAuthStatusToPrefs(true, context);
 

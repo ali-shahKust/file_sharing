@@ -33,9 +33,7 @@ class _ImagesViewState extends State<ImagesView> with SingleTickerProviderStateM
   // final provider = GetIt.I.get<CategoryVm>();
   @override
   Widget build(BuildContext context) {
-    print('image list length is ${Provider.of<CategoryVm>(context, listen: false).imageList.length}');
     SizeConfig().init(context);
-    // print('all files list length is ${Provider.of<CategoryVm>(context,listen: false).imageList.length}');
 
     return Consumer<CategoryVm>(
       builder: (context, provider, _) {
@@ -80,7 +78,6 @@ class _ImagesViewState extends State<ImagesView> with SingleTickerProviderStateM
                           IconButton(
                             onPressed: () {
                               provider.changeIsAllImagesSelected();
-                              print('value of selection var on tap is ${provider.isAllAudioSelected}');
                               !provider.isAllImagesSelected
                                   ? provider.unselectAllInList(provider.imageList)
                                   : provider.selectAllInList(provider.imageList);
@@ -147,7 +144,6 @@ class _ImagesViewState extends State<ImagesView> with SingleTickerProviderStateM
                                                 Navigator.pushNamed(context, UploadingScreen.routeName,
                                                         arguments: {'files': provider.selectedFiles, "drawer": false})
                                                     .whenComplete(() {
-                                                  print('whencomplete call...');
                                                   // provider.selectedFiles.clear();
                                                   // provider.clearAllSelectedLists();
                                                 });
@@ -217,10 +213,6 @@ class _MediaTile extends StatelessWidget {
   Widget build(BuildContext context) {
     File file = File(imgmodel.file.path);
     String path = file.path;
-    String mimeType = mime(path) ?? '';
-    // if (imgmodel.imgBytes != null) {
-    //   print('byte code of the image is...${imgmodel.imgBytes}');
-    // }
     return InkWell(
       onTap: () {
         provider.changeIsSelected(index, provider.imageList);

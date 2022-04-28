@@ -210,7 +210,6 @@ class _AudioViewsState extends State<AudioViews> {
                             if (provider.selectedFiles.length > 0) {
                               Navigator.pushNamed(context, UploadingScreen.routeName,
                                   arguments: {'files': provider.selectedFiles, "drawer": false}).whenComplete(() {
-                                print('whencomplete call...');
                                 // provider.selectedFiles.clear();
                                 // provider.clearAllSelectedLists();
                               });

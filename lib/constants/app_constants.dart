@@ -1,8 +1,6 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-// List<File>? globalImages = [];
 
 class AppConstants {
   static const String appName = "Quick Backup";

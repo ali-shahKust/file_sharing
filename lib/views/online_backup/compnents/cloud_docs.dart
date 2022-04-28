@@ -169,11 +169,9 @@ class _CloudDocsState extends State<CloudDocs> {
                                   vm.documents[index].isSelected =
                                       !vm.documents[index].isSelected;
                                   if (vm.documents[index].isSelected) {
-                                    print("Called if");
                                     vm.addToSelectedList =
                                         vm.documents[index];
                                   } else {
-                                    print("Called else");
                                     vm.removeFromSelectedList =
                                         vm.documents[index];
                                   }

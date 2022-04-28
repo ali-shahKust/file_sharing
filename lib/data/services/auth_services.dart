@@ -48,7 +48,6 @@ class AuthService {
       idToken: googleSignInAuthentication.idToken,
     );
     await auth.signInWithCredential(credential).then((value) async {
-      print("Token ${credential.token}");
       _user = auth.currentUser;
       await _user!.getIdToken().then((value) async {
         await sendTokenToNative(value).then((value) async {
@@ -66,15 +65,12 @@ class AuthService {
     if (!Amplify.isConfigured) {
       Amplify.addPlugin(AmplifyStorageS3());
       Amplify.addPlugin(AmplifyAuthCognito());
-      print("calledxx");
 
       try {
         await Amplify.configure(amplifyconfig);
       } on AmplifyAlreadyConfiguredException {
-        print("Amplify was already configured. Was the app restarted?");
       }
     } else {
-      print("Amplify was already configured. So I am not configuring it again!");
     }
   }
 
@@ -83,7 +79,6 @@ class AuthService {
     try {
       value = await platform.invokeMethod("sendIDToAWSFromNative", {"id": token});
     } catch (e) {
-      print('I am exception in sendTokenToNative: $e');
     }
 
     return value;
@@ -96,15 +91,10 @@ class AuthService {
       final User? user = auth.currentUser;
       if (user != null) {
         var token = await user.getIdToken();
-
-        print('Here is the user token: $token');
-
         await sendTokenToNative(token).then((value) => {
-              print('here is the result in refresh Session $value'),
             });
       }
     } on Exception catch (e) {
-      print(e);
     }
   }
 }

@@ -15,6 +15,7 @@ import 'package:quick_backup/custom_widgets/InfoDialoge.dart';
 import 'package:quick_backup/data/base/base_vm.dart';
 import 'package:quick_backup/data/local_db/database_helper.dart';
 import 'package:quick_backup/data/services/auth_services.dart';
+import 'package:quick_backup/utilities/i_utills.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/core_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/filemanager_home.dart';
@@ -22,10 +23,11 @@ import 'package:quick_backup/views/device_file_manager/file_manager_home/fileman
 import '../../data/models/app_model.dart';
 import '../../data/models/queue_model.dart';
 import '../../utilities/general_utilities.dart';
+import 'dashboard_screen.dart';
 
-int completed = 0;
 
 class DashBoardVm extends BaseVm {
+  int completed = 0;
 
   DashBoardVm(){
     loader();
@@ -69,7 +71,6 @@ class DashBoardVm extends BaseVm {
         .onConnectivityChanged
         .listen((ConnectivityResult result) {
       // Got a new connectivity status!
-      print("Connection name ${result.name}");
 
       if (result.name == 'none') {
         connectionLost = true;
@@ -113,7 +114,6 @@ class DashBoardVm extends BaseVm {
       }else {
         _folderkey = mime(filename)!.split('/').first;
       }
-      print("MIME IS ${_folderkey}");
       String fileKey = _folderkey +"/" + filename;
       try {
         await Amplify.Storage.uploadFile(
@@ -124,8 +124,6 @@ class DashBoardVm extends BaseVm {
               queue[i]!.progress =
                   (progress.getFractionCompleted() * 100).round().toString();
               notifyListeners();
-              print("XXPROGRESS: ${queue[i]!.progress}");
-
               queue[i]!.id = i;
                   (progress.getFractionCompleted() * 100).round().toString();
               if ((progress.getFractionCompleted() * 100).round() == 100) {
@@ -136,22 +134,22 @@ class DashBoardVm extends BaseVm {
             });
         int? count = await dbHelper.checkValue(queue[i]!.path);
         if (count != null && count > 0) {
-          print("This file already exist");
         } else {
           dbHelper.insertFileToDb(queue[i]!);
         }
         notifyListeners();
 
       } on StorageException catch (e) {
-        print(e.message);
       } catch (e) {
-        print(e.toString());
       }
-      if(completed!=0 && completed==queue.length){
-        queue.clear();
-        completed = 0;
-        notifyListeners();
-      }
+      // if(completed!=0 && completed==queue.length){
+      //   queue.clear();
+      //   completed = 0;
+      //   iUtills().showMessage(context: context,title: "Completed", text: "Files uploaded successfully");
+      //   Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false);
+      //
+      //   notifyListeners();
+      // }
     }
   }
    permissionCheck(BuildContext ?parentContext,int ?osVersion,PermissionStatus status){
@@ -172,48 +170,39 @@ class DashBoardVm extends BaseVm {
                 status = await Permission.storage.status;
               }
               // PermissionStatus status = osVersion! >=11? await Permission.manageExternalStorage.status:Permission.storage.status;
-              print('manage external storage permission status is ...$status');
               if (status.isGranted) {
-                print('i am in premission granted....');
                 // Dialogs.showToast('Permission granted...');
                 Provider.of<CoreVm>(parentContext, listen: false).checkSpace();
                 Provider.of<CategoryVm>(parentContext, listen: false).getDeviceFileManager();
                 // Provider.of<CategoryVm>(parentContext, listen: false).fetchAllListLength();
                 Navigator.pushNamed(parentContext, FileManagerHome.routeName);
               }  if (status.isDenied) {
-                print('I am permission denied.....');
                 PermissionStatus status =osVersion >=11
                     ? await Permission.manageExternalStorage.request()
                     : await Permission.storage.request();
                 Provider.of<CoreVm>(parentContext, listen: false).checkSpace();
                 Provider.of<CategoryVm>(parentContext, listen: false).getDeviceFileManager();
                 // Provider.of<CategoryVm>(parentContext, listen: false).fetchAllListLength();
-                print(
-                    'manage external storage permission status in denied condition is ...$status');
+
                 // Dialogs.showToast('Please Grant Storage Permissions');
                 // PermissionStatus status = await Permission.manageExternalStorage.request();
               }  if (status.isRestricted) {
                 // AppSettings.openAppSettings();
-                print('Restricted permission call');
+
                 PermissionStatus status = osVersion>=11
                     ? await Permission.manageExternalStorage.request()
                     : await Permission.storage.request();
-                print(
-                    'manage external storage permission status in restricted condition is ...$status');
+
                 // Dialogs.showToast('Please Grant Storage Permissions');
                 // PermissionStatus status = await Permission.manageExternalStorage.request();
               } else {
-                print('else condition permission call');
                 PermissionStatus status = osVersion >=11
                     ? await Permission.manageExternalStorage.request()
                     : await Permission.storage.request();
 
-                print(
-                    'manage external storage permission status in denied condition is ...$status');
                 // Dialogs.showToast('Please Grant Storage Permissions');
               }
-              // print('I am in no permission granted with status $status');
-              // ShareFilesUtils.requestPermission(context, NewFileManager());
+
             },
           );
         });

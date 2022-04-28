@@ -39,7 +39,6 @@ class _AppViewsState extends State<AppViews> {
     final screenWidth = MediaQuery.of(context).size.width;
     return Consumer(
       builder: (BuildContext context, CategoryVm provider, Widget? child) {
-        print('app list length is ${provider.appList.length}');
         return Scaffold(
           backgroundColor: AppColors.kPrimaryPurpleColor,
           body: SafeArea(
@@ -120,7 +119,6 @@ class _AppViewsState extends State<AppViews> {
 
                                     return GestureDetector(
                                       onTap: () {
-                                        print('item tap.....');
                                         provider.changeIsSelectedApp(index, provider.appList);
                                         if (provider.appList[index].isSelected) {
                                           provider.addToSelectedList = File(provider.appList[index].apps.apkFilePath);
@@ -226,7 +224,6 @@ class _AppViewsState extends State<AppViews> {
                                 if (provider.selectedFiles.length > 0) {
                                   Navigator.pushNamed(context, UploadingScreen.routeName,
                                       arguments: {'files': provider.selectedFiles, "drawer": false}).whenComplete(() {
-                                    print('whencomplete call...');
                                     // provider.selectedFiles.clear();
                                     // provider.clearAllSelectedLists();
                                   });

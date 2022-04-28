@@ -76,20 +76,14 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
   Future<bool> getPermissionStatus() async {
     PermissionStatus status = osVersion! >= 11 ? await Permission.manageExternalStorage.status : await Permission.storage.status;
-    print('on tap permission status ....$status');
     return status.isGranted;
   }
 
   Future<void> checkVersion() async {
     if (Platform.isAndroid) {
       var androidInfo = await DeviceInfoPlugin().androidInfo;
-      // var release = androidInfo.version.release;
       osVersion = int.parse(androidInfo.version.release);
-      // var sdkInt = androidInfo.version.sdkInt;
-      // var manufacturer = androidInfo.manufacturer;
-      // var model = androidInfo.model;
-      // print('Android $release (SDK $sdkInt), $manufacturer $model');
-      // Android 9 (SDK 28), Xiaomi Redmi Note 7
+
     }
   }
 
@@ -172,16 +166,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                           onTap: () async {
                                             PermissionStatus status =
                                                 osVersion! >= 11 ? await Permission.manageExternalStorage.status : await Permission.storage.status;
-                                            print('on tap permission status ....$status');
                                             if (!status.isGranted) {
-                                              print('dialoge open...');
                                               vm.permissionCheck(parentContext, osVersion, status);
                                             } else {
                                               Navigator.pushNamed(parentContext!, FileManagerHome.routeName);
                                             }
                                           },
-
-                                          // Navigator.pushNamed(context, FileManagerHome.routeName);
 
                                           child: customTile(icon: AppConstants.quick_backup_icon, title: "Quick Backup"),
                                         ),

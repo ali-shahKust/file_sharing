@@ -57,7 +57,6 @@ class DownloadVm extends BaseVm {
   checkConnection() async {
     subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       // Got a new connectivity status!
-      print("Connection name ${result.name}");
 
       if (result.name == 'none') {
         connectionLost = true;
@@ -84,7 +83,6 @@ class DownloadVm extends BaseVm {
           '/${files[i].key!.replaceAll("${Provider.of<PreferencesProvider>(context, listen: false).userCognito}/", "")}';
       final file = File(filepath);
 
-      print("File path is ${files[i].key}");
       bool fileExists = await file.exists();
       if (!fileExists) {
         try {
@@ -102,24 +100,15 @@ class DownloadVm extends BaseVm {
                 notifyListeners();
               });
         } on StorageException catch (e) {
-          print('Error downloading file: $e');
         } catch (e) {
-          print('Error downloading file: $e');
         }
       } else {
         queue[i]!.progress = "Exist already";
         queue[i]!.id = i;
         queue[i]!.path = file.path;
 
-        print("PROGRESS: ${queue[i]!.progress}");
         completed = i + 1;
         await Future.delayed(Duration.zero);
-        notifyListeners();
-        print("File Already Exist");
-      }
-      if (completed != 0 && completed == queue.length) {
-        queue.clear();
-        completed = 0;
         notifyListeners();
       }
     }

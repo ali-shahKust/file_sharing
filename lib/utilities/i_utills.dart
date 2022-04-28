@@ -83,11 +83,12 @@ class iUtills {
 
    showMessage({
     required BuildContext context,
+     required String title,
     required String text,
   }) {
     return Flushbar(
-      title: "Success",
-      message: "Username updated successfully.",
+      title: title,
+      message: text,
       duration: Duration(seconds:2),
       backgroundGradient: LinearGradient(colors: [  Color(0xffFFA37C),
         Color(0xffFE7940),

@@ -142,11 +142,9 @@ class _CloudVideosState extends State<CloudVideos> {
                                   vm.videos[index].isSelected =
                                       !vm.videos[index].isSelected;
                                   if (vm.videos[index].isSelected) {
-                                    print("Called if");
                                     vm.addToSelectedList =
                                         vm.videos[index];
                                   } else {
-                                    print("Called else");
                                     vm.removeFromSelectedList =
                                         vm.videos[index];
                                   }

@@ -43,7 +43,6 @@ class FileManagerUtilities {
       // Directory('/storage/562D-A602/Android/data/com.dummyapp.glass_mor/files')
     ];
     paths.forEach((element) {
-      print('${element.path}');
     });
     List<Directory> filteredPaths = <Directory>[];
     for (Directory dir in paths) {
@@ -75,8 +74,6 @@ class FileManagerUtilities {
             await getAllFilesInPath(dir.path, showHidden: showHidden);
       } catch (e) {
         allFilesInPath = [];
-        print('exception occur');
-        print(e);
       }
       files.addAll(allFilesInPath);
     }
@@ -114,7 +111,6 @@ class FileManagerUtilities {
     Directory d = Directory(path);
     List<FileSystemEntity> l = d.listSync();
     for (FileSystemEntity file in l) {
-      // print('file list in getAllFileInPath function...${file.path}');
       if (FileSystemEntity.isFileSync(file.path)) {
         if (!showHidden) {
           if (!basename(file.path).startsWith('.')) {
@@ -125,7 +121,6 @@ class FileManagerUtilities {
         }
       } else {
         if (!file.path.contains('/storage/emulated/0/Android')) {
-//          print(file.path);
           if (!showHidden) {
             if (!basename(file.path).startsWith('.')) {
               files.addAll(
@@ -138,7 +133,6 @@ class FileManagerUtilities {
         }
       }
     }
-//    print(files);
     return files;
   }
 

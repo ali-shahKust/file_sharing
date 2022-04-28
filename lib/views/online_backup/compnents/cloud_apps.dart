@@ -156,10 +156,8 @@ class _CloudAppsState extends State<CloudApps> {
                                       onTap: () {
                                         vm.apps[index].isSelected = !vm.apps[index].isSelected;
                                         if (vm.apps[index].isSelected) {
-                                          print("Called if");
                                           vm.addToSelectedList = vm.apps[index];
                                         } else {
-                                          print("Called else");
                                           vm.removeFromSelectedList = vm.apps[index];
                                         }
                                       },

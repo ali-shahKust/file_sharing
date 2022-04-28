@@ -13,10 +13,6 @@ import 'package:quick_backup/utilities/file_manager_utilities.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DocumentVm extends BaseVm {
-  DocumentVm() {
-    print("I am initialize");
-  }
-
   bool loading = false;
   List fileCategoryList = AppConstants.documnetCategories;
 
@@ -27,7 +23,6 @@ class DocumentVm extends BaseVm {
       } else {
         fileCategoryList[index]['isSelected'] = '1';
       }
-      print('isSelect value in unSelect function is ${fileCategoryList[index]['isSelected']}');
     }
     notifyListeners();
   }
@@ -41,7 +36,6 @@ class DocumentVm extends BaseVm {
       } else {
         fileCategory[index]['isSelected'] = '1';
       }
-      print('isSelect value in unSelect function is ${fileCategory[index]['isSelected']}');
     }
     notifyListeners();
   }
@@ -52,28 +46,8 @@ class DocumentVm extends BaseVm {
       } else {
         fileCategory[index]['isSelected'] = '1';
       }
-      print('isSelect value in unSelect function is ${fileCategory[index]['isSelected']}');
     }
     notifyListeners();
   }
-
-
-
-// if(fileCategoryList[index]['isSelected']=='1'){
-//   fileCategoryList[index]['isSelected']='0';
-// }
-// else{
-//   fileCategoryList[index]['isSelected']='1';
-// }
-
-// unSelectAll(int index){
-//    for(int i=0;i<fileCategoryList.length;i++){
-//      if(i!=index){
-//        fileCategoryList[index]['isSelected']='0';
-//      }
-//      print('isSelect value in unSelect function is ${fileCategoryList[index]['isSelected']}');
-//      }
-//    notifyListeners();
-//    }
 
 }

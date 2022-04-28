@@ -40,9 +40,9 @@ class _UploadingScreenState extends State<UploadingScreen> {
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (widget.map['files'] != null && !widget.map['drawer']) {
-        completed = 0;
+        Provider.of<DashBoardVm>(context, listen: false).completed = 0;
         Provider.of<DashBoardVm>(context, listen: false).uploadFile(widget.map['files'], context).then((value) {
-          if (completed != 0 && completed == Provider.of<DashBoardVm>(context, listen: false).queue.length) {
+          if (Provider.of<DashBoardVm>(context, listen: false).completed != 0 && Provider.of<DashBoardVm>(context, listen: false).completed == Provider.of<DashBoardVm>(context, listen: false).queue.length) {
             showDialog(
                 barrierDismissible: false,
                 context: context,
@@ -62,7 +62,7 @@ class _UploadingScreenState extends State<UploadingScreen> {
                         ),
                         InkWell(
                           onTap: () {
-                            completed = 0;
+                            Provider.of<DashBoardVm>(context, listen: false).completed = 0;
                             Provider.of<DashBoardVm>(context, listen: false).queue.clear();
                             Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false);
                           },
@@ -96,7 +96,14 @@ class _UploadingScreenState extends State<UploadingScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onWillPop,
+
       child: Consumer<DashBoardVm>(builder: (context, vm, _) {
+        if (vm.completed != 0 && vm.completed == vm.queue.length) {
+          vm.queue.clear();
+          vm.completed = 0;
+          iUtills().showMessage(context: context,title: "Completed", text: "Files Uploaded successfully");
+          Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false);
+        }
         return SafeArea(
           child: Scaffold(
             body: vm.isLoading
@@ -167,16 +174,16 @@ class _UploadingScreenState extends State<UploadingScreen> {
                                           animation: false,
                                           percent: vm.queue.length == 1
                                               ? double.parse(vm.queue[0]!.progress) / 100
-                                              : (completed / vm.queue.length).isNaN
+                                              : (vm.completed / vm.queue.length).isNaN
                                                   ? 0.0
-                                                  : completed / vm.queue.length,
+                                                  : vm.completed / vm.queue.length,
                                           center: Column(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
                                               PrimaryText(
                                                 vm.queue.length == 1
                                                     ? "${vm.queue[0]!.progress}%"
-                                                    : "${((completed / vm.queue.length) * 100).toStringAsFixed(0)}%",
+                                                    : "${((vm.completed / vm.queue.length) * 100).toStringAsFixed(0)}%",
                                                 fontSize: 34,
                                                 fontWeight: FontWeight.w700,
                                               ),
@@ -215,7 +222,7 @@ class _UploadingScreenState extends State<UploadingScreen> {
                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: [
                                               SvgPicture.asset(AppConstants.send_file),
-                                              completed == vm.queue.length
+                                              vm.completed == vm.queue.length
                                                   ? PrimaryText(
                                                       "Uploaded ${vm.queue.length}" + "${vm.queue.length == 1 ? " File " : " Files "}",
                                                       fontSize: 18,
@@ -256,7 +263,6 @@ class _UploadingScreenState extends State<UploadingScreen> {
                                           } else {
                                             type = mime(vm.queue[index]!.name)!.split('/').first;
                                           }
-                                          print("PROGRESS Report :${vm.queue[index]!.progress}");
                                           String size = FileManagerUtilities.formatBytes(int.parse(vm.queue[index]!.size), 2);
                                           return Padding(
                                             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 22),

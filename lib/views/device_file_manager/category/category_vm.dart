@@ -15,9 +15,6 @@ import 'package:quick_backup/utilities/file_manager_utilities.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CategoryVm extends BaseVm {
-  CategoryVm() {
-    print("I am initialize");
-  }
 
   int _videoIndex = 0;
   bool loading = false;
@@ -64,7 +61,6 @@ class CategoryVm extends BaseVm {
 
   void ChangeDocSelection(String type) {
     if (type == AppConstants.docCategories[0]) {
-      print(' I am pdf');
       if (_isAllPdfSelected == true) {
         this._isAllPdfSelected = false;
       } else if (_isAllPdfSelected == false) {
@@ -73,7 +69,6 @@ class CategoryVm extends BaseVm {
       notifyListeners();
     }
     if (type == AppConstants.docCategories[1]) {
-      print(' I am ppt ');
 
       if (_isAllPptsSelected == true) {
         this._isAllPptsSelected = false;
@@ -83,7 +78,6 @@ class CategoryVm extends BaseVm {
       notifyListeners();
     }
     if (type == AppConstants.docCategories[2]) {
-      print(' I am doc ');
       if (_isDocSelected == true) {
         this._isDocSelected = false;
       } else if (_isDocSelected == false) {
@@ -92,7 +86,6 @@ class CategoryVm extends BaseVm {
       notifyListeners();
     }
     if (type == AppConstants.docCategories[3]) {
-      print(' I am other ');
       if (_isAllOtherDocSelected == true) {
         this._isAllOtherDocSelected = false;
       } else if (_isAllOtherDocSelected == false) {
@@ -104,19 +97,15 @@ class CategoryVm extends BaseVm {
 
   bool getDocCurrentSelection(String type) {
     if (type == AppConstants.docCategories[0]) {
-      print(' I am pdf');
       return isAllPdfSelected;
     }
     if (type == AppConstants.docCategories[1]) {
-      print(' I am ppt ');
 
       return isAllPptsSelected;
     }
     if (type == AppConstants.docCategories[2]) {
-      print(' I am doc ');
       return isDocSelected;
     } else if (type == AppConstants.docCategories[3]) {
-      print(' I am other ');
       return isAllOtherDocSelected;
     } else
       return isAllPdfSelected;
@@ -126,7 +115,6 @@ class CategoryVm extends BaseVm {
   final isolates = IsolateHandler();
 
   set addToSelectedList(File file) {
-    print('file to add in the list from app screen is $file');
     this.selectedFiles.add(file);
     notifyListeners();
   }
@@ -138,7 +126,6 @@ class CategoryVm extends BaseVm {
 
   incrementVideoIndex() {
     _videoIndex++;
-    print('Incremented Video Index: ${_videoIndex}');
     notifyListeners();
   }
 
@@ -153,12 +140,9 @@ class CategoryVm extends BaseVm {
   int get videoIndex => _videoIndex;
 
   set removeFromSelectedList(File file) {
-    print('file to remove from selected list from app screen is $file');
     this.selectedFiles.removeWhere((element) => element.path == file.path);
 
-    // for (int i = 0; i < selectedFiles.length; i++) {
-    //   print('data in the selected list after remove is...${selectedFiles[i]}');
-    // }
+
     notifyListeners();
   }
 
@@ -175,66 +159,10 @@ class CategoryVm extends BaseVm {
     getAllApps();
   }
 
-  // getAllFilesData() async {
-  //   // String type = fileTypeList[1].toLowerCase();
-  //   print('get all filedata call....');
-  //   setLoading(true);
-  //   _imageList.clear();
-  //   videosList.clear();
-  //   audiosList.clear();
-  //   filesList.clear();
-  //
-  //   String isolateName ='allFiles';
-  //   isolates.spawn<String>(
-  //     getAllFilesWithIsolate,
-  //     name: isolateName,
-  //     onReceive: (val) {
-  //       print(val);
-  //       isolates.kill(isolateName);
-  //     },
-  //     onInitialized: () => isolates.send('hey', to: isolateName),
-  //   );
-  //   ReceivePort _port = ReceivePort();
-  //   IsolateNameServer.registerPortWithName(_port.sendPort, '${isolateName}_7');
-  //   _port.listen((files) {
-  //     print('RECEIVED SERVER PORT');
-  //
-  //     files.forEach((file) async {
-  //       // var base64Image;
-  //       String mimeType = mime(file.path) ?? '';
-  //       if (mimeType.split('/')[0] == AppConstants.fileTypeList[1]) {
-  //         FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
-  //         _imageList.add(fm);
-  //         print('image list in function is ${_imageList.length}');
-  //       }
-  //       else if (mimeType.split('/')[0] == AppConstants.fileTypeList[2]) {
-  //         FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
-  //         videosList.add(fm);
-  //         print('image list in function is ${_imageList.length}');
-  //       }
-  //       else if (mimeType.split('/')[0] == AppConstants.fileTypeList[3]) {
-  //         FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
-  //         audiosList.add(fm);
-  //         print('image list in function is ${_imageList.length}');
-  //       }
-  //      else if (mimeType.split('/')[0] == AppConstants.fileTypeList[4]) {
-  //         FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
-  //         filesList.add(fm);
-  //         print('image list in function is ${_imageList.length}');
-  //       }
-  //     });
-  //     setLoading(false);
-  //     notifyListeners();
-  //
-  //     _port.close();
-  //     IsolateNameServer.removePortNameMapping('${isolateName}_7');
-  //   });
-  // }
 
   getImages() async {
     // String type = fileTypeList[1].toLowerCase();
     double totalSize = 0;
-    print('get images fun call...');
     setLoading(true);
     _imageList.clear();
     String isolateName = "images";
@@ -242,7 +170,6 @@ class CategoryVm extends BaseVm {
       getAllFilesWithIsolate,
       name: isolateName,
       onReceive: (val) {
-        print(val);
         isolates.kill(isolateName);
       },
       onInitialized: () => isolates.send('hey', to: isolateName),
@@ -250,10 +177,8 @@ class CategoryVm extends BaseVm {
     ReceivePort _port = ReceivePort();
     IsolateNameServer.registerPortWithName(_port.sendPort, '${isolateName}_2');
     _port.listen((files) {
-      print('RECEIVED SERVER PORT');
 
       files.forEach((file) async {
-        print('files in image fun is ${file.path}');
         // var base64Image;
 
         String mimeType = mime(file.path) ?? '';
@@ -261,7 +186,6 @@ class CategoryVm extends BaseVm {
           totalSize = totalSize + file.lengthSync();
           FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
           _imageList.add(fm);
-          print('image list in function is ${_imageList.length}');
         }
       });
       setTotalFilesLength(_imageList.length, 0);
@@ -287,10 +211,8 @@ class CategoryVm extends BaseVm {
   }
 
   Future<List<FileMangerModel>> getVideos() async {
-    print('get video fun call...');
     double totalSize = 0;
-    // print('type in the function is $type');
-    // setVideoLoading(true);
+
     videosList.clear();
     // selectedVideoConversionList.clear();
     String isolateName = 'videosThumbnail';
@@ -298,8 +220,6 @@ class CategoryVm extends BaseVm {
       getThumbnailsWithIsolate,
       name: isolateName,
       onReceive: (val) {
-        print(val);
-        // setVideoLoading(false);
         isolates.kill(isolateName);
       },
       onInitialized: () => isolates.send('hey', to: isolateName),
@@ -308,13 +228,8 @@ class CategoryVm extends BaseVm {
     IsolateNameServer.registerPortWithName(_port.sendPort, '${isolateName}_2');
     // var appDocDir = await getApplicationDocumentsDirectory();
     _port.listen((files) {
-      print('RECEIVED SERVER PORT');
-//TODO check async in foreach show issues some time..
-
       files.forEach((file) async {
-        print('files length in provider ${file.length}');
         String mimeType = mime(file.path) ?? '';
-        print('mimeType value in the function is $mimeType');
         if (mimeType.split('/')[0] == AppConstants.fileTypeList[2]) {
           totalSize = totalSize + file.lengthSync();
           FileMangerModel fm = FileMangerModel(
@@ -326,7 +241,6 @@ class CategoryVm extends BaseVm {
 
         // notifyListeners();
       });
-      print('video list length in provider is ${videosList.length}');
 
       setTotalFilesLength(videosList.length, 1);
       setTotalFilesSizes(FileManagerUtilities.formatBytes(totalSize, 2), 1);
@@ -341,7 +255,6 @@ class CategoryVm extends BaseVm {
   getAudios() async {
     // setVideoLoading(true);
     double totalSize = 0;
-    print('get audio fun call...');
 
     audiosList.clear();
     String isolateName = AppConstants.fileTypeList[4];
@@ -349,7 +262,6 @@ class CategoryVm extends BaseVm {
       getAllFilesWithIsolate,
       name: isolateName,
       onReceive: (val) {
-        print(val);
         isolates.kill(isolateName);
       },
       onInitialized: () => isolates.send('hey', to: isolateName),
@@ -357,8 +269,6 @@ class CategoryVm extends BaseVm {
     ReceivePort _port = ReceivePort();
     IsolateNameServer.registerPortWithName(_port.sendPort, '${isolateName}_2');
     _port.listen((files) async {
-      print('RECEIVED SERVER from audio PORT');
-      print(files);
       files.forEach((file) {
         String mimeType = mime(file.path) ?? '';
         if (mimeType.split('/')[0] == AppConstants.fileTypeList[4]) {
@@ -379,20 +289,17 @@ class CategoryVm extends BaseVm {
   }
 
   getTextFile() async {
-    print('get files fun call...');
     double totalSize = 0;
     setLoading(true);
     pdfList.clear();
     pptList.clear();
     docList.clear();
     otherDocList.clear();
-    print('file type is ${AppConstants.fileTypeList[3]}');
     String isolateName = AppConstants.fileTypeList[3];
     isolates.spawn<String>(
       getAllFilesWithIsolate,
       name: isolateName,
       onReceive: (val) {
-        print(val);
         isolates.kill(isolateName);
       },
       onInitialized: () => isolates.send('hey', to: isolateName),
@@ -400,21 +307,11 @@ class CategoryVm extends BaseVm {
     ReceivePort _port = ReceivePort();
     IsolateNameServer.registerPortWithName(_port.sendPort, '${isolateName}_2');
     _port.listen((files) async {
-      print('RECEIVED SERVER from audio PORT');
-      print(files);
       files.forEach((file) {
-        // String mimeType = mime(file.path) ?? '';
-        //  && docExtensions.contains(extension(file.path))
-        // if (AppConstants.fileTypeList[3] == 'text' ) {
-        //   FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
-        //   filesList.add(fm);
-        //   totalSize = totalSize +fm.file.lengthSync();
-        //   // audio.add(file);
-        // }
+
         if (AppConstants.fileTypeList[3] == 'text' && extension(file.path) == '.pdf') {
           FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
           pdfList.add(fm);
-          // audio.add(file);
         }
         if (AppConstants.fileTypeList[3] == 'text' && (extension(file.path) == '.docx' || extension(file.path) == '.doc')) {
           totalSize = totalSize + file.lengthSync();
@@ -449,55 +346,31 @@ class CategoryVm extends BaseVm {
   }
 
   static getAllFilesWithIsolate(Map<String, dynamic> context) async {
-    print(context);
     String isolateName = context['name'];
-    print('Get files');
     List<FileSystemEntity> files = await FileManagerUtilities.getAllFiles(showHidden: false);
-    // print('Files $files');
     final messenger = HandledIsolate.initialize(context);
     try {
       final SendPort send = IsolateNameServer.lookupPortByName('${isolateName}_2')!;
       send.send(files);
     } catch (e) {
-      print(e);
     }
 
     messenger.send('done');
-    // print(context);
-    //
-    // String isolateName = context['name'];
-    // print('Get files');
-    // List<FileSystemEntity> files = await FileManagerUtilities.getAllFiles(showHidden: false);
-    // // print('Files $files');
-    // final messenger = HandledIsolate.initialize(context);
-    // try {
-    //   final SendPort send = IsolateNameServer.lookupPortByName('${isolateName}_7')!;
-    //   send.send(files);
-    // } catch (e) {
-    //   print(e);
-    // }
-    //
-    // messenger.send('done');
+
   }
 
   static getThumbnailsWithIsolate(Map<String, dynamic> context) async {
-    print(context);
     String isolateName = context['name'];
-    print('Get files');
     List<FileSystemEntity> files = await FileManagerUtilities.getAllFiles(showHidden: false);
-    // print('Files $files');
     final messenger = HandledIsolate.initialize(context);
     try {
       final SendPort send = IsolateNameServer.lookupPortByName('${isolateName}_2')!;
       send.send(files);
     } catch (e) {
-      print(e);
     }
-
     messenger.send('done');
   }
 
-//TODO unCommit to get device apps ....
   getAllApps() async {
     double totalSize = 0;
     setLoading(true);
@@ -507,7 +380,6 @@ class CategoryVm extends BaseVm {
       includeSystemApps: false,
       includeAppIcons: true,
     );
-    // print('data in apps object is $apps');
     apps.forEach((file) {
       DeviceAppModel appModel = DeviceAppModel(apps: file, isSelected: false);
       // totalSize = totalSize +file.apkFilePath.length.toString();
@@ -595,7 +467,6 @@ class CategoryVm extends BaseVm {
   }
 
   void clearAllSelectedLists() {
-    print('I am clearing!!');
     selectedFiles.clear();
     unSelectImages();
     unSelectVideos();
@@ -618,10 +489,7 @@ class CategoryVm extends BaseVm {
     for (int i = 0; i < _imageList.length; i++) {
       _imageList[i].isSelected = false;
     }
-    // for (int i = 0; i < _imageList.length; i++) {
-    //   print('value of isSelected variable is ...${_imageList[i].isSelected}');
-    //   _imageList[i].isSelected = false;
-    // }
+
   }
 
   void unSelectVideos() {

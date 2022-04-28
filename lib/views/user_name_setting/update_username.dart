@@ -128,7 +128,7 @@ class UpdateUserNameScreen extends StatelessWidget {
                                       child: ElevatedButton(
                                         onPressed: () {
                                           PreferenceUtilities.setUserNameToPrefs(vm.userName.text, context).whenComplete((){
-                                            iUtills().showMessage(context: context, text: "Name Updated");
+                                            iUtills().showMessage(context: context,title: "Success", text: "Name Updated successfully");
                                           });
 
                                           Navigator.pushNamed(context, DashBoardScreen.routeName);

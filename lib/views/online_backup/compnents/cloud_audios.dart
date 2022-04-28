@@ -167,11 +167,9 @@ class _CloudAudiosState extends State<CloudAudios> {
                                   vm.audios[index].isSelected =
                                       !vm.audios[index].isSelected;
                                   if (vm.audios[index].isSelected) {
-                                    print("Called if");
                                     vm.addToSelectedList =
                                         vm.audios[index];
                                   } else {
-                                    print("Called else");
                                     vm.removeFromSelectedList =
                                         vm.audios[index];
                                   }

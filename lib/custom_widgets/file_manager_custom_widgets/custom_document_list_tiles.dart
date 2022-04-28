@@ -28,7 +28,6 @@ class CustomDocumentListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<CategoryVm>(context, listen: false);
-    print('Length of the file is ${list.length}');
     return list.length == 0
         ? GeneralUtilities.noDataFound()
         : Stack(

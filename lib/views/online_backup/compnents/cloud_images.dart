@@ -171,11 +171,9 @@ class _CloudImagesState extends State<CloudImages> {
                                   vm.images[index].isSelected =
                                       !vm.images[index].isSelected;
                                   if (vm.images[index].isSelected) {
-                                    print("Called if");
                                     vm.addToSelectedList =
                                         vm.images[index];
                                   } else {
-                                    print("Called else");
                                     vm.removeFromSelectedList =
                                         vm.images[index];
                                   }

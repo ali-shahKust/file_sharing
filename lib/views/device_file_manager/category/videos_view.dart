@@ -38,7 +38,6 @@ class _VideosViewState extends State<VideosView> {
     SizeConfig().init(context);
     return Consumer(
       builder: (BuildContext context, CategoryVm provider, Widget? child) {
-        print('length of video list from provider is ${provider.videosList.length}');
         return Scaffold(
           // backgroundColor: Colors.white,
           backgroundColor: AppColors.kPrimaryPurpleColor,
@@ -120,10 +119,8 @@ class _VideosViewState extends State<VideosView> {
                               onTap: () async {
                                 //  pd.show(max: 100, msg: 'File Uploading...');
                                 if (provider.selectedFiles.length > 0) {
-                                  print('Button pressed.');
                                   Navigator.pushNamed(context, UploadingScreen.routeName,
                                       arguments: {'files': provider.selectedFiles, "drawer": false}).whenComplete(() {
-                                    print('whencomplete call...');
                                     // provider.selectedFiles.clear();
                                     // provider.clearAllSelectedLists();
                                   });
@@ -136,24 +133,7 @@ class _VideosViewState extends State<VideosView> {
                           ),
                         ),
 
-                        // Positioned(
-                        //   bottom: 5,
-                        //   left:50,
-                        //   right: 50,
-                        //   child: RaisedButton(
-                        //     color: Colors.blue,
-                        //     child: Text(
-                        //       "Selected Files ${provider.selectedFiles.length}",
-                        //       style: TextStyle(color: Colors.white,fontSize: 18),
-                        //     ),
-                        //     onPressed: () {
-                        //       for (int i = 0; i < provider.selectedFiles.length; i++) {
-                        //         print(
-                        //             'files in the selected list are.....${provider.selectedFiles[i]}');
-                        //       }
-                        //     },
-                        //   ),
-                        // ),
+
                       ],
                     ),
                   ),
@@ -172,7 +152,6 @@ class PagewiseGridViewExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('I am in pagewise build function...');
     return PagewiseGridView.count(
         physics: BouncingScrollPhysics(),
         pageSize: PAGE_SIZE,
@@ -183,13 +162,11 @@ class PagewiseGridViewExample extends StatelessWidget {
         padding: EdgeInsets.all(0.0),
         itemBuilder: this._itemBuilder,
         loadingBuilder: (context) {
-          print('I am in loading builder...');
           // Provider.of<CategoryVm>(context, listen: false).setVideoLoading();
           return Center(child: GeneralUtilities.LoadingFileWidget());
           // return Container(height:300, width:double.infinity,child: gridPlaceHolder());
         },
         pageFuture: (pageIndex) {
-          print('page index is ....$pageIndex');
           // pageIndex! * PAGE_SIZE, PAGE_SIZE
           return getThumbnails(pageIndex! * PAGE_SIZE, (pageIndex * PAGE_SIZE) + PAGE_SIZE, context);
         });
@@ -246,21 +223,14 @@ class PagewiseGridViewExample extends StatelessWidget {
 }
 
 Future<List<FileMangerModel>> getThumbnails(int start, int end, context) async {
-  print('start value is $start');
-  print('END value is $end');
+
 
   Provider.of<CategoryVm>(context, listen: false).videoTempList.clear();
   if (start < Provider.of<CategoryVm>(context, listen: false).videosList.length) {
     // templist.clear();
     for (int i = start; i < end; i++) {
-      // print('I  value is $i');
-      // print('start   value  in loop is $start');
-      // print('end value is $end');
-      // for(int i=0;i<Provider.of<CategoryVm>(context, listen: false).videosList.length;i++)
-      //   {
-      try {
-        print('Creating Thumbnail for: ${Provider.of<CategoryVm>(context, listen: false).videosList[i].file.path}');
 
+      try {
         final uint8list = await VideoThumbnail.thumbnailData(
           video: Provider.of<CategoryVm>(context, listen: false).videosList[i].file.path,
 
@@ -270,14 +240,12 @@ Future<List<FileMangerModel>> getThumbnails(int start, int end, context) async {
           quality: 50,
         );
 
-        // print('thumbnail is $uint8list');
         FileMangerModel fm = FileMangerModel(
             file: Provider.of<CategoryVm>(context, listen: false).videosList[i].file,
             isSelected: false,
             thumbNail: uint8list);
         Provider.of<CategoryVm>(context, listen: false).videoTempList.add(fm);
       } catch (e) {
-        print('Cant create Thumbnail : $e');
       }
 
       // Provider.of<CategoryVm>(context, listen: false).incrementVideoIndex();
@@ -291,7 +259,6 @@ Future<List<FileMangerModel>> getThumbnails(int start, int end, context) async {
 
   // start = end;
   // end = end*2;
-  print('length of primary list is ${Provider.of<CategoryVm>(context, listen: false).videoTempList.length}');
   return Provider.of<CategoryVm>(context, listen: false).videoTempList;
 }
 
@@ -352,12 +319,9 @@ class _MediaTile extends StatelessWidget {
     File file = File(imgmodel.file.path);
     String path = file.path;
     String mimeType = mime(path) ?? '';
-    // if (imgmodel.imgBytes != null) {
-    //   print('byte code of the image is...${imgmodel.imgBytes}');
-    // }
+
     return InkWell(
       onTap: () {
-        print('tapped index is $index');
         provider.changeIsSelected(index, provider.videosList);
         if (provider.videosList[index].isSelected) {
           provider.addToSelectedList = provider.videosList[index].file;
@@ -415,442 +379,15 @@ class _MediaTile extends StatelessWidget {
                             color: Colors.white,
                           )),
                     )
-                  //     : Container(
-                  //   height: SizeConfig.screenHeight! * 0.1,
-                  //   width: SizeConfig.screenWidth! * 0.07,
-                  //
-                  //   // decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.kBlueColor),
-                  //   child: Icon(
-                  //     Icons.check_box_outline_blank,
-                  //     size: SizeConfig.screenHeight! * 0.03,
-                  //     color: Colors.grey,
-                  //   ),
-                  // )
+
                   : SizedBox(
                       height: 2.0,
                     ),
             ),
           ),
-
-          // Positioned(
-          //   // top: SizeConfig.screenHeight! * (-0.032),
-          //   // left:50,
-          //   bottom: SizeConfig.screenHeight! * (-0.032),
-          //   right: 0,
-          //   child: Padding(
-          //       padding: EdgeInsets.all(5.0),
-          //       child: provider.videosList[index].isSelected
-          //           ? Container(
-          //               height: SizeConfig.screenHeight! * 0.1,
-          //               width: SizeConfig.screenWidth! * 0.07,
-          //               // decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.kBlueColor),
-          //               child: Icon(
-          //                 Icons.check_box_outlined,
-          //                 size: SizeConfig.screenHeight! * 0.03,
-          //                 color: Colors.grey,
-          //                 // Icons.check,
-          //                 // size: SizeConfig.screenHeight! * 0.02,
-          //                 // color: Colors.white,
-          //               ),
-          //             )
-          //           : Container(
-          //               height: SizeConfig.screenHeight! * 0.1,
-          //               width: SizeConfig.screenWidth! * 0.07,
-          //
-          //               // decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.kBlueColor),
-          //               child: Icon(
-          //                 Icons.check_box_outline_blank,
-          //                 size: SizeConfig.screenHeight! * 0.03,
-          //                 color: Colors.grey,
-          //               ),
-          //             )
-          //       // SizedBox(
-          //       //         height: 2.0,
-          //       //       ),
-          //       ),
-          // ),
-          // Positioned(
-          //   top: SizeConfig.screenHeight! * (-0.032),
-          //   // left:50,
-          //   // bottom: 0,
-          //   right: 0,
-          //   child: Padding(
-          //     padding: EdgeInsets.all(SizeConfig.screenHeight! * 0.005),
-          //     child: provider.videosList[index].isSelected
-          //         ? Container(
-          //             height: SizeConfig.screenHeight! * 0.1,
-          //             width: SizeConfig.screenWidth! * 0.07,
-          //             decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
-          //             child: Icon(
-          //               Icons.check,
-          //               size: SizeConfig.screenHeight! * 0.02,
-          //               color: Colors.white,
-          //             ),
-          //           )
-          //         : SizedBox(
-          //             height: 2.0,
-          //           ),
-          //   ),
-          // ),
         ],
       ),
     );
   }
 }
 
-//
-//
-// import 'dart:io';
-//
-// import 'package:file_sharing_app/provider/file_provider.dart';
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:transparent_image/transparent_image.dart';
-//
-// class PhotosPicker extends StatelessWidget {
-//   const PhotosPicker({Key key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final fileProvider = Provider.of<FileProvider>(context, listen: false);
-//     // fileProvider.getlist(w);
-//
-//     return fileProvider.photosListData == null
-//         ? CircularProgressIndicator(
-//       color: Colors.green,
-//     )
-//       //   : ListView.builder(
-//       // //if file/folder list is grabbed, then show here
-//       // itemCount: fileProvider.photosListData.length ?? 0,
-//       // itemBuilder: (context, index) {
-//         // File file = File(fileProvider.photosListData[index].path);
-//         // String path = (file.path.toString());
-//         // if (widget.isVideo) {
-//         //   print('type of the screen is ${widget.isVideo}');
-//         //
-//         //   getThumbNail(path);
-//         //   print('thumbnail of the video is $videoThumbNail');
-//         // }
-//     :Container(
-//           child: GridView.builder(
-//             reverse: false,
-//             cacheExtent: 15,
-//             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//               crossAxisCount: 3,
-//               mainAxisSpacing: 7.0,
-//               crossAxisSpacing: 7.0,
-//             ),
-//             itemCount: fileProvider.photosListData.length ?? 0,
-//             itemBuilder: (BuildContext context, int index) {
-//               // ImageModel imageModel = ImageModel.fromJson(list[index]);
-//               return Container(
-//                 child: Stack(
-//                   alignment: Alignment.bottomCenter,
-//                   children: <Widget>[
-//                     FadeInImage(
-//                       image: FileImage(
-//                         File(fileProvider.photosListData[index].path),
-//                       ),
-//                       placeholder: MemoryImage(kTransparentImage),
-//                       fit: BoxFit.cover,
-//                       width: double.infinity,
-//                       height: double.infinity,
-//                     ),
-//                     // Container(
-//                     //   color: Colors.black.withOpacity(0.7),
-//                     //   height: 30,
-//                     //   width: double.infinity,
-//                     //   child: Center(
-//                     //     child: Text(
-//                     //       fileProvider.photosListData[index].name ?? '',
-//                     //       maxLines: 1,
-//                     //       overflow: TextOverflow.ellipsis,
-//                     //       style: TextStyle(
-//                     //           color: Colors.white,
-//                     //           fontSize: 16,
-//                     //           fontFamily: 'Regular'
-//                     //       ),
-//                     //     ),
-//                     //   ),
-//                     // )
-//                   ],
-//                 ),
-//               );
-//             },
-//           ),
-//         );
-//         // return Card(
-//         //     child: ListTile(
-//         //       title: Text(fileProvider.photosListData[index].name ?? ''),
-//         //       // leading:
-//         //       // Padding(
-//         //       //   padding: const EdgeInsets.symmetric(vertical: 5.0),
-//         //       //   child: Image.file(
-//         //       //     File(fileProvider.photosListData[index].path),
-//         //       //     fit: BoxFit.fitWidth,
-//         //       //     width: 70,
-//         //       //     height: 70,
-//         //       //   ),
-//         //       // ),
-//         //       // Icon(Icons.picture_as_pdf),
-//         //       trailing: fileProvider.photosListData[index].isSelected?Container(
-//         //           height: 30,
-//         //           width: 30,
-//         //           decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
-//         //           child: Padding(
-//         //               padding: const EdgeInsets.all(5.0),
-//         //               child: Icon(
-//         //                 Icons.check,
-//         //                 size: 20.0,
-//         //                 color: Colors.white,
-//         //               ))):SizedBox(height: 2.0,),
-//         //       // IconButton(
-//         //       //   icon:Icon(Icons.arrow_forward),
-//         //       //   color: Colors.redAccent,
-//         //       //   onPressed: (){
-//         //       //   List<File> list =   fileProvider.getSelectedList();
-//         //       //   for(int i =0 ;i<list.length;i++){
-//         //       //     print('selected list values are...${list[i].path}');
-//         //       //   }
-//         //       //   },
-//         //       // ),
-//         //       onLongPress: () {
-//         //         print(
-//         //             'path of the file selected is ....${fileProvider.photosListData[index].path}');
-//         //         fileProvider.enableSelectMode = true;
-//         //         // fileProvider.photosListData[index].isSelected = true;
-//         //         print('select mode value is ${fileProvider.selectModeValue}');
-//         //         // setState(() {
-//         //         //   isSelect = true;
-//         //         //   // filePathToShare = path;
-//         //         // });
-//         //         // print('path of the file to share  is ....$path');
-//         //         // print('path of the file name  to share  is ....$file');
-//         //         // uploadFile(context)
-//         //         // uploadFile(context, currentContext: globals.globalContext, path: path, file1: file, sizeDem: 0);
-//         //       },
-//         //       onTap: () {
-//         //         if(fileProvider.selectModeValue){
-//         //           fileProvider.changeIsSelected(true, index);
-//         //           // setState(() {
-//         //           //
-//         //           // });
-//         //           print('list is Selected varibale value is ${fileProvider.photosListData[index].isSelected}');
-//         //           print('list is name varibale value is ${fileProvider.photosListData[index].name}');
-//         //
-//         //           fileProvider.addToSelectedList(fileProvider.photosListData[index].path);
-//         //         }
-//         //         else{
-//         //         }
-//         //
-//         //
-//         //         // setState(() {
-//         //         //   isSelect = !isSelect;
-//         //         // });
-//         //         // for(int i =0;i<files.length();i++){
-//         //         //   print('item in the list are ...${files[i]}');
-//         //         // }
-//         //         // OpenFile.open(path);
-//         //         // Navigator.push(context, MaterialPageRoute(builder: (context) {
-//         //         //   return ViewPDF(pathPDF: files[index].path.toString());
-//         //         //open viewPDF page on click
-//         //       },
-//         //     )
-//         // );
-//     //   },
-//     // );
-//   }
-// }
-
-//
-//
-// import 'dart:convert';
-// import 'dart:io';
-//
-// import 'package:file_sharing_app/provider/file_provider.dart';
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:transparent_image/transparent_image.dart';
-// import 'package:video_thumbnail/video_thumbnail.dart';
-//
-// class VideosView extends StatelessWidget {
-//   const VideosView({Key key}) : super(key: key);
-//
-//   //   Future<String> getThumbNail(final filepath) async {
-//   //   String thumbnail = await VideoThumbnail.thumbnailData(
-//   //     video: filepath,
-//   //     imageFormat: ImageFormat.PNG,
-//   //     maxWidth: 100,
-//   //     // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
-//   //     quality: 25,
-//   //   ).toString();
-//   //   return thumbnail;
-//   //   // setState(() {
-//   //   //   videoThumbNail = thumbnail;
-//   //   // });
-//   // }
-//   @override
-//   Widget build(BuildContext context) {
-//     final fileProvider = Provider.of<FileProvider>(context, listen: false);
-//     // fileProvider.getlist(w);
-//
-//     return fileProvider.videosListData == null
-//         ? CircularProgressIndicator(
-//       color: Colors.green,
-//     )
-//         :Container(
-//       child: GridView.builder(
-//         reverse: false,
-//         cacheExtent: 15,
-//         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//           crossAxisCount: 3,
-//           mainAxisSpacing: 7.0,
-//           crossAxisSpacing: 7.0,
-//         ),
-//         itemCount: fileProvider.videosListData.length ?? 0,
-//         itemBuilder: (BuildContext context, int index) {
-//           // ImageModel imageModel = ImageModel.fromJson(list[index]);
-//           return Container(
-//             child: Stack(
-//               alignment: Alignment.bottomCenter,
-//               children: <Widget>[
-//               Padding(
-//                           padding: const EdgeInsets.symmetric(vertical: 5.0),
-//                           child: Container(
-//                               child: Image.memory(
-//                                 fileProvider.videosListData[index].thumbNail,
-//                                 height: 200,
-//                                 width: 200,
-//                                 fit: BoxFit.cover,
-//                               ),
-//                           ),
-//                         ),
-//                 // Container(
-//                 //   color: Colors.black.withOpacity(0.7),
-//                 //   height: 30,
-//                 //   width: double.infinity,
-//                 //   child: Center(
-//                 //     child: Text(
-//                 //       fileProvider.photosListData[index].name ?? '',
-//                 //       maxLines: 1,
-//                 //       overflow: TextOverflow.ellipsis,
-//                 //       style: TextStyle(
-//                 //           color: Colors.white,
-//                 //           fontSize: 16,
-//                 //           fontFamily: 'Regular'
-//                 //       ),
-//                 //     ),
-//                 //   ),
-//                 // )
-//               ],
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//     //     : ListView.builder(
-//     //   //if file/folder list is grabbed, then show here
-//     //   itemCount: fileProvider.videosListData.length ?? 0,
-//     //   itemBuilder: (context, index) {
-//     //     // File file = File(fileProvider.videosListData[index].path);
-//     //     // String path = (file.path.toString());
-//     //     // if (widget.isVideo) {
-//     //     //   print('type of the screen is ${widget.isVideo}');
-//     //     //
-//     //     //   getThumbNail(path);
-//     //     //   print('thumbnail of the video is $videoThumbNail');
-//     //     // }
-//     //
-//     //     // dynamic thumnail =  getThumbNail(fileProvider.videosListData[index].path);
-//     //
-//     //     return Card(
-//     //         child: ListTile(
-//     //           title: Text(fileProvider.videosListData[index].name ?? ''),
-//     //           leading:
-//     //           Padding(
-//     //             padding: const EdgeInsets.symmetric(vertical: 5.0),
-//     //             child: Container(
-//     //                 child: Image.memory(
-//     //                   fileProvider.videosListData[index].thumbNail,
-//     //                   height: 200,
-//     //                   width: 200,
-//     //                   fit: BoxFit.cover,
-//     //                 ),
-//     //             ),
-//     //           ),
-//     //           //   child: Image.file(
-//     //           //     File(fileProvider.videosListData[index].path),
-//     //           //     fit: BoxFit.fitWidth,
-//     //           //     width: 70,
-//     //           //     height: 70,
-//     //           //   ),
-//     //           // ),
-//     //           // Icon(Icons.picture_as_pdf),
-//     //           trailing: fileProvider.videosListData[index].isSelected?Container(
-//     //               height: 30,
-//     //               width: 30,
-//     //               decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
-//     //               child: Padding(
-//     //                   padding: const EdgeInsets.all(5.0),
-//     //                   child: Icon(
-//     //                     Icons.check,
-//     //                     size: 20.0,
-//     //                     color: Colors.white,
-//     //                   ))):SizedBox(height: 2.0,),
-//     //           // IconButton(
-//     //           //   icon:Icon(Icons.arrow_forward),
-//     //           //   color: Colors.redAccent,
-//     //           //   onPressed: (){
-//     //           //   List<File> list =   fileProvider.getSelectedList();
-//     //           //   for(int i =0 ;i<list.length;i++){
-//     //           //     print('selected list values are...${list[i].path}');
-//     //           //   }
-//     //           //   },
-//     //           // ),
-//     //           onLongPress: () {
-//     //             print(
-//     //                 'path of the file selected is ....${fileProvider.videosListData[index].path}');
-//     //             fileProvider.enableSelectMode = true;
-//     //             // fileProvider.videosListData[index].isSelected = true;
-//     //             print('select mode value is ${fileProvider.selectModeValue}');
-//     //             // setState(() {
-//     //             //   isSelect = true;
-//     //             //   // filePathToShare = path;
-//     //             // });
-//     //             // print('path of the file to share  is ....$path');
-//     //             // print('path of the file name  to share  is ....$file');
-//     //             // uploadFile(context)
-//     //             // uploadFile(context, currentContext: globals.globalContext, path: path, file1: file, sizeDem: 0);
-//     //           },
-//     //           onTap: () {
-//     //             if(fileProvider.selectModeValue){
-//     //               fileProvider.changeIsSelected(true, index);
-//     //               // setState(() {
-//     //               //
-//     //               // });
-//     //               print('list is Selected varibale value is ${fileProvider.videosListData[index].isSelected}');
-//     //               print('list is name varibale value is ${fileProvider.videosListData[index].name}');
-//     //
-//     //               fileProvider.addToSelectedList(fileProvider.videosListData[index].path);
-//     //             }
-//     //             else{
-//     //             }
-//     //
-//     //
-//     //             // setState(() {
-//     //             //   isSelect = !isSelect;
-//     //             // });
-//     //             // for(int i =0;i<files.length();i++){
-//     //             //   print('item in the list are ...${files[i]}');
-//     //             // }
-//     //             // OpenFile.open(path);
-//     //             // Navigator.push(context, MaterialPageRoute(builder: (context) {
-//     //             //   return ViewPDF(pathPDF: files[index].path.toString());
-//     //             //open viewPDF page on click
-//     //           },
-//     //         )
-//     //     );
-//     //   },
-//     // );
-//   }
-// }

@@ -12,6 +12,7 @@ import 'package:quick_backup/data/models/app_model.dart';
 import 'package:quick_backup/data/models/download_model.dart';
 import 'package:quick_backup/data/models/queue_model.dart';
 import 'package:quick_backup/data/services/auth_services.dart';
+import 'package:quick_backup/utilities/i_utills.dart';
 
 import '../../utilities/pref_provider.dart';
 
@@ -170,7 +171,6 @@ class OnlineBackUpVm extends BaseVm {
       for (int i = 0; i < items.length; i++) {
         final GetUrlResult result =
             await Amplify.Storage.getUrl(key: items[i].key, options: GetUrlOptions(accessLevel: StorageAccessLevel.protected));
-        print('MY DATA ${items[i].key}');
         if (mime(items[i].key)!.split("/").first == "video") {
           videos.add(DownloadModel(
               url: result.url, key: items[i].key, date: items[i].lastModified.toString(), size: items[i].size.toString(), isSelected: false));
@@ -184,7 +184,6 @@ class OnlineBackUpVm extends BaseVm {
           documents.add(DownloadModel(
               url: result.url, key: items[i].key, date: items[i].lastModified.toString(), size: items[i].size.toString(), isSelected: false));
         } else if (mime(items[i].key)!.split("/").first == "application") {
-          print("mime type ${(mime(items[i].key))}");
           if (mime(items[i].key)!.split("/").last == "vnd.android.package-archive") {
             apps.add(DownloadModel(
                 url: result.url, key: items[i].key, date: items[i].lastModified.toString(), size: items[i].size.toString(), isSelected: false));
@@ -204,24 +203,18 @@ class OnlineBackUpVm extends BaseVm {
         notifyListeners();
       }
     } on StorageException catch (e) {
-      print('Error listing items on StorageException: $e');
+      iUtills().showMessage(context: context, title: "Error", text: e.message.toString());
     } catch (e) {
-      print('Error listing items here in catch: $e');
     }
   }
 
   set removeFromSelectedList(DownloadModel file) {
-    print('file to remove from selected list from app screen is $file');
     this.selectedFiles.removeWhere((element) => element.name == file.key);
 
-    // for (int i = 0; i < selectedFiles.length; i++) {
-    //   print('data in the selected list after remove is...${selectedFiles[i]}');
-    // }
     notifyListeners();
   }
 
   set addToSelectedList(DownloadModel file) {
-    print('file to add in the list from app screen is $file');
     this.selectedFiles.add(QueueModel(key: file.key, name: file.key, size: file.size, date: file.date, status: "pending", progress: "pending"));
     notifyListeners();
   }

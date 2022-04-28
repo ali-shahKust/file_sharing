@@ -56,7 +56,6 @@ Widget cloudFileCard({required context, icon, title, size, isSelected, required 
                   menuOffset: 5.0,
                   bottomOffsetHeight: 60.0,
                   onPressed: () {
-                    print('menu is tapped.....');
                   },
                   menuItems: <FocusedMenuItem>[
                     FocusedMenuItem(
@@ -91,51 +90,6 @@ Widget cloudFileCard({required context, icon, title, size, isSelected, required 
                     child: Icon(Icons.more_vert),
                   ),
                 ),
-
-                // subtitle: Text('${app.packageName}'),
-                // onTap: () {
-                //   listitems[index].isSelected = !listitems[index].isSelected;
-                //   setState(() {});
-                //   if (listitems[index].isSelected) {
-                //     print("Called if");
-                //
-                //     provider.selectedFiles.add(QueueModel(
-                //       id: null,
-                //       name: listitems[index].key.split('/').last,
-                //       size: listitems[index].size,
-                //       date: listitems[index].date,
-                //       status: "pending",
-                //       progress: "pending",
-                //       key: listitems[index].key,
-                //     ));
-                //     provider.selectedFiles.forEach((element) {
-                //       print(element.name);
-                //     });
-                //   } else {
-                //     print("Called else");
-                //     provider.removeFromSelectedList = QueueModel(
-                //       id: null,
-                //       name: listitems[index].key.split('/').last,
-                //       size: listitems[index].size,
-                //       date: listitems[index].date,
-                //       status: "pending",
-                //       progress: "pending",
-                //       key: listitems[index].key,
-                //     );
-                //   }
-                // provider.changeIsSelected(
-                //     index, provider.audiosList);
-                // if (provider.audiosList[index]
-                //     .isSelected) {
-                //   provider.addToSelectedList =
-                //       provider
-                //           .audiosList[index].file;
-                // } else {
-                //   provider.removeFromSelectedList =
-                //       provider
-                //           .audiosList[index].file;
-                // }
-                // },
               ),
             ),
           ),

@@ -145,10 +145,7 @@ class _FileManagerHomeState extends State<FileManagerHome> {
 class _CategoriesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print('total space from the provider is${Provider.of<CoreVm>(context, listen: false).totalSpace}');
-    print('used status from the provider is${Provider.of<CoreVm>(context, listen: false).usedSpace}');
     final categoryVm = Provider.of<CategoryVm>(context, listen: false);
-    print('length of video in build function is ${categoryVm.videosList.length}');
     return Container(
       decoration: BoxDecoration(
           color: AppColors.kWhiteColor,
@@ -178,8 +175,6 @@ class _CategoriesSection extends StatelessWidget {
             leadingColorLight: category['startColor'],
             onTap: () {
               if (index == 0) {
-                print(
-                    'image list in function is testing ${Provider.of<CategoryVm>(context, listen: false).imageList.length}');
 
                 Navigator.pushNamed(context, ImagesView.routeName);
               } else if (index == 1) {

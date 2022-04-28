@@ -134,6 +134,12 @@ class _DownloadScreenState extends State<DownloadScreen> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Consumer<DownloadVm>(builder: (context, vm, _) {
+        if (vm.completed != 0 && vm.completed == vm.queue.length) {
+          vm.queue.clear();
+          vm.completed = 0;
+          iUtills().showMessage(context: context,title: "Completed", text: "Files downloaded successfully");
+          Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false);
+        }
         return SafeArea(
           child: Scaffold(
             body: vm.isLoading
@@ -217,7 +223,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                                 fontWeight: FontWeight.w700,
                                               ),
                                               PrimaryText(
-                                                "vm.completed",
+                                                "Completed",
                                                 fontSize: 17,
                                                 fontWeight: FontWeight.w600,
                                               ),
@@ -292,7 +298,6 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                           } else {
                                             type = mime(vm.queue[index]!.name)!.split('/').first;
                                           }
-                                          print("PROGRESS Report :${vm.queue[index]!.progress}");
                                           String size = FileManagerUtilities.formatBytes(int.parse(vm.queue[index]!.size), 2);
                                           return Padding(
                                             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 22),

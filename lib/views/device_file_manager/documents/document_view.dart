@@ -41,8 +41,6 @@ class _DocumentViewsState extends State<DocumentViews> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (BuildContext context, CategoryVm provider, Widget? child) {
-        print('i im in build function of type ${provider.getDocCurrentSelection(type)}');
-        print('number of ppt in doc are...${provider.pptList.length}');
         return Scaffold(
           backgroundColor: AppColors.kPrimaryPurpleColor,
           body: SafeArea(
@@ -101,10 +99,6 @@ class _DocumentViewsState extends State<DocumentViews> {
                                         documentVm.changeIsSelected(index);
                                         // documentVm.unSelectAll(index);
                                       });
-                                      // print(
-                                      //     'image list in function is testing ${Provider.of<CategoryVm>(context, listen: false).imageList.length}');
-                                      //
-                                      // Navigator.pushNamed(context, ImagesView.routeName);
                                     } else if (index == 1) {
                                       setState(() {
                                         type = AppConstants.docCategories[1];
@@ -211,7 +205,6 @@ class _DocumentViewsState extends State<DocumentViews> {
                                       Navigator.pushNamed(context, UploadingScreen.routeName,
                                               arguments: {'files': provider.selectedFiles, "drawer": false})
                                           .whenComplete(() {
-                                        print('whencomplete call...');
                                         // provider.selectedFiles.clear();
                                         // provider.clearAllSelectedLists();
                                       });

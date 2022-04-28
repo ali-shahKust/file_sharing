@@ -18,12 +18,9 @@ class DatabaseHelper {
   static Database? _db;
   Future<Database?> get db async {
     if (_db != null) {
-      print('Databae Exists $_dbName so i am ignoring rest of create functions');
       return _db;
     }
-    print('I am creating Database $_dbName Now ');
     _db = await initDatabase();
-    print('db value is $_db');
     return _db;
   }
   initDatabase() async {
@@ -36,7 +33,6 @@ class DatabaseHelper {
     await db.execute(
         'CREATE TABLE $_filesTable($columnFileId INTEGER PRIMARY KEY AUTOINCREMENT,$columnFileName TEXT,$columnFilePath TEXT,$columnFileSize TEXT,$columnFileDate TEXT,$columnFileKey TEXT,$columnFileSelected TEXT)');
 
-      print("Table $_filesTable  Created!!");
   }
   //PDF SIGNATURE RELEATED FUNTIONS
   Future<int> insertFileToDb(QueueModel queueModel) async {
@@ -49,7 +45,6 @@ class DatabaseHelper {
     List<Map> maps = await dbClient!.rawQuery('SELECT * FROM $_filesTable');
     List<QueueModel> queueList = [];
     for (int i = 0; i < maps.length; i++) {
-      print("My result is :${maps[i]}");
       queueList.add(QueueModel.fromMap(maps[i]));
     }
     return queueList;

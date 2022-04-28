@@ -59,7 +59,6 @@ class CoreVm extends BaseVm {
       getFilesWithIsolate,
       name: isolateName,
       onReceive: (val) {
-        print(val);
         isolates.kill(isolateName);
       },
       onInitialized: () => isolates.send('hey', to: isolateName),
@@ -67,8 +66,6 @@ class CoreVm extends BaseVm {
     ReceivePort _port = ReceivePort();
     IsolateNameServer.registerPortWithName(_port.sendPort, '${isolateName}_2');
     _port.listen((message) {
-      print('RECEIVED SERVER PORT');
-      print(message);
       recentFiles.addAll(message);
       setRecentLoading(false);
       _port.close();
@@ -77,7 +74,6 @@ class CoreVm extends BaseVm {
   }
 
   static getFilesWithIsolate(Map<String, dynamic> context) async {
-    print(context);
     String isolateName = context['name'];
     List<FileSystemEntity> l =
         await FileManagerUtilities.getRecentFiles(showHidden: false);
