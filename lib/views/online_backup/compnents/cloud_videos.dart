@@ -8,7 +8,6 @@ import 'package:quick_backup/custom_widgets/custom_appbar.dart';
 import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/views/download/download_screen.dart';
 import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
-import '../../../custom_widgets/app_text_widget.dart';
 import '../../../utilities/general_utilities.dart';
 
 class CloudVideos extends StatefulWidget {
@@ -166,7 +165,6 @@ class _CloudVideosState extends State<CloudVideos> {
                             //   return CustomDivider();
                             // },
                           ),
-
                         ],
                       ),
                     ),
