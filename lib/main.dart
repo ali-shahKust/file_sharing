@@ -40,6 +40,8 @@ void main() async {
   GetIt.I.registerSingleton<AuthService>(AuthService());
   await GetIt.I.allReady();
 
+  await AuthService.configureAmplify();
+
   runApp(MyApp());
 }
 

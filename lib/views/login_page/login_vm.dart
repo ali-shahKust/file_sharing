@@ -39,6 +39,7 @@ class LoginVm extends BaseVm {
           print("AWS Token $value");
 
           PreferenceUtilities.setUserCognitoToPrefs(value, context);
+          PreferenceUtilities.setUserAuthStatusToPrefs(true, context);
 
           if(Provider.of<PreferencesProvider>(context,listen: false).userName.isEmpty){
             Navigator.pushNamedAndRemoveUntil(

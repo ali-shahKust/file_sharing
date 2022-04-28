@@ -416,8 +416,7 @@ class CategoryVm extends BaseVm {
           pdfList.add(fm);
           // audio.add(file);
         }
-        if (AppConstants.fileTypeList[3] == 'text' &&
-            (extension(file.path) == '.docx' || extension(file.path) == '.doc')) {
+        if (AppConstants.fileTypeList[3] == 'text' && (extension(file.path) == '.docx' || extension(file.path) == '.doc')) {
           totalSize = totalSize + file.lengthSync();
           FileMangerModel fm = FileMangerModel(file: file, isSelected: false);
           docList.add(fm);
@@ -540,27 +539,26 @@ class CategoryVm extends BaseVm {
   }
 
   void selectAllInList(List<FileMangerModel> list) {
-
     list.forEach((element) {
-        element.isSelected = true;
-        addToSelectedList = element.file;
-
+      element.isSelected = true;
+      addToSelectedList = element.file;
     });
     notifyListeners();
   }
+
   void unselectAllInList(List<FileMangerModel> list) {
-
     list.forEach((element) {
-        element.isSelected = false;
-        removeFromSelectedList = element.file;
+      element.isSelected = false;
+      removeFromSelectedList = element.file;
 
-    notifyListeners();
-  });
+      notifyListeners();
+    });
   }
+
   void selectAllAppInList(List<DeviceAppModel> list) {
     list.forEach((element) {
       element.isSelected = true;
-        addToSelectedList = File(element.apps.apkFilePath);
+      addToSelectedList = File(element.apps.apkFilePath);
       // if (element.isSelected) {
       //   element.isSelected = false;
       //   // File(provider.appList[index].apps.apkFilePath)
@@ -573,6 +571,7 @@ class CategoryVm extends BaseVm {
 
     notifyListeners();
   }
+
   void unSelectAllAppInList(List<DeviceAppModel> list) {
     list.forEach((element) {
       element.isSelected = false;
@@ -596,6 +595,8 @@ class CategoryVm extends BaseVm {
   }
 
   void clearAllSelectedLists() {
+    print('I am clearing!!');
+    selectedFiles.clear();
     unSelectImages();
     unSelectVideos();
     unSelectAudios();
@@ -614,7 +615,9 @@ class CategoryVm extends BaseVm {
   // }
 
   void unSelectImages() {
-    _isAllImagesSelected = false;
+    for (int i = 0; i < _imageList.length; i++) {
+      _imageList[i].isSelected = false;
+    }
     // for (int i = 0; i < _imageList.length; i++) {
     //   print('value of isSelected variable is ...${_imageList[i].isSelected}');
     //   _imageList[i].isSelected = false;
@@ -671,7 +674,6 @@ class CategoryVm extends BaseVm {
   bool getIsSelectedVal(int index, List<FileMangerModel> list) {
     return list[index].isSelected;
   }
-
 
 // Specific for Device app  "Model Change"..............
   void changeIsSelectedApp(int index, List<DeviceAppModel> list) {

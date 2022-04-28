@@ -13,5 +13,6 @@ class SplashVm extends BaseVm {
 
   getPrefValues(context)async {
     PreferenceUtilities.getIsOnBoardingViewedFromPrefsToProvider(context);
+    PreferenceUtilities.getUserAuthStatusFromPrefsToProvider(context);
   }
 }
