@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/custom_widgets/app_text_widget.dart';
 import 'package:quick_backup/custom_widgets/bages/badge.dart';
-import 'package:quick_backup/custom_widgets/upload_screen.dart';
+import 'package:quick_backup/views/dashboard/upload_screen.dart';
 import 'package:quick_backup/data/models/app_model.dart';
 import 'package:quick_backup/views/dashboard/dashboard_vm.dart';
 import 'package:quick_backup/views/download/download_screen.dart';

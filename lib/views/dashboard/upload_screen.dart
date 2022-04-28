@@ -22,8 +22,8 @@ import 'package:quick_backup/views/dashboard/dashboard_vm.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 
-import 'custom_dialog.dart';
-import 'loading_widget.dart';
+import '../../custom_widgets/custom_dialog.dart';
+import '../../custom_widgets/loading_widget.dart';
 
 class UploadingScreen extends StatefulWidget {
   static const routeName = 'queue_screen';

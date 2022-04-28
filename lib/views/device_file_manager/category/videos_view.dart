@@ -14,7 +14,7 @@ import 'package:quick_backup/utilities/general_utilities.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
-import '../../../custom_widgets/upload_screen.dart';
+import '../../dashboard/upload_screen.dart';
 
 class VideosView extends StatefulWidget {
   static const routeName = 'videos';

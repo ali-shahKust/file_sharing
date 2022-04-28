@@ -11,8 +11,9 @@ import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/constants/app_constants.dart';
 import 'package:quick_backup/custom_widgets/InfoDialoge.dart';
 import 'package:quick_backup/custom_widgets/app_text_widget.dart';
+import 'package:quick_backup/custom_widgets/custom_dialog.dart';
 import 'package:quick_backup/custom_widgets/drawer_items_widget.dart';
-import 'package:quick_backup/custom_widgets/upload_screen.dart';
+import 'package:quick_backup/views/dashboard/upload_screen.dart';
 import 'package:quick_backup/utilities/i_utills.dart';
 import 'package:quick_backup/custom_widgets/primary_text.dart';
 import 'package:provider/provider.dart';
@@ -169,7 +170,77 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                             if (!status.isGranted) {
                                               vm.permissionCheck(parentContext, osVersion, status);
                                             } else {
-                                              Navigator.pushNamed(parentContext!, FileManagerHome.routeName);
+                                              if(vm.queue.isEmpty){
+                                                Navigator.pushNamed(parentContext!, FileManagerHome.routeName);
+                                              }
+                                              else {
+                                                showDialog(context: context, builder: (BuildContext dialogContext){
+                                                  return AlertDialog(
+                                                    content: Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: [
+                                                        Text("Info!",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
+                                                        SizedBox(height: 15,),
+                                                        Text("Uploading Already in progress.",style: TextStyle(fontSize: 14),textAlign: TextAlign.center,),
+                                                        Text("Do you want to view the progress ?",style: TextStyle(fontSize: 14),textAlign: TextAlign.center,),
+                                                        SizedBox(height: 22,),
+                                                        Align(
+                                                          alignment: Alignment.bottomRight,
+                                                          child: Row(
+                                                            children: [
+                                                              Container(
+                                                                height: SizeConfig.screenHeight! * 0.057,
+                                                                width: SizeConfig.screenWidth! * 0.3,
+                                                                margin: const EdgeInsets.all(15.0),
+                                                                padding: const EdgeInsets.all(3.0),
+                                                                decoration: BoxDecoration(
+                                                                    borderRadius: BorderRadius.circular(15),
+                                                                    border: Border.all(
+                                                                        color: AppColors.kPrimaryColor)),
+                                                                child: Center(
+                                                                    child: InkWell(
+                                                                      onTap: () {
+                                                                        Navigator.pop(context);
+                                                                      },
+                                                                      child: PrimaryText(
+                                                                        'Cancel',
+                                                                        color: AppColors.kPrimaryColor,
+                                                                        fontWeight: FontWeight.normal,
+                                                                        fontSize: SizeConfig.screenHeight! * 0.025,
+                                                                      ),
+                                                                    )),
+                                                              ),
+                                                              Container(
+                                                                decoration: BoxDecoration(
+                                                                    borderRadius: BorderRadius.circular(15),
+                                                                    gradient: LinearGradient(colors: [
+                                                                      Color(0xff7266F8),
+                                                                      Color(0xff5043D8),
+                                                                    ])),
+                                                                height: SizeConfig.screenHeight! * 0.057,
+                                                                width: SizeConfig.screenWidth! * 0.3,
+                                                                child: Center(
+                                                                    child: InkWell(
+                                                                      onTap: () {
+                                                                        Navigator.pushNamed(context, UploadingScreen.routeName,
+                                                                            arguments: {"drawer": true});
+                                                                      },
+                                                                      child: PrimaryText(
+                                                                        'Yes',
+                                                                        color: AppColors.kWhiteColor,
+                                                                        fontWeight: FontWeight.normal,
+                                                                        fontSize: SizeConfig.screenHeight! * 0.025,
+                                                                      ),
+                                                                    )),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                });
+                                              }
                                             }
                                           },
 
