@@ -11,6 +11,7 @@ import 'package:quick_backup/custom_widgets/loading_widget.dart';
 import 'package:quick_backup/data/extension.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_backup/utilities/file_manager_utilities.dart';
+import 'package:quick_backup/views/dashboard/dashboard_screen.dart';
 import 'package:quick_backup/views/download/download_vm.dart';
 import '../../configurations/size_config.dart';
 import '../../custom_widgets/app_text_widget.dart';
@@ -91,12 +92,6 @@ class _DownloadScreenState extends State<DownloadScreen> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Consumer<DownloadVm>(builder: (context, vm, _) {
-        if (vm.completed != 0 && vm.completed == vm.queue.length) {
-          vm.queue.clear();
-          vm.completed = 0;
-          iUtills().showMessage(context: context,title: "Completed", text: "Files downloaded successfully");
-          Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false);
-        }
         return SafeArea(
           child: Scaffold(
             body: vm.isLoading

@@ -103,7 +103,7 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
                         child: CircularPercentIndicator(
                           radius: 178.0,
                           lineWidth: 13.0,
-                          animation: false,
+                          animation: true,
                           percent: (int.parse(AppConstants.allow_space) -
                                   vm.usedSpace) /
                               int.parse(AppConstants.allow_space),
@@ -112,12 +112,12 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
                             children: [
                               PrimaryText(
                                 "${(((int.parse(AppConstants.allow_space) - vm.usedSpace) / int.parse(AppConstants.allow_space)) * 100).toStringAsFixed(0)}%",
-                                fontSize: 34,
+                              fontSize: SizeConfig.screenHeight!*0.034,
                                 fontWeight: FontWeight.w700,
                               ),
                               PrimaryText(
                                 "Available",
-                                fontSize: 17,
+                                fontSize: SizeConfig.screenHeight!*0.02,
                                 fontWeight: FontWeight.w600,
                               ),
                             ],
@@ -128,8 +128,8 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 22),
+                        padding:  EdgeInsets.symmetric(
+                            vertical: SizeConfig.screenHeight!*0.012, horizontal: SizeConfig.screenWidth!*0.05),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -155,7 +155,7 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 PrimaryText(
-                                  AppConstants.allow_space,
+                                  FileManagerUtilities.formatBytes(int.parse(AppConstants.allow_space), 2),
                                   fontSize: SizeConfig.screenHeight! * 0.024,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xff74D5DE),

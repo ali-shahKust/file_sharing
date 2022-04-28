@@ -42,48 +42,6 @@ class _UploadingScreenState extends State<UploadingScreen> {
       if (widget.map['files'] != null && !widget.map['drawer']) {
         Provider.of<DashBoardVm>(context, listen: false).completed = 0;
         Provider.of<DashBoardVm>(context, listen: false).uploadFile(widget.map['files'], context);
-
-        // then((value) {
-        //   if (Provider.of<DashBoardVm>(context, listen: false).completed != 0 && Provider.of<DashBoardVm>(context, listen: false).completed == Provider.of<DashBoardVm>(context, listen: false).queue.length) {
-        //     showDialog(
-        //         barrierDismissible: false,
-        //         context: context,
-        //         builder: (BuildContext context) {
-        //           return AlertDialog(
-        //             content: Column(
-        //               mainAxisSize: MainAxisSize.min,
-        //               children: [
-        //                 PrimaryText(
-        //                   "All Files Uploaded Successfully.",
-        //                   fontSize: 18,
-        //                   fontWeight: FontWeight.w400,
-        //                   color: Colors.black,
-        //                 ),
-        //                 SizedBox(
-        //                   height: SizeConfig.screenHeight! * 0.053,
-        //                 ),
-        //                 InkWell(
-        //                   onTap: () {
-        //                     Provider.of<DashBoardVm>(context, listen: false).completed = 0;
-        //                     Provider.of<DashBoardVm>(context, listen: false).queue.clear();
-        //                     Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false);
-        //                   },
-        //                   child: iUtills().gradientButton(
-        //                       width: SizeConfig.screenWidth! * 0.253,
-        //                       height: SizeConfig.screenHeight! * 0.053,
-        //                       child: Center(
-        //                           child: PrimaryText(
-        //                         "OK",
-        //                         fontSize: 18,
-        //                         fontWeight: FontWeight.w600,
-        //                       ))),
-        //                 )
-        //               ],
-        //             ),
-        //           );
-        //         });
-        //   }
-        // });
       }
     });
     super.initState();
