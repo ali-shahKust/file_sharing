@@ -217,7 +217,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                                 fontWeight: FontWeight.w700,
                                               ),
                                               PrimaryText(
-                                                "vm.completed",
+                                                "Completed",
                                                 fontSize: 17,
                                                 fontWeight: FontWeight.w600,
                                               ),
