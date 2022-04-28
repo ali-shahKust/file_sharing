@@ -15,7 +15,6 @@ import 'package:quick_backup/custom_widgets/InfoDialoge.dart';
 import 'package:quick_backup/data/base/base_vm.dart';
 import 'package:quick_backup/data/local_db/database_helper.dart';
 import 'package:quick_backup/data/services/auth_services.dart';
-import 'package:quick_backup/utilities/i_utills.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/core_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/filemanager_home.dart';
@@ -23,11 +22,10 @@ import 'package:quick_backup/views/device_file_manager/file_manager_home/fileman
 import '../../data/models/app_model.dart';
 import '../../data/models/queue_model.dart';
 import '../../utilities/general_utilities.dart';
-import 'dashboard_screen.dart';
 
+int completed = 0;
 
 class DashBoardVm extends BaseVm {
-  int completed = 0;
 
   DashBoardVm(){
     loader();
@@ -35,7 +33,7 @@ class DashBoardVm extends BaseVm {
   var queue = GetIt.I.get<AppModel>().queue;
   List<File> _files = [];
   StreamSubscription? subscription;
-  var dbHelper = GetIt.I.get<DatabaseHelper>();
+  // var dbHelper = GetIt.I.get<DatabaseHelper>();
 
   List<File> get files => _files;
   bool _connectionLost = false;
@@ -132,11 +130,12 @@ class DashBoardVm extends BaseVm {
               }
 
             });
-        int? count = await dbHelper.checkValue(queue[i]!.path);
-        if (count != null && count > 0) {
-        } else {
-          dbHelper.insertFileToDb(queue[i]!);
-        }
+        // int? count = await dbHelper.checkValue(queue[i]!.path);
+        // if (count != null && count > 0) {
+        //   print("This file already exist");
+        // } else {
+        //   dbHelper.insertFileToDb(queue[i]!);
+        // }
         notifyListeners();
 
       } on StorageException catch (e) {
