@@ -183,8 +183,6 @@ class _UploadingScreenState extends State<UploadingScreen> {
                                               PrimaryText(
                                                 vm.queue.length == 1
                                                     ? "${vm.queue[0]!.progress}%"
-                                                    : "${((completed / vm.queue.length) * 100).toStringAsFixed(0)}%",
-                                                fontSize: SizeConfig.screenHeight! * 0.04,
                                                     : "${((vm.completed / vm.queue.length) * 100).toStringAsFixed(0)}%",
                                                 fontSize: 34,
                                                 fontWeight: FontWeight.w700,

@@ -36,7 +36,6 @@ void main() async {
   GetIt.I.registerSingleton<DashBoardRepo>(DashBoardRepoImp());
   GetIt.I.registerSingleton<CategoryVm>(CategoryVm());
   GetIt.I.registerSingleton<LoginRepo>(LoginRepoImp());
-  GetIt.I.registerSingleton<DatabaseHelper>(DatabaseHelper());
   GetIt.I.registerSingleton<AuthService>(AuthService());
   await GetIt.I.allReady();
 
@@ -68,7 +67,6 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider(create: (_) => OnlineBackUpVm()),
           ChangeNotifierProvider(create: (_) => DownloadVm()),
           ChangeNotifierProvider(create: (_) => DashBoardVm()),
-          ChangeNotifierProvider(create: (_) => BackUpVm()),
           ChangeNotifierProvider(create: (_) => OnBoardingVm()),
           ChangeNotifierProvider(create: (_) => PreferencesProvider()),
           ChangeNotifierProvider(create: (_) => UserNameSettingVm()),

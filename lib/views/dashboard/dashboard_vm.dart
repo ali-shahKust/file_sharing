@@ -23,9 +23,9 @@ import '../../data/models/app_model.dart';
 import '../../data/models/queue_model.dart';
 import '../../utilities/general_utilities.dart';
 
-int completed = 0;
 
 class DashBoardVm extends BaseVm {
+  int completed = 0;
 
   DashBoardVm(){
     loader();
