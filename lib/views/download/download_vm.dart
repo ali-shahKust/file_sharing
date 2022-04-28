@@ -22,9 +22,6 @@ import '../dashboard/dashboard_vm.dart';
 import '../online_backup/online_backup_vm.dart';
 
 class DownloadVm extends BaseVm {
-  DownloadVm() {
-    loader();
-  }
 
   var queue = GetIt.I.get<AppModel>().downloadQueue;
   int completed = 0;

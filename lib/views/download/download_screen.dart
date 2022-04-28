@@ -6,6 +6,7 @@ import 'package:open_file/open_file.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/constants/app_constants.dart';
+import 'package:quick_backup/custom_widgets/custom_appbar.dart';
 import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
 import 'package:quick_backup/custom_widgets/loading_widget.dart';
 import 'package:quick_backup/data/extension.dart';
@@ -39,7 +40,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (widget.map['files'] != null && !widget.map['drawer']) {
         Provider.of<DownloadVm>(context, listen: false).downloadFile(widget.map['files'], context).then((value) {
-          if (completed == Provider.of<DownloadVm>(context, listen: false).queue.length) {
+          if (Provider.of<DownloadVm>(context, listen: false).completed == Provider.of<DownloadVm>(context, listen: false).queue.length) {
             showDialog(
                 barrierDismissible: false,
                 context: context,
@@ -59,7 +60,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                         ),
                         InkWell(
                           onTap: () {
-                            completed = 0;
+                            Provider.of<DownloadVm>(context, listen: false).completed = 0;
                             Provider.of<DashBoardVm>(context, listen: false).queue.clear();
                             Provider.of<OnlineBackUpVm>(context, listen: false).selectedFiles.clear();
                             Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false);

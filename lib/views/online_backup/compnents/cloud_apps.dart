@@ -69,7 +69,9 @@ class _CloudAppsState extends State<CloudApps> {
                     decoration: BoxDecoration(
                       color: AppColors.kPrimaryPurpleColor,
                       image: DecorationImage(
-                          image: AssetImage('assets/images/container_background.webp'), fit: BoxFit.cover),
+                          image: AssetImage(
+                              'assets/images/container_background.webp'),
+                          fit: BoxFit.cover),
 
                       // Image.asset('assets/container_background.svg'),
                     ),
@@ -89,8 +91,9 @@ class _CloudAppsState extends State<CloudApps> {
                             children: [
                               Text(
                                 '${vm.selectedFiles.length} Selected',
-                                style:
-                                    TextStyle(fontSize: SizeConfig.screenHeight! * 0.024, color: AppColors.kWhiteColor),
+                                style: TextStyle(
+                                    fontSize: SizeConfig.screenHeight! * 0.024,
+                                    color: AppColors.kWhiteColor),
                               ),
                               SizedBox(
                                 width: SizeConfig.screenWidth! * 0.3,
@@ -98,10 +101,14 @@ class _CloudAppsState extends State<CloudApps> {
                               IconButton(
                                 onPressed: () {
                                   vm.isAllAppsSelected = !vm.isAllAppsSelected;
-                                  !vm.isAllAppsSelected ? vm.unselectAllInList(vm.apps) : vm.selectAllInList(vm.apps);
+                                  !vm.isAllAppsSelected
+                                      ? vm.unselectAllInList(vm.apps)
+                                      : vm.selectAllInList(vm.apps);
                                 },
                                 icon: Icon(
-                                  vm.isAllAppsSelected ? Icons.check_box_outlined : Icons.check_box_outline_blank,
+                                  vm.isAllAppsSelected
+                                      ? Icons.check_box_outlined
+                                      : Icons.check_box_outline_blank,
                                   color: AppColors.kWhiteColor,
                                 ),
                               ),
@@ -114,44 +121,53 @@ class _CloudAppsState extends State<CloudApps> {
                             // height: SizeConfig.screenHeight! * 0.82,
                             decoration: BoxDecoration(
                                 color: AppColors.kWhiteColor,
-                                borderRadius:
-                                    BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(30),
+                                    topRight: Radius.circular(30))),
                             child: Column(
                               children: [
-                                SizedBox(height: SizeConfig.screenHeight!*0.02,),
+                                SizedBox(
+                                  height: SizeConfig.screenHeight! * 0.02,
+                                ),
                                 Expanded(
                                   child: ListView.builder(
                                     physics: BouncingScrollPhysics(),
 
-                                  padding: EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
-                                  itemCount: vm.apps.length,
-                                  itemBuilder: (
-                                    BuildContext context,
-                                    int index,
-                                  ) {
-                                    return InkWell(
-                                      onTap: () {
-                                        vm.apps[index].isSelected = !vm.apps[index].isSelected;
-                                        if (vm.apps[index].isSelected) {
-                                          vm.addToSelectedList = vm.apps[index];
-                                        } else {
-                                          vm.removeFromSelectedList = vm.apps[index];
-                                        }
-                                      },
-                                      child: cloudFileCard(
-                                          context: context,
-                                          size: vm.apps[index].size,
-                                          title: vm.apps[index].key,
-                                          icon: AppConstants.apps_icon,
-                                          isSelected: vm.apps[index].isSelected,
-                                          item: vm.apps[index]),
-                                    );
-                                  },
+                                    padding: EdgeInsets.all(
+                                        SizeConfig.screenHeight! * 0.02),
+                                    itemCount: vm.apps.length,
+                                    itemBuilder: (
+                                      BuildContext context,
+                                      int index,
+                                    ) {
+                                      return InkWell(
+                                        onTap: () {
+                                          vm.apps[index].isSelected =
+                                              !vm.apps[index].isSelected;
+                                          if (vm.apps[index].isSelected) {
+                                            vm.addToSelectedList =
+                                                vm.apps[index];
+                                          } else {
+                                            vm.removeFromSelectedList =
+                                                vm.apps[index];
+                                          }
+                                        },
+                                        child: cloudFileCard(
+                                            context: context,
+                                            size: vm.apps[index].size,
+                                            title: vm.apps[index].key,
+                                            icon: AppConstants.apps_icon,
+                                            isSelected:
+                                                vm.apps[index].isSelected,
+                                            item: vm.apps[index]),
+                                      );
+                                    },
 
-                                  // separatorBuilder: (BuildContext context, int index) {
-                                  //   return CustomDivider();
-                                  // },
-                                ),
+                                    // separatorBuilder: (BuildContext context, int index) {
+                                    //   return CustomDivider();
+                                    // },
+                                  ),
+                                )
                               ],
                             ),
                           ),
@@ -173,7 +189,10 @@ class _CloudAppsState extends State<CloudApps> {
                                     Navigator.pushNamed(
                                       context,
                                       DownloadScreen.routeName,
-                                      arguments: {'files': vm.selectedFiles, "drawer": false},
+                                      arguments: {
+                                        'files': vm.selectedFiles,
+                                        "drawer": false
+                                      },
                                     );
                                   }
                                 },
