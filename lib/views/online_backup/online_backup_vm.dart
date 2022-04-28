@@ -11,6 +11,7 @@ import 'package:quick_backup/data/base/base_vm.dart';
 import 'package:quick_backup/data/models/app_model.dart';
 import 'package:quick_backup/data/models/download_model.dart';
 import 'package:quick_backup/data/models/queue_model.dart';
+import 'package:quick_backup/data/services/auth_services.dart';
 
 import '../../utilities/pref_provider.dart';
 
@@ -151,6 +152,8 @@ class OnlineBackUpVm extends BaseVm {
   }
 
   Future<void> listItems(context) async {
+    await AuthService.refreshSession();
+
     try {
       pics.clear();
       audios.clear();
@@ -165,54 +168,29 @@ class OnlineBackUpVm extends BaseVm {
       final List<StorageItem> items = result.items;
 
       for (int i = 0; i < items.length; i++) {
-        final GetUrlResult result = await Amplify.Storage.getUrl(
-            key: items[i].key,
-            options: GetUrlOptions(accessLevel: StorageAccessLevel.protected));
+        final GetUrlResult result =
+            await Amplify.Storage.getUrl(key: items[i].key, options: GetUrlOptions(accessLevel: StorageAccessLevel.protected));
         print('MY DATA ${items[i].key}');
         if (mime(items[i].key)!.split("/").first == "video") {
           videos.add(DownloadModel(
-              url: result.url,
-              key: items[i].key,
-              date: items[i].lastModified.toString(),
-              size: items[i].size.toString(),
-              isSelected: false));
+              url: result.url, key: items[i].key, date: items[i].lastModified.toString(), size: items[i].size.toString(), isSelected: false));
         } else if (mime(items[i].key)!.split("/").first == "image") {
           images.add(DownloadModel(
-              url: result.url,
-              key: items[i].key,
-              date: items[i].lastModified.toString(),
-              size: items[i].size.toString(),
-              isSelected: false));
+              url: result.url, key: items[i].key, date: items[i].lastModified.toString(), size: items[i].size.toString(), isSelected: false));
         } else if (mime(items[i].key)!.split("/").first == "audio") {
           audios.add(DownloadModel(
-              url: result.url,
-              key: items[i].key,
-              date: items[i].lastModified.toString(),
-              size: items[i].size.toString(),
-              isSelected: false));
+              url: result.url, key: items[i].key, date: items[i].lastModified.toString(), size: items[i].size.toString(), isSelected: false));
         } else if (mime(items[i].key)!.split("/").first == "document") {
           documents.add(DownloadModel(
-              url: result.url,
-              key: items[i].key,
-              date: items[i].lastModified.toString(),
-              size: items[i].size.toString(),
-              isSelected: false));
+              url: result.url, key: items[i].key, date: items[i].lastModified.toString(), size: items[i].size.toString(), isSelected: false));
         } else if (mime(items[i].key)!.split("/").first == "application") {
           print("mime type ${(mime(items[i].key))}");
           if (mime(items[i].key)!.split("/").last == "vnd.android.package-archive") {
             apps.add(DownloadModel(
-                url: result.url,
-                key: items[i].key,
-                date: items[i].lastModified.toString(),
-                size: items[i].size.toString(),
-                isSelected: false));
+                url: result.url, key: items[i].key, date: items[i].lastModified.toString(), size: items[i].size.toString(), isSelected: false));
           } else {
             documents.add(DownloadModel(
-                url: result.url,
-                key: items[i].key,
-                date: items[i].lastModified.toString(),
-                size: items[i].size.toString(),
-                isSelected: false));
+                url: result.url, key: items[i].key, date: items[i].lastModified.toString(), size: items[i].size.toString(), isSelected: false));
           }
         }
         usedSpace += items[i].size!;
@@ -226,7 +204,9 @@ class OnlineBackUpVm extends BaseVm {
         notifyListeners();
       }
     } on StorageException catch (e) {
-      print('Error listing items: $e');
+      print('Error listing items on StorageException: $e');
+    } catch (e) {
+      print('Error listing items here in catch: $e');
     }
   }
 
@@ -242,13 +222,7 @@ class OnlineBackUpVm extends BaseVm {
 
   set addToSelectedList(DownloadModel file) {
     print('file to add in the list from app screen is $file');
-    this.selectedFiles.add(QueueModel(
-        key: file.key,
-        name: file.key,
-        size: file.size,
-        date: file.date,
-        status: "pending",
-        progress: "pending"));
+    this.selectedFiles.add(QueueModel(key: file.key, name: file.key, size: file.size, date: file.date, status: "pending", progress: "pending"));
     notifyListeners();
   }
 

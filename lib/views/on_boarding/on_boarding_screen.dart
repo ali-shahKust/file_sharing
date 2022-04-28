@@ -27,7 +27,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 width: SizeConfig.screenWidth,
                 height: SizeConfig.screenHeight! * 0.80,
                 child: PageView.builder(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: BouncingScrollPhysics(),
                     itemCount: vm.pages.length,
                     onPageChanged: (index){
                       vm.currentPage = index;

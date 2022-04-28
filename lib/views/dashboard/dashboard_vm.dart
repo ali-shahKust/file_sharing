@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:quick_backup/custom_widgets/InfoDialoge.dart';
 import 'package:quick_backup/data/base/base_vm.dart';
 import 'package:quick_backup/data/local_db/database_helper.dart';
+import 'package:quick_backup/data/services/auth_services.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/core_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/filemanager_home.dart';
@@ -80,6 +81,7 @@ class DashBoardVm extends BaseVm {
     });
   }
   Future<void>uploadFile(List<File> file,context) async {
+    await AuthService.refreshSession();
     isLoading = true;
     queue.clear();
 

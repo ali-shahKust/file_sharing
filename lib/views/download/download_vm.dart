@@ -11,6 +11,7 @@ import 'package:quick_backup/constants/app_constants.dart';
 import 'package:quick_backup/data/base/base_vm.dart';
 import 'package:quick_backup/data/models/app_model.dart';
 import 'package:quick_backup/data/models/queue_model.dart';
+import 'package:quick_backup/data/services/auth_services.dart';
 import 'package:quick_backup/utilities/pref_provider.dart';
 
 import '../../configurations/size_config.dart';
@@ -21,16 +22,15 @@ import '../dashboard/dashboard_vm.dart';
 import '../online_backup/online_backup_vm.dart';
 
 class DownloadVm extends BaseVm {
-
-  DownloadVm(){
+  DownloadVm() {
     loader();
   }
+
   var queue = GetIt.I.get<AppModel>().downloadQueue;
-  int completed= 0;
+  int completed = 0;
 
   StreamSubscription? subscription;
   bool _isLoading = true;
-
 
   bool get isLoading => _isLoading;
 
@@ -47,15 +47,15 @@ class DownloadVm extends BaseVm {
     _connectionLost = value;
     notifyListeners();
   }
-  loader()async {
+
+  loader() async {
     isLoading = true;
     await Future.delayed(Duration(seconds: 2));
     isLoading = false;
   }
+
   checkConnection() async {
-    subscription = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult result) {
+    subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       // Got a new connectivity status!
       print("Connection name ${result.name}");
 
@@ -69,9 +69,9 @@ class DownloadVm extends BaseVm {
     });
   }
 
-  Future<void> downloadFile(
-      List<QueueModel> files,context
-      ) async {
+  Future<void> downloadFile(List<QueueModel> files, context) async {
+    await AuthService.refreshSession();
+
     completed = 0;
     queue.clear();
     await Future.delayed(Duration(seconds: 2));
@@ -81,7 +81,7 @@ class DownloadVm extends BaseVm {
     for (int i = 0; i < files.length; i++) {
       final filepath = documentsDir +
           "/${AppConstants.appName}" +
-          '/${files[i].key!.replaceAll("${Provider.of<PreferencesProvider>(context,listen: false).userCognito}/", "")}';
+          '/${files[i].key!.replaceAll("${Provider.of<PreferencesProvider>(context, listen: false).userCognito}/", "")}';
       final file = File(filepath);
 
       print("File path is ${files[i].key}");
@@ -93,8 +93,7 @@ class DownloadVm extends BaseVm {
               key: files[i].key!,
               local: file,
               onProgress: (progress) {
-                queue[i]!.progress =
-                    (progress.getFractionCompleted() * 100).round().toString();
+                queue[i]!.progress = (progress.getFractionCompleted() * 100).round().toString();
                 queue[i]!.id = i;
                 queue[i]!.path = file.path;
                 if ((progress.getFractionCompleted() * 100).round() == 100) {
@@ -118,12 +117,11 @@ class DownloadVm extends BaseVm {
         notifyListeners();
         print("File Already Exist");
       }
-      if(completed!=0 && completed==queue.length){
+      if (completed != 0 && completed == queue.length) {
         queue.clear();
         completed = 0;
         notifyListeners();
       }
     }
-
   }
 }
