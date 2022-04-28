@@ -33,7 +33,7 @@ class DashBoardVm extends BaseVm {
   var queue = GetIt.I.get<AppModel>().queue;
   List<File> _files = [];
   StreamSubscription? subscription;
-  var dbHelper = GetIt.I.get<DatabaseHelper>();
+  // var dbHelper = GetIt.I.get<DatabaseHelper>();
 
   List<File> get files => _files;
   bool _connectionLost = false;
@@ -134,12 +134,12 @@ class DashBoardVm extends BaseVm {
               }
 
             });
-        int? count = await dbHelper.checkValue(queue[i]!.path);
-        if (count != null && count > 0) {
-          print("This file already exist");
-        } else {
-          dbHelper.insertFileToDb(queue[i]!);
-        }
+        // int? count = await dbHelper.checkValue(queue[i]!.path);
+        // if (count != null && count > 0) {
+        //   print("This file already exist");
+        // } else {
+        //   dbHelper.insertFileToDb(queue[i]!);
+        // }
         notifyListeners();
 
       } on StorageException catch (e) {

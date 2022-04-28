@@ -32,8 +32,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => LoginScreen());
     case DashBoardScreen.routeName:
       return MaterialPageRoute(builder: (context) => DashBoardScreen());
-    case BackupFilesScreen.routeName:
-      return MaterialPageRoute(builder: (context) => BackupFilesScreen());
+    // case BackupFilesScreen.routeName:
+    //   return MaterialPageRoute(builder: (context) => BackupFilesScreen());
     case UploadingScreen.routeName:
       return MaterialPageRoute(
           builder: (context) => UploadingScreen(
