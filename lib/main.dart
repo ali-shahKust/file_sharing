@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
           initialRoute: SplashScreen.routeName,
           theme: ThemeData(
             fontFamily: 'AvenirNextLTPro',
-            pageTransitionsTheme: const PageTransitionsTheme(builders: {TargetPlatform.android: CupertinoPageTransitionsBuilder(),}),
+            // pageTransitionsTheme: const PageTransitionsTheme(builders: {TargetPlatform.android: CupertinoPageTransitionsBuilder(),}),
           ),
           onGenerateRoute: (settings) => generateRoute(settings),
         ));

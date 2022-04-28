@@ -99,6 +99,8 @@ class DownloadVm extends BaseVm {
         } on StorageException catch (e) {
         } catch (e) {
         }
+
+
       } else {
         queue[i]!.progress = "Exist already";
         queue[i]!.id = i;
@@ -106,6 +108,18 @@ class DownloadVm extends BaseVm {
 
         completed = i + 1;
         await Future.delayed(Duration.zero);
+        notifyListeners();
+      }
+
+      if (completed != 0 && completed == queue.length) {
+        queue.clear();
+        completed = 0;
+        iUtills().showMessage(context: context, title: "Completed", text: "Files Downloaded successfully");
+        await Future.delayed(Duration(seconds: 3)).whenComplete(() => {
+          Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false),
+
+        });
+
         notifyListeners();
       }
     }

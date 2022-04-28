@@ -8,8 +8,7 @@ import '../custom_widgets/custom_dialog.dart';
 import 'custom_theme.dart';
 
 class iUtills {
-  Widget upperRoundedContainer(context, width, height,
-      {Widget? child, required color}) {
+  Widget upperRoundedContainer(context, width, height, {Widget? child, required color}) {
     return Container(
       width: width,
       height: height,
@@ -81,33 +80,35 @@ class iUtills {
     );
   }
 
-   showMessage({
+  showMessage({
     required BuildContext context,
-     required String title,
+    required String title,
     required String text,
   }) {
     return Flushbar(
       title: title,
       message: text,
-      duration: Duration(seconds:2),
-      backgroundGradient: LinearGradient(colors: [  Color(0xffFFA37C),
+      duration: Duration(seconds: 3),
+      backgroundGradient: LinearGradient(colors: [
+        Color(0xffFFA37C),
         Color(0xffFE7940),
-        Color(0xffFF9A70),]),
+        Color(0xffFF9A70),
+      ]),
     )..show(context);
   }
 
-
-  exitPopUp(context,screen) {
-    return   showDialog(context: context,
-        builder: (BuildContext context){
+  exitPopUp(context, screen) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
           return CustomDialogBox(
             title: "Do you want to go back ?",
             descriptions: "",
             text: "Yes",
-            screen:screen ,
+            screen: screen,
           );
-        }
-    );;
+        });
+    ;
   }
 }
 
