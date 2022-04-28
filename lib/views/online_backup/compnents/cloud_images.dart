@@ -32,38 +32,38 @@ class _CloudImagesState extends State<CloudImages> {
             child: vm.images.isEmpty
                 ? Stack(
               children: [
-                CustomAppBar(
-                    title: 'Images',
-                    onTap: () {
-                      Navigator.pop(context);
-
-                    }),
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 8.0),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       IconButton(
-                //           onPressed: () {
-                //             Navigator.pop(context);
-                //           },
-                //           icon: Icon(
-                //             Icons.arrow_back_ios,
-                //             size: SizeConfig.screenHeight! * 0.024,
-                //             color: Colors.black,
-                //           )),
-                //       PrimaryText(
-                //         "Images",
-                //         fontSize: SizeConfig.screenHeight! * 0.020,
-                //         fontWeight: FontWeight.w500,
-                //         color: Colors.black,
-                //       ),
-                //       SizedBox(
-                //         width: 50,
-                //       )
-                //     ],
-                //   ),
-                // ),
+                // CustomAppBar(
+                //     title: 'Images',
+                //     onTap: () {
+                //       Navigator.pop(context);
+                //
+                //     }),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            size: SizeConfig.screenHeight! * 0.024,
+                            color: Colors.black,
+                          )),
+                      PrimaryText(
+                        "Images",
+                        fontSize: SizeConfig.screenHeight! * 0.025,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                      ),
+                      SizedBox(
+                        width: SizeConfig.screenHeight! * 0.055,
+                      )
+                    ],
+                  ),
+                ),
                 GeneralUtilities.noDataFound(),
               ],
             ):Container(

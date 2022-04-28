@@ -11,15 +11,11 @@ import 'package:quick_backup/custom_widgets/loading_widget.dart';
 import 'package:quick_backup/data/extension.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_backup/utilities/file_manager_utilities.dart';
-import 'package:quick_backup/views/dashboard/dashboard_screen.dart';
-import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 import 'package:quick_backup/views/download/download_vm.dart';
-import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 import '../../configurations/size_config.dart';
 import '../../custom_widgets/app_text_widget.dart';
 import '../../utilities/general_utilities.dart';
 import '../../utilities/i_utills.dart';
-import '../dashboard/dashboard_vm.dart';
 
 class DownloadScreen extends StatefulWidget {
   static const routeName = 'download_screen';
@@ -36,91 +32,95 @@ class _DownloadScreenState extends State<DownloadScreen> {
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (widget.map['files'] != null && !widget.map['drawer']) {
-        Provider.of<DownloadVm>(context, listen: false).downloadFile(widget.map['files'], context).then((value) {
-          if (Provider.of<DownloadVm>(context, listen: false).completed == Provider.of<DownloadVm>(context, listen: false).queue.length) {
-            showDialog(
-                barrierDismissible: false,
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        PrimaryText(
-                          "All Files Downloaded Successfully.",
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black,
-                        ),
-                        SizedBox(
-                          height: SizeConfig.screenHeight! * 0.053,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Provider.of<DownloadVm>(context, listen: false).completed = 0;
-                            Provider.of<DashBoardVm>(context, listen: false).queue.clear();
-                            Provider.of<OnlineBackUpVm>(context, listen: false).selectedFiles.clear();
-                            Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false);
-                          },
-                          child: iUtills().gradientButton(
-                              width: SizeConfig.screenWidth! * 0.253,
-                              height: SizeConfig.screenHeight! * 0.053,
-                              child: Center(
-                                  child: PrimaryText(
-                                "OK",
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                              ))),
-                        )
-                      ],
-                    ),
-                  );
-                });
-          }
-        });
-      } else {
-        if (Provider.of<DownloadVm>(context, listen: false).completed != 0 &&
-            Provider.of<DownloadVm>(context, listen: false).completed == Provider.of<DownloadVm>(context, listen: false).queue.length) {
-          showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      PrimaryText(
-                        "All Files Downloaded Successfully.",
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black,
-                      ),
-                      SizedBox(
-                        height: SizeConfig.screenHeight! * 0.053,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Provider.of<DownloadVm>(context, listen: false).completed = 0;
-                          Provider.of<DashBoardVm>(context, listen: false).queue.clear();
-                          Provider.of<OnlineBackUpVm>(context, listen: false).selectedFiles.clear();
-                          Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false);
-                        },
-                        child: iUtills().gradientButton(
-                            width: SizeConfig.screenWidth! * 0.253,
-                            height: SizeConfig.screenHeight! * 0.053,
-                            child: Center(
-                                child: PrimaryText(
-                              "OK",
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            ))),
-                      )
-                    ],
-                  ),
-                );
-              });
-        }
+        Provider.of<DownloadVm>(context, listen: false).downloadFile(widget.map['files'], context);
+
+        // then((value) {
+        //   if (Provider.of<DownloadVm>(context, listen: false).completed == Provider.of<DownloadVm>(context, listen: false).queue.length) {
+        //     showDialog(
+        //         barrierDismissible: false,
+        //         context: context,
+        //         builder: (BuildContext context) {
+        //           return AlertDialog(
+        //             content: Column(
+        //               mainAxisSize: MainAxisSize.min,
+        //               children: [
+        //                 PrimaryText(
+        //                   "All Files Downloaded Successfully.",
+        //                   fontSize: 18,
+        //                   fontWeight: FontWeight.w400,
+        //                   color: Colors.black,
+        //                 ),
+        //                 SizedBox(
+        //                   height: SizeConfig.screenHeight! * 0.053,
+        //                 ),
+        //                 InkWell(
+        //                   onTap: () {
+        //                     Provider.of<DownloadVm>(context, listen: false).completed = 0;
+        //                     Provider.of<DashBoardVm>(context, listen: false).queue.clear();
+        //                     Provider.of<OnlineBackUpVm>(context, listen: false).selectedFiles.clear();
+        //                     Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false);
+        //                   },
+        //                   child: iUtills().gradientButton(
+        //                       width: SizeConfig.screenWidth! * 0.253,
+        //                       height: SizeConfig.screenHeight! * 0.053,
+        //                       child: Center(
+        //                           child: PrimaryText(
+        //                         "OK",
+        //                         fontSize: 18,
+        //                         fontWeight: FontWeight.w600,
+        //                       ))),
+        //                 )
+        //               ],
+        //             ),
+        //           );
+        //         });
+        //   }
+        // });
       }
+
+      // else {
+      //   if (Provider.of<DownloadVm>(context, listen: false).completed != 0 &&
+      //       Provider.of<DownloadVm>(context, listen: false).completed == Provider.of<DownloadVm>(context, listen: false).queue.length) {
+      //     showDialog(
+      //         barrierDismissible: false,
+      //         context: context,
+      //         builder: (BuildContext context) {
+      //           return AlertDialog(
+      //             content: Column(
+      //               mainAxisSize: MainAxisSize.min,
+      //               children: [
+      //                 PrimaryText(
+      //                   "All Files Downloaded Successfully.",
+      //                   fontSize: 18,
+      //                   fontWeight: FontWeight.w400,
+      //                   color: Colors.black,
+      //                 ),
+      //                 SizedBox(
+      //                   height: SizeConfig.screenHeight! * 0.053,
+      //                 ),
+      //                 InkWell(
+      //                   onTap: () {
+      //                     Provider.of<DownloadVm>(context, listen: false).completed = 0;
+      //                     Provider.of<DashBoardVm>(context, listen: false).queue.clear();
+      //                     Provider.of<OnlineBackUpVm>(context, listen: false).selectedFiles.clear();
+      //                     Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false);
+      //                   },
+      //                   child: iUtills().gradientButton(
+      //                       width: SizeConfig.screenWidth! * 0.253,
+      //                       height: SizeConfig.screenHeight! * 0.053,
+      //                       child: Center(
+      //                           child: PrimaryText(
+      //                         "OK",
+      //                         fontSize: 18,
+      //                         fontWeight: FontWeight.w600,
+      //                       ))),
+      //                 )
+      //               ],
+      //             ),
+      //           );
+      //         });
+      //   }
+      // }
     });
     super.initState();
   }
@@ -132,14 +132,10 @@ class _DownloadScreenState extends State<DownloadScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: _onWillPop,
+      onWillPop: () {
+        return _onWillPop();
+      },
       child: Consumer<DownloadVm>(builder: (context, vm, _) {
-        if (vm.completed != 0 && vm.completed == vm.queue.length) {
-          vm.queue.clear();
-          vm.completed = 0;
-          iUtills().showMessage(context: context,title: "Completed", text: "Files downloaded successfully");
-          Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false);
-        }
         return SafeArea(
           child: Scaffold(
             body: vm.isLoading
@@ -150,7 +146,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                     ? const Center(
                         child: Text("Connection lost"),
                       )
-                    : vm.queue.isEmpty
+                    : widget.map['drawer'] && vm.queue.isEmpty
                         ? Stack(
                             children: [
                               Padding(
@@ -218,7 +214,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                               PrimaryText(
                                                 vm.queue.length == 1
                                                     ? "${vm.queue[0]!.progress}%"
-                                                    : "${((vm.completed / vm.queue.length) * 100).toStringAsFixed(0)}%",
+                                                    : (vm.completed / vm.queue.length).isNaN ? "" : "${((vm.completed / vm.queue.length) * 100).toStringAsFixed(0)}%",
                                                 fontSize: 34,
                                                 fontWeight: FontWeight.w700,
                                               ),

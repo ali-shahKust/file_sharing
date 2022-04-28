@@ -9,6 +9,7 @@ import 'package:quick_backup/constants/app_strings.dart';
 import 'package:quick_backup/custom_widgets/app_text_widget.dart';
 import 'package:quick_backup/custom_widgets/custom_appbar.dart';
 import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
+import 'package:quick_backup/custom_widgets/loading_widget.dart';
 import 'package:quick_backup/data/models/file_model.dart';
 import 'package:quick_backup/utilities/general_utilities.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
@@ -163,7 +164,7 @@ class PagewiseGridViewExample extends StatelessWidget {
         itemBuilder: this._itemBuilder,
         loadingBuilder: (context) {
           // Provider.of<CategoryVm>(context, listen: false).setVideoLoading();
-          return Center(child: GeneralUtilities.LoadingFileWidget());
+          return Center(child: LoadingWidget());
           // return Container(height:300, width:double.infinity,child: gridPlaceHolder());
         },
         pageFuture: (pageIndex) {

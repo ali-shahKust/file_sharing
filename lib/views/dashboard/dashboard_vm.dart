@@ -15,6 +15,8 @@ import 'package:quick_backup/custom_widgets/InfoDialoge.dart';
 import 'package:quick_backup/data/base/base_vm.dart';
 import 'package:quick_backup/data/local_db/database_helper.dart';
 import 'package:quick_backup/data/services/auth_services.dart';
+import 'package:quick_backup/utilities/i_utills.dart';
+import 'package:quick_backup/views/dashboard/dashboard_screen.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/core_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/filemanager_home.dart';
@@ -27,12 +29,16 @@ import '../../utilities/general_utilities.dart';
 class DashBoardVm extends BaseVm {
   int completed = 0;
 
-  DashBoardVm(){
+  DashBoardVm() {
     loader();
   }
-  var queue = GetIt.I.get<AppModel>().queue;
+
+  var queue = GetIt.I
+      .get<AppModel>()
+      .queue;
   List<File> _files = [];
   StreamSubscription? subscription;
+
   // var dbHelper = GetIt.I.get<DatabaseHelper>();
 
   List<File> get files => _files;
@@ -46,6 +52,7 @@ class DashBoardVm extends BaseVm {
     _isLoading = value;
     notifyListeners();
   }
+
   bool get connectionLost => _connectionLost;
 
   set connectionLost(bool value) {
@@ -58,7 +65,8 @@ class DashBoardVm extends BaseVm {
     _files = value;
     notifyListeners();
   }
-  loader()async {
+
+  loader() async {
     isLoading = true;
     await Future.delayed(Duration(seconds: 2));
     isLoading = false;
@@ -79,7 +87,8 @@ class DashBoardVm extends BaseVm {
       }
     });
   }
-  Future<void>uploadFile(List<File> file,context) async {
+
+  Future<void> uploadFile(List<File> file, context) async {
     await AuthService.refreshSession();
     isLoading = true;
     queue.clear();
@@ -87,8 +96,11 @@ class DashBoardVm extends BaseVm {
     completed = 0;
     await Future.delayed(Duration(seconds: 2));
     for (var element in file) {
-      String filename =  GeneralUtilities.getFileName(element.path);
-      String date = element.statSync().modified.toString();
+      String filename = GeneralUtilities.getFileName(element.path);
+      String date = element
+          .statSync()
+          .modified
+          .toString();
       queue.add(QueueModel(
           id: null,
           name: filename,
@@ -101,18 +113,18 @@ class DashBoardVm extends BaseVm {
     }
     isLoading = false;
     for (int i = 0; i < file.length; i++) {
-      String filename =  GeneralUtilities.getFileName(file[i].path);
+      String filename = GeneralUtilities.getFileName(file[i].path);
       String _folderkey = mime(filename)!.split('/').first;
-      if(mime(filename)!.split('/').first == "application"){
-        if(mime(filename)!.split('/').last == "vnd.android.package-archive"){
+      if (mime(filename)!.split('/').first == "application") {
+        if (mime(filename)!.split('/').last == "vnd.android.package-archive") {
           _folderkey = "application";
-        }else {
+        } else {
           _folderkey = 'document';
         }
-      }else {
+      } else {
         _folderkey = mime(filename)!.split('/').first;
       }
-      String fileKey = _folderkey +"/" + filename;
+      String fileKey = _folderkey + "/" + filename;
       try {
         await Amplify.Storage.uploadFile(
             local: file[i],
@@ -123,12 +135,11 @@ class DashBoardVm extends BaseVm {
                   (progress.getFractionCompleted() * 100).round().toString();
               notifyListeners();
               queue[i]!.id = i;
-                  (progress.getFractionCompleted() * 100).round().toString();
+              (progress.getFractionCompleted() * 100).round().toString();
               if ((progress.getFractionCompleted() * 100).round() == 100) {
                 completed = i + 1;
                 queue[i]!.key = fileKey;
               }
-
             });
         // int? count = await dbHelper.checkValue(queue[i]!.path);
         // if (count != null && count > 0) {
@@ -137,22 +148,23 @@ class DashBoardVm extends BaseVm {
         //   dbHelper.insertFileToDb(queue[i]!);
         // }
         notifyListeners();
+      } on StorageException catch (e) {} catch (e) {}
+      if (completed != 0 && completed == queue.length) {
+        queue.clear();
+        completed = 0;
+        iUtills().showMessage(context: context, title: "Completed", text: "Files uploaded successfully");
+        await Future.delayed(Duration(seconds: 3)).whenComplete(() => {
+        Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false),
 
-      } on StorageException catch (e) {
-      } catch (e) {
+        });
+
+        notifyListeners();
       }
-      // if(completed!=0 && completed==queue.length){
-      //   queue.clear();
-      //   completed = 0;
-      //   iUtills().showMessage(context: context,title: "Completed", text: "Files uploaded successfully");
-      //   Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false);
-      //
-      //   notifyListeners();
-      // }
     }
   }
-   permissionCheck(BuildContext ?parentContext,int ?osVersion,PermissionStatus status){
-   return  showDialog(
+
+  permissionCheck(BuildContext ?parentContext, int ?osVersion, PermissionStatus status) {
+    return showDialog(
         barrierDismissible: true,
         context: parentContext!,
         builder: (context) {
@@ -163,7 +175,7 @@ class DashBoardVm extends BaseVm {
             btnText: 'Ok',
             onBtnTap: () async {
               Navigator.pop(context);
-              if (osVersion! >=11) {
+              if (osVersion! >= 11) {
                 status = await Permission.manageExternalStorage.status;
               } else {
                 status = await Permission.storage.status;
@@ -175,8 +187,9 @@ class DashBoardVm extends BaseVm {
                 Provider.of<CategoryVm>(parentContext, listen: false).getDeviceFileManager();
                 // Provider.of<CategoryVm>(parentContext, listen: false).fetchAllListLength();
                 Navigator.pushNamed(parentContext, FileManagerHome.routeName);
-              }  if (status.isDenied) {
-                PermissionStatus status =osVersion >=11
+              }
+              if (status.isDenied) {
+                PermissionStatus status = osVersion >= 11
                     ? await Permission.manageExternalStorage.request()
                     : await Permission.storage.request();
                 Provider.of<CoreVm>(parentContext, listen: false).checkSpace();
@@ -185,23 +198,23 @@ class DashBoardVm extends BaseVm {
 
                 // Dialogs.showToast('Please Grant Storage Permissions');
                 // PermissionStatus status = await Permission.manageExternalStorage.request();
-              }  if (status.isRestricted) {
+              }
+              if (status.isRestricted) {
                 // AppSettings.openAppSettings();
 
-                PermissionStatus status = osVersion>=11
+                PermissionStatus status = osVersion >= 11
                     ? await Permission.manageExternalStorage.request()
                     : await Permission.storage.request();
 
                 // Dialogs.showToast('Please Grant Storage Permissions');
                 // PermissionStatus status = await Permission.manageExternalStorage.request();
               } else {
-                PermissionStatus status = osVersion >=11
+                PermissionStatus status = osVersion >= 11
                     ? await Permission.manageExternalStorage.request()
                     : await Permission.storage.request();
 
                 // Dialogs.showToast('Please Grant Storage Permissions');
               }
-
             },
           );
         });
