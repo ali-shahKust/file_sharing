@@ -9,6 +9,7 @@ import 'package:quick_backup/custom_widgets/app_text_widget.dart';
 import 'package:quick_backup/utilities/custom_theme.dart';
 import 'package:quick_backup/utilities/i_utills.dart';
 import 'package:quick_backup/utilities/pref_provider.dart';
+import 'package:quick_backup/views/dashboard/dashboard_screen.dart';
 import 'package:quick_backup/views/login_page/login_screen.dart';
 import 'package:quick_backup/views/on_boarding/on_boarding_screen.dart';
 import 'package:quick_backup/views/splash/splash_vm.dart';
@@ -59,7 +60,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: SizeConfig.screenHeight! * 0.014,
               ),
               PrimaryText(
-                "Backup Your Files On Cloud\nAnd Restore It...",
+                "Backup your files nn Cloud\nand Restore",
                 textAlign: TextAlign.center,
                 fontSize: SizeConfig.screenHeight! * 0.020,
                 color: Color(0xff959595),
@@ -69,25 +70,19 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: SizeConfig.screenHeight! * 0.05,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: SizeConfig.screenWidth! * 0.194, vertical: 25),
+                padding: EdgeInsets.symmetric(horizontal: SizeConfig.screenWidth! * 0.194, vertical: 25),
                 child: iUtills().gradientButton(
                   height: SizeConfig.screenHeight! * 0.064,
                   width: SizeConfig.screenWidth,
                   child: ElevatedButton(
                     onPressed: () {
-                      if (Provider.of<PreferencesProvider>(context,
-                              listen: false)
-                          .isOnBoardingViewed) {
-                        Navigator.pushNamed(context, LoginScreen.routeName);
+                      if (Provider.of<PreferencesProvider>(context, listen: false).userAuthStatus) {
+                        Navigator.pushNamed(context, DashBoardScreen.routeName);
                       } else {
-                        Navigator.pushNamed(
-                            context, OnBoardingScreen.routeName);
+                        Navigator.pushNamed(context, OnBoardingScreen.routeName);
                       }
                     },
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.transparent,
-                        shadowColor: Colors.transparent),
+                    style: ElevatedButton.styleFrom(primary: Colors.transparent, shadowColor: Colors.transparent),
                     child: Text('Start'),
                   ),
                 ),

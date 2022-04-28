@@ -41,10 +41,8 @@ class AuthService {
   Future<String?> signInWithGoogle() async {
     String? result;
 
-    final GoogleSignInAccount? googleSignInAccount =
-        await _googleSignIn.signIn();
-    final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount!.authentication;
+    final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount!.authentication;
     final AuthCredential credential = GoogleAuthProvider.credential(
       accessToken: googleSignInAuthentication.accessToken,
       idToken: googleSignInAuthentication.idToken,
@@ -76,20 +74,37 @@ class AuthService {
         print("Amplify was already configured. Was the app restarted?");
       }
     } else {
-      print(
-          "Amplify was already configured. So I am not configuring it again!");
+      print("Amplify was already configured. So I am not configuring it again!");
     }
   }
 
   static Future<String?> sendTokenToNative(String token) async {
     String value = '';
     try {
-      value =
-          await platform.invokeMethod("sendIDToAWSFromNative", {"id": token});
+      value = await platform.invokeMethod("sendIDToAWSFromNative", {"id": token});
     } catch (e) {
       print('I am exception in sendTokenToNative: $e');
     }
 
     return value;
+  }
+
+  static Future refreshSession() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+
+    try {
+      final User? user = auth.currentUser;
+      if (user != null) {
+        var token = await user.getIdToken();
+
+        print('Here is the user token: $token');
+
+        await sendTokenToNative(token).then((value) => {
+              print('here is the result in refresh Session $value'),
+            });
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
   }
 }

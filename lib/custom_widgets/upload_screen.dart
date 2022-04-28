@@ -10,6 +10,7 @@ import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/constants/app_constants.dart';
 import 'package:quick_backup/custom_widgets/app_text_widget.dart';
+import 'package:quick_backup/custom_widgets/custom_appbar.dart';
 import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
 import 'package:quick_backup/data/extension.dart';
 import 'package:quick_backup/utilities/custom_theme.dart';
@@ -18,6 +19,8 @@ import 'package:quick_backup/utilities/general_utilities.dart';
 import 'package:quick_backup/utilities/i_utills.dart';
 import 'package:quick_backup/views/dashboard/dashboard_screen.dart';
 import 'package:quick_backup/views/dashboard/dashboard_vm.dart';
+import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
+import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 
 import 'custom_dialog.dart';
 import 'loading_widget.dart';
@@ -38,13 +41,10 @@ class _UploadingScreenState extends State<UploadingScreen> {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (widget.map['files'] != null && !widget.map['drawer']) {
         completed = 0;
-        Provider.of<DashBoardVm>(context, listen: false)
-            .uploadFile(widget.map['files'], context)
-            .then((value) {
-          if (completed!=0 && completed ==
-              Provider.of<DashBoardVm>(context, listen: false).queue.length) {
+        Provider.of<DashBoardVm>(context, listen: false).uploadFile(widget.map['files'], context).then((value) {
+          if (completed != 0 && completed == Provider.of<DashBoardVm>(context, listen: false).queue.length) {
             showDialog(
-              barrierDismissible: false,
+                barrierDismissible: false,
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
@@ -63,11 +63,8 @@ class _UploadingScreenState extends State<UploadingScreen> {
                         InkWell(
                           onTap: () {
                             completed = 0;
-                            Provider.of<DashBoardVm>(context, listen: false)
-                                .queue
-                                .clear();
-                            Navigator.pushNamedAndRemoveUntil(context,
-                                DashBoardScreen.routeName, (route) => false);
+                            Provider.of<DashBoardVm>(context, listen: false).queue.clear();
+                            Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false);
                           },
                           child: iUtills().gradientButton(
                               width: SizeConfig.screenWidth! * 0.253,
@@ -91,10 +88,8 @@ class _UploadingScreenState extends State<UploadingScreen> {
   }
 
   Future<bool> _onWillPop() async {
-    return (await Provider.of<DashBoardVm>(context, listen: false).queue.isEmpty
-            ? true
-            : iUtills().exitPopUp(context, 'queue')) ??
-        false;
+    Provider.of<CategoryVm>(context, listen: false).clearAllSelectedLists();
+    return (await Provider.of<DashBoardVm>(context, listen: false).queue.isEmpty ? true : iUtills().exitPopUp(context, 'queue')) ?? false;
   }
 
   @override
@@ -116,30 +111,28 @@ class _UploadingScreenState extends State<UploadingScreen> {
                         ? Stack(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
+                                padding: EdgeInsets.only(top: SizeConfig.screenHeight! * 0.02),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     IconButton(
                                         onPressed: () {
+                                          Provider.of<CategoryVm>(context, listen: false).clearAllSelectedLists();
                                           Navigator.pop(context);
                                         },
                                         icon: Icon(
                                           Icons.arrow_back_ios,
-                                          size:
-                                              SizeConfig.screenHeight! * 0.024,
-                                          color: Colors.black,
+                                          size: SizeConfig.screenHeight! * 0.028,
+                                          color: AppColors.kBlackColor,
                                         )),
                                     PrimaryText(
-                                      "Transferring",
-                                      fontSize:
-                                          SizeConfig.screenHeight! * 0.020,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black,
+                                      "Uploading",
+                                      fontSize: SizeConfig.screenHeight! * 0.028,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.kBlackColor,
                                     ),
                                     SizedBox(
-                                      width: 50,
+                                      width: SizeConfig.screenWidth! * 0.09,
                                     )
                                   ],
                                 ),
@@ -150,48 +143,19 @@ class _UploadingScreenState extends State<UploadingScreen> {
                         : Container(
                             width: SizeConfig.screenWidth,
                             height: SizeConfig.screenHeight,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        AppConstants.transfer_background),
-                                    fit: BoxFit.cover)),
+                            decoration: BoxDecoration(image: DecorationImage(image: AssetImage(AppConstants.transfer_background), fit: BoxFit.cover)),
                             child: Stack(
                               children: [
                                 Align(
                                   alignment: Alignment.topCenter,
                                   child: Column(
                                     children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 8.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            IconButton(
-                                                onPressed: () {
-                                                  iUtills().exitPopUp(
-                                                      context, 'queue');
-                                                },
-                                                icon: Icon(
-                                                  Icons.arrow_back_ios,
-                                                  size:
-                                                      SizeConfig.screenHeight! *
-                                                          0.024,
-                                                  color: Colors.white,
-                                                )),
-                                            PrimaryText(
-                                              "Transferring",
-                                              fontSize:
-                                                  SizeConfig.screenHeight! *
-                                                      0.020,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                            SizedBox(
-                                              width: 50,
-                                            )
-                                          ],
-                                        ),
+                                      CustomAppBar(
+                                        title: "Uploading",
+                                        onTap: () {
+                                          Provider.of<CategoryVm>(context, listen: false).clearAllSelectedLists();
+                                          iUtills().exitPopUp(context, 'queue');
+                                        },
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -202,16 +166,12 @@ class _UploadingScreenState extends State<UploadingScreen> {
                                           lineWidth: 13.0,
                                           animation: false,
                                           percent: vm.queue.length == 1
-                                              ? double.parse(
-                                                      vm.queue[0]!.progress) /
-                                                  100
-                                              : (completed / vm.queue.length)
-                                                      .isNaN
+                                              ? double.parse(vm.queue[0]!.progress) / 100
+                                              : (completed / vm.queue.length).isNaN
                                                   ? 0.0
                                                   : completed / vm.queue.length,
                                           center: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
                                               PrimaryText(
                                                 vm.queue.length == 1
@@ -227,12 +187,9 @@ class _UploadingScreenState extends State<UploadingScreen> {
                                               ),
                                             ],
                                           ),
-                                          backgroundColor: Color(0xffE7E7E7)
-                                              .withOpacity(0.18),
-                                          circularStrokeCap:
-                                              CircularStrokeCap.round,
-                                          linearGradient:
-                                              LinearGradient(colors: [
+                                          backgroundColor: Color(0xffE7E7E7).withOpacity(0.18),
+                                          circularStrokeCap: CircularStrokeCap.round,
+                                          linearGradient: LinearGradient(colors: [
                                             Color(0xff765EEF),
                                             Color(0xff74D5DE),
                                           ], stops: [
@@ -246,35 +203,29 @@ class _UploadingScreenState extends State<UploadingScreen> {
                                         height: 25,
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 30),
+                                        padding: EdgeInsets.symmetric(horizontal: 30),
                                         child: Container(
                                           width: SizeConfig.screenWidth,
-                                          height:
-                                              SizeConfig.screenHeight! * 0.104,
+                                          height: SizeConfig.screenHeight! * 0.104,
                                           decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(18),
-                                            color:
-                                                Colors.white.withOpacity(0.08),
+                                            borderRadius: BorderRadius.circular(18),
+                                            color: Colors.white.withOpacity(0.08),
                                           ),
                                           child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: [
-                                              SvgPicture.asset(
-                                                  AppConstants.send_file),
-                                              completed == vm.queue.length? PrimaryText(
-                                                "Uploaded ${vm.queue.length}" +
-                                                    "${vm.queue.length == 1 ? " File " : " Files "}",
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w600,
-                                              ): PrimaryText(
-                                                "Uploading ${vm.queue.length}" +
-                                                    "${vm.queue.length == 1 ? " File " : " Files "}",
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w600,
-                                              )
+                                              SvgPicture.asset(AppConstants.send_file),
+                                              completed == vm.queue.length
+                                                  ? PrimaryText(
+                                                      "Uploaded ${vm.queue.length}" + "${vm.queue.length == 1 ? " File " : " Files "}",
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.w600,
+                                                    )
+                                                  : PrimaryText(
+                                                      "Uploading ${vm.queue.length}" + "${vm.queue.length == 1 ? " File " : " Files "}",
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.w600,
+                                                    )
                                             ],
                                           ),
                                         ),
@@ -296,57 +247,34 @@ class _UploadingScreenState extends State<UploadingScreen> {
                                         itemCount: vm.queue.length,
                                         itemBuilder: (context, index) {
                                           String type = "";
-                                          if (mime(vm.queue[index]!.name)!
-                                                  .split('/')
-                                                  .first ==
-                                              "application") {
-                                            if (mime(vm.queue[index]!.name)!
-                                                    .split('/')
-                                                    .last ==
-                                                "vnd.android.package-archive") {
+                                          if (mime(vm.queue[index]!.name)!.split('/').first == "application") {
+                                            if (mime(vm.queue[index]!.name)!.split('/').last == "vnd.android.package-archive") {
                                               type = "application";
                                             } else {
                                               type = 'document';
                                             }
                                           } else {
-                                            type = mime(vm.queue[index]!.name)!
-                                                .split('/')
-                                                .first;
+                                            type = mime(vm.queue[index]!.name)!.split('/').first;
                                           }
-                                          print(
-                                              "PROGRESS Report :${vm.queue[index]!.progress}");
-                                          String size =
-                                              FileManagerUtilities.formatBytes(
-                                                  int.parse(
-                                                      vm.queue[index]!.size),
-                                                  2);
+                                          print("PROGRESS Report :${vm.queue[index]!.progress}");
+                                          String size = FileManagerUtilities.formatBytes(int.parse(vm.queue[index]!.size), 2);
                                           return Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 8.0, horizontal: 22),
+                                            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 22),
                                             child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 SvgPicture.asset(
                                                   type == "video"
                                                       ? AppConstants.videos_icon
                                                       : type == "audio"
-                                                          ? AppConstants
-                                                              .audio_icon
+                                                          ? AppConstants.audio_icon
                                                           : type == "image"
-                                                              ? AppConstants
-                                                                  .images_icon
-                                                              : type ==
-                                                                      "document"
-                                                                  ? AppConstants
-                                                                      .document_icon
-                                                                  : type ==
-                                                                          "application"
-                                                                      ? AppConstants
-                                                                          .apps_icon
-                                                                      : AppConstants
-                                                                          .document_icon,
+                                                              ? AppConstants.images_icon
+                                                              : type == "document"
+                                                                  ? AppConstants.document_icon
+                                                                  : type == "application"
+                                                                      ? AppConstants.apps_icon
+                                                                      : AppConstants.document_icon,
                                                   width: 32,
                                                   height: 32,
                                                   fit: BoxFit.fill,
@@ -355,41 +283,28 @@ class _UploadingScreenState extends State<UploadingScreen> {
                                                   width: 25,
                                                 ),
                                                 Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     SizedBox(
-                                                      width: SizeConfig
-                                                              .screenWidth! -
-                                                          160,
+                                                      width: SizeConfig.screenWidth! - 160,
                                                       child: PrimaryText(
                                                         vm.queue[index]!.name,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        fontSize: SizeConfig
-                                                                .screenHeight! *
-                                                            0.020,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: AppColors
-                                                            .kBlackColor,
+                                                        overflow: TextOverflow.ellipsis,
+                                                        fontSize: SizeConfig.screenHeight! * 0.020,
+                                                        fontWeight: FontWeight.w500,
+                                                        color: AppColors.kBlackColor,
                                                       ),
                                                     ),
                                                     PrimaryText(
                                                       size,
                                                       fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w600,
+                                                      fontWeight: FontWeight.w600,
                                                       color: Color(0xffAFAFAF),
                                                     ),
                                                     PrimaryText(
-                                                      DateTime.parse(vm
-                                                              .queue[index]!
-                                                              .date)
-                                                          .toddMMMMyyyy(),
+                                                      DateTime.parse(vm.queue[index]!.date).toddMMMMyyyy(),
                                                       fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w600,
+                                                      fontWeight: FontWeight.w600,
                                                       color: Color(0xffAFAFAF),
                                                     ),
                                                   ],
@@ -401,60 +316,39 @@ class _UploadingScreenState extends State<UploadingScreen> {
                                                   radius: 32.0,
                                                   lineWidth: 3.0,
                                                   animation: false,
-                                                  percent: vm.queue[index]!
-                                                              .progress ==
-                                                          "pending"
-                                                      ? 0.0
-                                                      : double.parse(vm
-                                                              .queue[index]!
-                                                              .progress) /
-                                                          100,
+                                                  percent:
+                                                      vm.queue[index]!.progress == "pending" ? 0.0 : double.parse(vm.queue[index]!.progress) / 100,
                                                   center: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
+                                                    mainAxisAlignment: MainAxisAlignment.center,
                                                     children: [
                                                       PrimaryText(
                                                         "${vm.queue[index]!.progress}%",
                                                         fontSize: 6,
                                                         color: Colors.black54,
-                                                        fontWeight:
-                                                            FontWeight.w600,
+                                                        fontWeight: FontWeight.w600,
                                                       ),
                                                     ],
                                                   ),
-                                                  backgroundColor:
-                                                      Color(0xffE7E7E7)
-                                                          .withOpacity(0.18),
-                                                  circularStrokeCap:
-                                                      CircularStrokeCap.round,
+                                                  backgroundColor: Color(0xffE7E7E7).withOpacity(0.18),
+                                                  circularStrokeCap: CircularStrokeCap.round,
                                                   progressColor: type == "video"
-                                                      ? AppColors
-                                                          .kButtonSecondColor
+                                                      ? AppColors.kButtonSecondColor
                                                       : type == "audio"
-                                                          ? AppColors
-                                                              .kAudioPinkColor
+                                                          ? AppColors.kAudioPinkColor
                                                           : type == "image"
-                                                              ? AppColors
-                                                                  .kImagePeachColor
-                                                              : type ==
-                                                                      "document"
-                                                                  ? AppColors
-                                                                      .kDocGreenColor
-                                                                  : type ==
-                                                                          "apps"
-                                                                      ? AppColors
-                                                                          .kPrimaryDarkBlackColor
-                                                                      : AppColors
-                                                                          .kPrimaryColor,
+                                                              ? AppColors.kImagePeachColor
+                                                              : type == "document"
+                                                                  ? AppColors.kDocGreenColor
+                                                                  : type == "apps"
+                                                                      ? AppColors.kPrimaryDarkBlackColor
+                                                                      : AppColors.kPrimaryColor,
                                                   rotateLinearGradient: true,
                                                 ),
                                               ],
                                             ),
                                           );
                                         },
-                                        separatorBuilder:
-                                            (BuildContext context, int index) {
+                                        separatorBuilder: (BuildContext context, int index) {
                                           return CustomDivider();
                                         },
                                       ),
