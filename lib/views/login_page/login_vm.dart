@@ -51,7 +51,9 @@ class LoginVm extends BaseVm {
           }
 
         }
+      }).whenComplete(() {
         isLoading = false;
+
       });
     });
   }

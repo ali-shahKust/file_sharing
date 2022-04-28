@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_constants.dart';
 import 'package:quick_backup/custom_widgets/app_text_widget.dart';
 import 'package:quick_backup/custom_widgets/custom_appbar.dart';
-import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
 import 'package:quick_backup/utilities/file_manager_utilities.dart';
 import 'package:quick_backup/utilities/i_utills.dart';
-import 'package:quick_backup/views/download/download_screen.dart';
 import 'package:quick_backup/views/online_backup/compnents/cloud_apps.dart';
 import 'package:quick_backup/views/online_backup/compnents/cloud_audios.dart';
 import 'package:quick_backup/views/online_backup/compnents/cloud_docs.dart';
 import 'package:quick_backup/views/online_backup/compnents/cloud_images.dart';
 import 'package:quick_backup/views/online_backup/compnents/cloud_videos.dart';
 import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
-
 import '../../constants/app_colors.dart';
-import '../../custom_widgets/custom_list_tile.dart';
 
 class CloudItemsScreen extends StatefulWidget {
   static const routeName = 'cloud_items';
@@ -96,7 +91,8 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 22),
+                        padding: EdgeInsets.symmetric(
+                            vertical: SizeConfig.screenHeight! * 0.028, horizontal: SizeConfig.screenWidth! * 0.05),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -105,13 +101,14 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
                               children: [
                                 PrimaryText(
                                   size,
-                                  fontSize: 19,
+                                  fontSize: SizeConfig.screenHeight! * 0.024,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xff74D5DE),
                                 ),
+                                SizedBox(height: SizeConfig.screenHeight! * 0.01),
                                 PrimaryText(
                                   "Used",
-                                  fontSize: 16,
+                                  fontSize: SizeConfig.screenHeight! * 0.022,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.white,
                                 )
@@ -122,13 +119,14 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
                               children: [
                                 PrimaryText(
                                   AppConstants.allow_space,
-                                  fontSize: 19,
+                                  fontSize: SizeConfig.screenHeight! * 0.024,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xff74D5DE),
                                 ),
+                                SizedBox(height: SizeConfig.screenHeight! * 0.01),
                                 PrimaryText(
                                   "Total",
-                                  fontSize: 16,
+                                  fontSize: SizeConfig.screenHeight! * 0.022,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.white,
                                 )
@@ -140,7 +138,10 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
                       iUtills().upperRoundedContainer(context, SizeConfig.screenWidth, SizeConfig.screenHeight! * 0.475,
                           color: AppColors.kWhiteColor,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 22),
+                            padding: EdgeInsets.symmetric(
+                              vertical: SizeConfig.screenHeight! * 0.02,
+                              horizontal: SizeConfig.screenWidth! * 0.06,
+                            ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.start,

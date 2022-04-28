@@ -12,7 +12,7 @@ import 'package:quick_backup/constants/app_constants.dart';
 import 'package:quick_backup/custom_widgets/InfoDialoge.dart';
 import 'package:quick_backup/custom_widgets/app_text_widget.dart';
 import 'package:quick_backup/custom_widgets/drawer_items_widget.dart';
-import 'package:quick_backup/custom_widgets/upload_screen.dart';
+import 'package:quick_backup/views/dashboard/upload_screen.dart';
 import 'package:quick_backup/utilities/i_utills.dart';
 import 'package:quick_backup/custom_widgets/primary_text.dart';
 import 'package:provider/provider.dart';
@@ -55,6 +55,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
     super.initState();
   }
+
   // void fetchFileManagerData(){
   //   if()
   // }
@@ -74,118 +75,116 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double height = SizeConfig.screenHeight!;
-    double width = SizeConfig.screenWidth!;
+    SizeConfig().init(context);
+    double screenHeight = SizeConfig.screenHeight!;
+    double screenWidth = SizeConfig.screenWidth!;
     parentContext = context;
     return WillPopScope(
         onWillPop: _onWillPop,
         child: Consumer<DashBoardVm>(
-        builder: (context, vm, _)
-    =>
-        AdvancedDrawer(
-          backdropColor: AppColors.kPrimaryColor,
-          controller: _advancedDrawerController,
-          animationCurve: Curves.easeInOut,
-          animationDuration: const Duration(milliseconds: 300),
-          animateChildDecoration: true,
-          rtlOpening: false,
-          openScale: 0.55,
-          openRatio: 0.66,
-          disabledGestures: false,
-          childDecoration: const BoxDecoration(
-            // NOTICE: Uncomment if you want to add shadow behind the page.
-            // Keep in mind that it may cause animation jerks.
-            // boxShadow: <BoxShadow>[
-            //   BoxShadow(
-            //     color: Colors.black12,
-            //     blurRadius: 0.0,
-            //   ),
-            // ],
-            borderRadius: const BorderRadius.all(Radius.circular(16)),
-          ),
-          drawer: DrawerWidgetItems(),
-          child: Scaffold(
-            body: SizedBox(
-              width: getScreenWidth(context),
-              height: getScreenHeight(context),
-              child: Stack(
-                children: [
-                  SizedBox(
+            builder: (context, vm, _) => AdvancedDrawer(
+                  backdropColor: AppColors.kPrimaryColor,
+                  controller: _advancedDrawerController,
+                  animationCurve: Curves.easeInOut,
+                  animationDuration: const Duration(milliseconds: 300),
+                  animateChildDecoration: true,
+                  rtlOpening: false,
+                  openScale: 0.55,
+                  openRatio: 0.66,
+                  disabledGestures: false,
+                  childDecoration: const BoxDecoration(
+                    // NOTICE: Uncomment if you want to add shadow behind the page.
+                    // Keep in mind that it may cause animation jerks.
+                    // boxShadow: <BoxShadow>[
+                    //   BoxShadow(
+                    //     color: Colors.black12,
+                    //     blurRadius: 0.0,
+                    //   ),
+                    // ],
+                    borderRadius: const BorderRadius.all(Radius.circular(16)),
+                  ),
+                  drawer: DrawerWidgetItems(),
+                  child: Scaffold(
+                    body: SizedBox(
                       width: getScreenWidth(context),
                       height: getScreenHeight(context),
-                      child: Image.asset(
-                        AppConstants.home_screen_background,
-                        fit: BoxFit.cover,
-                      )),
-                  Padding(
-                    padding:
-                    const EdgeInsets.symmetric(vertical: 58.0, horizontal: 12),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: InkWell(
-                          onTap: () {
-                            _advancedDrawerController.showDrawer();
-                          },
-                          child: SvgPicture.asset(AppConstants.drawer_icon)),
+                      child: Stack(
+                        children: [
+                          SizedBox(
+                              width: getScreenWidth(context),
+                              height: getScreenHeight(context),
+                              child: Image.asset(
+                                AppConstants.home_screen_background,
+                                fit: BoxFit.cover,
+                              )),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: screenHeight * 0.08, horizontal: screenWidth * 0.05),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: InkWell(
+                                  onTap: () {
+                                    _advancedDrawerController.showDrawer();
+                                  },
+                                  child: SvgPicture.asset(AppConstants.drawer_icon)),
+                            ),
+                          ),
+                          Align(
+                              alignment: Alignment.bottomCenter,
+                              child: iUtills().upperRoundedContainer(context, screenWidth, screenHeight * 0.476,
+                                  color: AppColors.kPrimaryColor,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: screenHeight * 0.01,
+                                      horizontal: screenWidth * 0.05,
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            PrimaryText(
+                                              "Files Backup",
+                                              fontSize: screenHeight*0.034,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white,
+                                            ),
+                                            SvgPicture.asset(AppConstants.cloud_icon)
+                                          ],
+                                        ),
+                                        InkWell(
+                                          onTap: () async {
+                                            PermissionStatus status = osVersion! >= 11
+                                                ? await Permission.manageExternalStorage.status
+                                                : await Permission.storage.status;
+                                            print('on tap permission status ....$status');
+                                            if (!status.isGranted) {
+                                              print('dialoge open...');
+                                              vm.permissionCheck(parentContext, osVersion, status);
+                                            } else {
+                                              Navigator.pushNamed(parentContext!, FileManagerHome.routeName);
+                                            }
+                                          },
+
+                                          // Navigator.pushNamed(context, FileManagerHome.routeName);
+
+                                          child:
+                                              customTile(icon: AppConstants.quick_backup_icon, title: "Quick Backup"),
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.pushNamed(context, CloudItemsScreen.routeName);
+                                          },
+                                          child: customTile(icon: AppConstants.restore_icon, title: "Restore Files"),
+                                        ),
+                                      ],
+                                    ),
+                                  )))
+                        ],
+                      ),
                     ),
                   ),
-                  Align(
-                      alignment: Alignment.bottomCenter,
-                      child: iUtills().upperRoundedContainer(
-                          context, width, height * 0.476, color: AppColors.kPrimaryColor,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 22.0, horizontal: 22),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    PrimaryText(
-                                      "Files Backup",
-                                      fontSize: 26,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white,
-                                    ),
-                                    SvgPicture.asset(AppConstants.cloud_icon)
-                                  ],
-                                ),
-                                InkWell(
-                                  onTap: () async {
-                                    PermissionStatus status = osVersion! >=11
-                                        ? await Permission.manageExternalStorage.status
-                                        : await Permission.storage.status;
-                                    print('on tap permission status ....$status');
-                                    if (!status.isGranted) {
-                                      print('dialoge open...');
-                                     vm.permissionCheck(parentContext,osVersion,status);
-                                    } else {
-                                      Navigator.pushNamed(parentContext!, FileManagerHome.routeName);
-                                    }
-                                  },
-
-
-                                  // Navigator.pushNamed(context, FileManagerHome.routeName);
-
-                                  child: customTile(icon: AppConstants.quick_backup_icon, title: "Quick Backup"),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.pushNamed(context, CloudItemsScreen.routeName);
-                                  },
-                                  child: customTile(icon: AppConstants.restore_icon, title: "Restore Files"),
-                                ),
-                              ],
-                            ),
-                          )))
-                ],
-              ),
-            ),
-          ),
-        )
-        )
-    );
+                )));
   }
 
   Widget customTile({icon, title}) {
@@ -200,7 +199,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             SvgPicture.asset(icon),
             PrimaryText(
               title,
-              fontSize: 24,
+              fontSize:SizeConfig.screenHeight! *0.03,
               fontWeight: FontWeight.w600,
               color: Color(0xff373737),
             ),

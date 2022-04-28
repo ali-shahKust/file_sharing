@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:quick_backup/custom_widgets/upload_screen.dart';
+import 'package:quick_backup/views/dashboard/upload_screen.dart';
 import 'package:quick_backup/data/models/queue_model.dart';
 import 'package:quick_backup/views/device_file_manager/category/audio_view.dart';
 import 'package:quick_backup/views/device_file_manager/category/images_view.dart';

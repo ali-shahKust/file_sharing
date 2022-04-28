@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/custom_widgets/app_text_widget.dart';
 import 'package:quick_backup/custom_widgets/bages/badge.dart';
-import 'package:quick_backup/custom_widgets/upload_screen.dart';
-import 'package:quick_backup/data/models/app_model.dart';
+import 'package:quick_backup/custom_widgets/bages/badge_position.dart';
+import 'package:quick_backup/views/dashboard/upload_screen.dart';
 import 'package:quick_backup/views/dashboard/dashboard_vm.dart';
 import 'package:quick_backup/views/download/download_screen.dart';
 import 'package:quick_backup/views/download/download_vm.dart';
 import 'package:quick_backup/views/login_page/login_screen.dart';
 import 'package:quick_backup/views/user_name_setting/update_username.dart';
-
-import '../constants/app_constants.dart';
-import '../utilities/i_utills.dart';
 import '../utilities/pref_utills.dart';
 
 class DrawerWidgetItems extends StatelessWidget {
@@ -20,6 +18,7 @@ class DrawerWidgetItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       backgroundColor: AppColors.kPrimaryColor,
       body: Center(
@@ -28,101 +27,115 @@ class DrawerWidgetItems extends StatelessWidget {
           children: [
             PrimaryText(
               "Quick Backup App",
-              fontSize: 28,
+              fontSize: SizeConfig.screenHeight! * 0.03,
               fontWeight: FontWeight.w700,
-            ),
-            customTile(Icons.star, "Rate App"),
-            customTile(Icons.share, "Share App"),
-            customTile(Icons.shield, "Privacy Policy"),
-            InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, UploadingScreen.routeName,
-                      arguments: {"drawer": true});
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 18.0, horizontal: 10),
-                  child: Row(
-                    children: [
-                      Badge(
-
-                        showBadge:
-                        Provider.of<DashBoardVm>(context).queue.length == 0
-                                ? false
-                                : true,
-                        badgeContent: PrimaryText(
-                          '${Provider.of<DashBoardVm>(context).queue.length}',
-                          color: AppColors.kWhiteColor,
-                          fontSize: 12,
-                        ),
-                        badgeColor: AppColors.kPrimaryColor,
-                        child: Icon(
-                          Icons.list,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      PrimaryText(
-                        "Uploading Queue",
-                        color: Colors.white,
-                        fontSize: 19,
-                      )
-                    ],
-                  ),
-                )),
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, DownloadScreen.routeName,
-                    arguments: {"drawer": true});
-              },
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 18.0, horizontal: 10),
-                child: Row(
-                  children: [
-                    Badge(
-                      showBadge:
-                      Provider.of<DownloadVm>(context).queue.length == 0
-                              ? false
-                              : true,
-                      badgeContent: PrimaryText(
-                        '${Provider.of<DownloadVm>(context).queue.length}',
-                        color: AppColors.kWhiteColor,
-                        fontSize: 12,
-
-                      ),
-                      badgeColor: AppColors.kPrimaryColor,
-                      child: Icon(
-                        Icons.list,
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    PrimaryText(
-                      "Downloading Queue",
-                      color: Colors.white,
-                      fontSize: 19,
-                    )
-                  ],
-                ),
-              ),
             ),
             InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, UpdateUserNameScreen.routeName);
                 },
-                child: customTile(Icons.edit, "Update Profile")),
+                child: customTile(Icons.edit_outlined, "Update Profile")),
+            InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, UploadingScreen.routeName, arguments: {"drawer": true});
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: SizeConfig.screenHeight! * 0.025,
+                    horizontal: SizeConfig.screenWidth! * 0.02,
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.list_outlined,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: SizeConfig.screenWidth! * 0.015,
+                      ),
+                      Badge(
+                        showBadge: Provider.of<DashBoardVm>(context).queue.length == 0 ? false : true,
+                        // showBadge: true,
+
+                        badgeContent: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 1.0,
+                            vertical: 1.0,
+                          ),
+                          child: PrimaryText(
+                            '${Provider.of<DashBoardVm>(context).queue.length}',
+                            // '100',
+                            color: AppColors.kWhiteColor,
+                            fontSize: SizeConfig.screenHeight! * 0.018,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        position: BadgePosition.topEnd(top: -20, end: -28),
+                        // padding: EdgeInsets.symmetric(horizontal: 6),
+                        badgeColor: AppColors.kBadgePeachColor,
+                        child: PrimaryText(
+                          "Uploading Queue",
+                          color: Colors.white,
+                          fontSize: SizeConfig.screenHeight! * 0.023,
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, DownloadScreen.routeName, arguments: {"drawer": true});
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 10),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.list_outlined,
+                      color: Colors.white,
+                    ),
+                    SizedBox(
+                      width: SizeConfig.screenWidth! * 0.015,
+                    ),
+                    Badge(
+                      showBadge: Provider.of<DownloadVm>(context).queue.length == 0 ? false : true,
+                      // showBadge: true,
+
+                      badgeContent: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 1.0,
+                          vertical: 1.0,
+                        ),
+                        child: PrimaryText(
+                          '${Provider.of<DownloadVm>(context).queue.length}',
+                          // '0',
+                          color: AppColors.kWhiteColor,
+                          fontSize: SizeConfig.screenHeight! * 0.018,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      position: BadgePosition.topEnd(top: -20, end: -28),
+                      // padding: EdgeInsets.symmetric(horizontal: 6),
+                      badgeColor: AppColors.kBadgePeachColor,
+                      child: PrimaryText(
+                        "Downloading Queue",
+                        color: Colors.white,
+                        fontSize: SizeConfig.screenHeight! * 0.023,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            customTile(Icons.star_outline, "Rate App"),
+            customTile(Icons.share_outlined, "Share App"),
+            customTile(Icons.shield_outlined, "Privacy Policy"),
             InkWell(
                 onTap: () {
                   PreferenceUtilities.clearAllPrefs();
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, LoginScreen.routeName, (route) => false);
+                  Navigator.pushNamedAndRemoveUntil(context, LoginScreen.routeName, (route) => false);
                 },
-                child: customTile(Icons.login, "Logout")),
+                child: customTile(Icons.login_outlined, "Logout")),
           ],
         ),
       ),
@@ -139,12 +152,12 @@ class DrawerWidgetItems extends StatelessWidget {
             color: Colors.white,
           ),
           SizedBox(
-            width: 15,
+            width: SizeConfig.screenWidth! * 0.025,
           ),
           PrimaryText(
             title,
             color: Colors.white,
-            fontSize: 19,
+            fontSize: SizeConfig.screenHeight! * 0.023,
           )
         ],
       ),

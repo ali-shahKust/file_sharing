@@ -59,8 +59,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 30.0, vertical: 50),
+                  padding:  EdgeInsets.symmetric(
+                      horizontal: SizeConfig.screenWidth!*0.05, vertical: SizeConfig.screenHeight!*0.050),
                   child: Column(
                     children: [
                       iUtills().roundedContainer(context,
@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       PrimaryText(
                                         "Login with Google",
                                         color: AppColors.kBlackColor,
-                                        fontSize: 17,
+                                        fontSize: SizeConfig.screenHeight!*0.022,
                                         fontWeight: FontWeight.w500,
                                       )
                                     ],
@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   alignment: Alignment.bottomCenter,
                                   child: Container(
                                     width: width,
-                                    height: 6,
+                                    height: SizeConfig.screenHeight!*0.007,
                                     decoration: BoxDecoration(
                                         gradient: LinearGradient(colors: [
                                       Color(0xffE43E2B),

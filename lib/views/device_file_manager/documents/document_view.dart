@@ -7,7 +7,7 @@ import 'package:quick_backup/constants/app_strings.dart';
 import 'package:quick_backup/custom_widgets/custom_appbar.dart';
 import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/custom_widgets/custom_document_category_list.dart';
-import 'package:quick_backup/custom_widgets/upload_screen.dart';
+import 'package:quick_backup/views/dashboard/upload_screen.dart';
 import 'package:quick_backup/utilities/file_manager_utilities.dart';
 import 'package:quick_backup/utilities/general_utilities.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';

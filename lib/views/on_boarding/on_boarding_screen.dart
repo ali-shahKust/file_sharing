@@ -61,9 +61,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       ),
                     ),
                     Positioned(
-                      left: 50,
-                      right: 50,
-                      bottom: 50,
+                      left: SizeConfig.screenWidth!*0.050,
+                      right: SizeConfig.screenWidth!*0.050,
+                      bottom: SizeConfig.screenHeight!*0.060,
                       child: Column(
                         children: [
                           InkWell(
@@ -78,8 +78,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                   children: [
                                     Image.asset(
                                       AppConstants.next_icon,
-                                      width: 22,
-                                      height: 22,
+                                      width: SizeConfig.screenWidth!*0.05,
+                                      height: SizeConfig.screenHeight!*0.022,
                                     ),
                                   ],
                                 )),

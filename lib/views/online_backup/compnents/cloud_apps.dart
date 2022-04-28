@@ -76,31 +76,6 @@ class _CloudAppsState extends State<CloudApps> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Padding(
-                        //   padding: const EdgeInsets.only(top: 8.0),
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //     children: [
-                        //       IconButton(
-                        //           onPressed: () {
-                        //             Navigator.pop(context);
-                        //           },
-                        //           icon: Icon(
-                        //             Icons.arrow_back_ios,
-                        //             size: SizeConfig.screenHeight! * 0.024,
-                        //             color: Colors.white,
-                        //           )),
-                        //       PrimaryText(
-                        //         "Apps",
-                        //         fontSize: SizeConfig.screenHeight! * 0.020,
-                        //         fontWeight: FontWeight.w500,
-                        //       ),
-                        //       SizedBox(
-                        //         width: 50,
-                        //       )
-                        //     ],
-                        //   ),
-                        // ),
                         CustomAppBar(
                             title: 'Apps',
                             onTap: () {
@@ -141,40 +116,40 @@ class _CloudAppsState extends State<CloudApps> {
                                 color: AppColors.kWhiteColor,
                                 borderRadius:
                                     BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-                            child: Stack(
+                            child: Column(
                               children: [
-                                ListView.builder(
-                                  physics: BouncingScrollPhysics(),
+                                SizedBox(height: SizeConfig.screenHeight!*0.02,),
+                                Expanded(
+                                  child: ListView.builder(
+                                    physics: BouncingScrollPhysics(),
 
-                                  padding: EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
-                                  itemCount: vm.apps.length,
-                                  itemBuilder: (
-                                    BuildContext context,
-                                    int index,
-                                  ) {
-                                    return InkWell(
-                                      onTap: () {
-                                        vm.apps[index].isSelected = !vm.apps[index].isSelected;
-                                        if (vm.apps[index].isSelected) {
-                                          print("Called if");
-                                          vm.addToSelectedList = vm.apps[index];
-                                        } else {
-                                          print("Called else");
-                                          vm.removeFromSelectedList = vm.apps[index];
-                                        }
-                                      },
-                                      child: cloudFileCard(
-                                          context: context,
-                                          size: vm.apps[index].size,
-                                          title: vm.apps[index].key,
-                                          icon: AppConstants.apps_icon,
-                                          isSelected: vm.apps[index].isSelected,
-                                          item: vm.apps[index]),
-                                    );
-                                  },
-                                  // separatorBuilder: (BuildContext context, int index) {
-                                  //   return CustomDivider();
-                                  // },
+                                    padding: EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
+                                    itemCount: vm.apps.length,
+                                    itemBuilder: (
+                                      BuildContext context,
+                                      int index,
+                                    ) {
+                                      return InkWell(
+                                        onTap: () {
+                                          vm.apps[index].isSelected = !vm.apps[index].isSelected;
+                                          if (vm.apps[index].isSelected) {
+                                            print("Called if");
+                                            vm.addToSelectedList = vm.apps[index];
+                                          } else {
+                                            print("Called else");
+                                            vm.removeFromSelectedList = vm.apps[index];
+                                          }
+                                        },
+                                        child: cloudFileCard(
+                                            context: context,
+                                            size: vm.apps[index].size,
+                                            title: vm.apps[index].key,
+                                            icon: AppConstants.apps_icon,
+                                            isSelected: vm.apps[index].isSelected,
+                                            item: vm.apps[index]),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ],
                             ),
