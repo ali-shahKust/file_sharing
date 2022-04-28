@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_colors.dart';
+import 'package:quick_backup/custom_widgets/loading_widget.dart';
 
 class GeneralUtilities {
   static Widget noDataFound() {
@@ -44,14 +45,12 @@ class GeneralUtilities {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CircularProgressIndicator(
-                color: AppColors.kPrimaryPurpleColor,
-              ),
+             LoadingWidget(),
               SizedBox(
-                height: SizeConfig.screenHeight! * 0.05,
+                height: SizeConfig.screenHeight! * 0.03,
               ),
               Text(
-                'Getting Files.....',
+                'Getting Files',
                 style: TextStyle(
                     color: AppColors.kBlackColor, fontSize: SizeConfig.screenHeight! * 0.023),
               ),

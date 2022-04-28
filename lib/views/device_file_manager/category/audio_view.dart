@@ -62,31 +62,6 @@ class _AudioViewsState extends State<AudioViews> {
                         Navigator.pop(context);
                         //
                       }),
-                  // Padding(
-                  //   padding: EdgeInsets.only(top: SizeConfig.screenHeight! * 0.02),
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //     children: [
-                  //       IconButton(
-                  //           onPressed: () {
-                  //             Navigator.pop(context);
-                  //           },
-                  //           icon: Icon(
-                  //             Icons.arrow_back_ios,
-                  //             size: SizeConfig.screenHeight! * 0.024,
-                  //             color: Colors.white,
-                  //           )),
-                  //       PrimaryText(
-                  //         "Audios",
-                  //         fontSize: SizeConfig.screenHeight! * 0.028,
-                  //         fontWeight: FontWeight.w500,
-                  //       ),
-                  //       SizedBox(
-                  //         width: SizeConfig.screenWidth! * 0.050,
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
                   Expanded(
                     flex: 2,
                     child: Row(
@@ -124,14 +99,16 @@ class _AudioViewsState extends State<AudioViews> {
                       child: provider.loading == true
                           ? GeneralUtilities.LoadingFileWidget()
                           : Container(
-                              // height: SizeConfig.screenHeight! * 0.82,
-                              decoration: BoxDecoration(
-                                  color: AppColors.kWhiteColor,
-                                  borderRadius:
-                                      BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-                              child: Stack(
-                                children: [
-                                  ListView.builder(
+                            // height: SizeConfig.screenHeight! * 0.82,
+                            decoration: BoxDecoration(
+                                color: AppColors.kWhiteColor,
+                                borderRadius:
+                                    BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+                            child: Column(
+                              children: [
+                                SizedBox(height: SizeConfig.screenHeight!*0.02,),
+                                Expanded(
+                                  child: ListView.builder(
                                     padding: EdgeInsets.all(SizeConfig.screenHeight! * 0.02),
                                     itemCount: provider.audiosList.length,
                                     itemBuilder: (BuildContext context, int index) {
@@ -160,8 +137,8 @@ class _AudioViewsState extends State<AudioViews> {
                                                         height: SizeConfig.screenHeight! * 0.022,
                                                       ),
                                                     ),
-                                                    title:
-                                                        Text('${provider.audiosList[index].file.path.split('/').last}'),
+                                                    title: Text(
+                                                        '${provider.audiosList[index].file.path.split('/').last}'),
                                                     subtitle: Text(
                                                       FileManagerUtilities.formatBytes(
                                                           provider.audiosList[index].file.lengthSync(), 3),
@@ -189,7 +166,8 @@ class _AudioViewsState extends State<AudioViews> {
                                                       height: SizeConfig.screenHeight! * 0.1,
                                                       width: SizeConfig.screenWidth! * 0.07,
                                                       decoration: BoxDecoration(
-                                                          shape: BoxShape.circle, color: AppColors.kPrimaryPurpleColor),
+                                                          shape: BoxShape.circle,
+                                                          color: AppColors.kPrimaryPurpleColor),
                                                       child: Padding(
                                                           padding: const EdgeInsets.all(5.0),
                                                           child: Icon(
@@ -210,10 +188,10 @@ class _AudioViewsState extends State<AudioViews> {
                                     //   return CustomDivider();
                                     // },
                                   ),
-
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
+                          ),
                     ),
                   ),
                   Visibility(
@@ -231,8 +209,7 @@ class _AudioViewsState extends State<AudioViews> {
                             //  pd.show(max: 100, msg: 'File Uploading...');
                             if (provider.selectedFiles.length > 0) {
                               Navigator.pushNamed(context, UploadingScreen.routeName,
-                                  arguments: {'files': provider.selectedFiles, "drawer": false})
-                                  .whenComplete(() {
+                                  arguments: {'files': provider.selectedFiles, "drawer": false}).whenComplete(() {
                                 print('whencomplete call...');
                                 // provider.selectedFiles.clear();
                                 // provider.clearAllSelectedLists();

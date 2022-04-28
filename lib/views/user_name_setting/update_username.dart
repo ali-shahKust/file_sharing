@@ -127,8 +127,11 @@ class UpdateUserNameScreen extends StatelessWidget {
                                       width: SizeConfig.screenWidth! * 0.366,
                                       child: ElevatedButton(
                                         onPressed: () {
-                                          PreferenceUtilities.setUserNameToPrefs(vm.userName.text, context);
-                                          iUtills().showMessage(context: context, text: "Name Updated");
+                                          PreferenceUtilities.setUserNameToPrefs(vm.userName.text, context).whenComplete((){
+                                            iUtills().showMessage(context: context, text: "Name Updated");
+                                          });
+
+                                          Navigator.pushNamed(context, DashBoardScreen.routeName);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             primary: Colors.transparent, shadowColor: Colors.transparent),

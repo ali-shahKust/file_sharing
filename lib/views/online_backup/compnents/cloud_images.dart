@@ -208,7 +208,7 @@ class _CloudImagesState extends State<CloudImages> {
                         // width: SizeConfig.screenWidth!*1,
                         // height: SizeConfig.screenHeight!*0.1,
                         child: BackupButton(
-                          text: 'Recover Now',
+                          text: 'Recover Now ',
                           width: SizeConfig.screenWidth! * 0.58,
                           onTap: () async {
                             //  pd.show(max: 100, msg: 'File Uploading...');

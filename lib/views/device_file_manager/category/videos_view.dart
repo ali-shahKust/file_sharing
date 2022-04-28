@@ -10,6 +10,7 @@ import 'package:quick_backup/custom_widgets/app_text_widget.dart';
 import 'package:quick_backup/custom_widgets/custom_appbar.dart';
 import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/data/models/file_model.dart';
+import 'package:quick_backup/utilities/general_utilities.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
@@ -50,8 +51,8 @@ class _VideosViewState extends State<VideosView> {
                   image: DecorationImage(
                     image: AssetImage('assets/images/container_background.webp'),
                   )
-                // Image.asset('assets/container_background.svg'),
-              ),
+                  // Image.asset('assets/container_background.svg'),
+                  ),
               child: Column(
                 children: [
                   CustomAppBar(
@@ -60,7 +61,6 @@ class _VideosViewState extends State<VideosView> {
                         Navigator.pop(context);
                         //
                       }),
-
                   Expanded(
                     flex: 1,
                     child: Row(
@@ -76,7 +76,6 @@ class _VideosViewState extends State<VideosView> {
                         ),
                         IconButton(
                           onPressed: () {
-
                             provider.changeIsAllVideosSelected();
                             // provider.selectAllInList(provider.videosList);
                             !provider.isAllVideosSelected
@@ -84,17 +83,13 @@ class _VideosViewState extends State<VideosView> {
                                 : provider.selectAllInList(provider.videosList);
                           },
                           icon: Icon(
-                            provider.isAllVideosSelected
-                                ? Icons.check_box_outlined
-                                : Icons.check_box_outline_blank,
+                            provider.isAllVideosSelected ? Icons.check_box_outlined : Icons.check_box_outline_blank,
                             color: AppColors.kWhiteColor,
                           ),
                         ),
                       ],
                     ),
                   ),
-
-
                   Container(
                     height: SizeConfig.screenHeight! * 0.82,
                     decoration: BoxDecoration(
@@ -126,8 +121,8 @@ class _VideosViewState extends State<VideosView> {
                                 //  pd.show(max: 100, msg: 'File Uploading...');
                                 if (provider.selectedFiles.length > 0) {
                                   print('Button pressed.');
-                                  Navigator.pushNamed(context, UploadingScreen.routeName, arguments: {'files':provider.selectedFiles,"drawer":false})
-                                      .whenComplete(() {
+                                  Navigator.pushNamed(context, UploadingScreen.routeName,
+                                      arguments: {'files': provider.selectedFiles, "drawer": false}).whenComplete(() {
                                     print('whencomplete call...');
                                     // provider.selectedFiles.clear();
                                     // provider.clearAllSelectedLists();
@@ -190,7 +185,7 @@ class PagewiseGridViewExample extends StatelessWidget {
         loadingBuilder: (context) {
           print('I am in loading builder...');
           // Provider.of<CategoryVm>(context, listen: false).setVideoLoading();
-          return Center(child: CircularProgressIndicator(color: AppColors.kPrimaryPurpleColor,));
+          return Center(child: GeneralUtilities.LoadingFileWidget());
           // return Container(height:300, width:double.infinity,child: gridPlaceHolder());
         },
         pageFuture: (pageIndex) {
@@ -377,7 +372,7 @@ class _MediaTile extends StatelessWidget {
             decoration: BoxDecoration(color: Colors.transparent, borderRadius: BorderRadius.all(Radius.circular(8))),
             // height: screenHeight * 0.15  ,
             // width: screenWidht * 0.47,
-            child:ClipRRect(
+            child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(8)),
               child: Image.memory(
                 imgmodel.thumbNail,
@@ -409,42 +404,33 @@ class _MediaTile extends StatelessWidget {
               padding: EdgeInsets.all(5.0),
               child: provider.videosList[index].isSelected
                   ? Container(
-                height: SizeConfig.screenHeight! * 0.1,
-                width: SizeConfig.screenWidth! * 0.07,
-                decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.kPrimaryPurpleColor),
-                child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Icon(
-                      Icons.check,
-                      size: SizeConfig.screenHeight! * 0.02,
-                      color: Colors.white,
-                    )),
-              )
-              //     : Container(
-              //   height: SizeConfig.screenHeight! * 0.1,
-              //   width: SizeConfig.screenWidth! * 0.07,
-              //
-              //   // decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.kBlueColor),
-              //   child: Icon(
-              //     Icons.check_box_outline_blank,
-              //     size: SizeConfig.screenHeight! * 0.03,
-              //     color: Colors.grey,
-              //   ),
-              // )
+                      height: SizeConfig.screenHeight! * 0.1,
+                      width: SizeConfig.screenWidth! * 0.07,
+                      decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.kPrimaryPurpleColor),
+                      child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Icon(
+                            Icons.check,
+                            size: SizeConfig.screenHeight! * 0.02,
+                            color: Colors.white,
+                          )),
+                    )
+                  //     : Container(
+                  //   height: SizeConfig.screenHeight! * 0.1,
+                  //   width: SizeConfig.screenWidth! * 0.07,
+                  //
+                  //   // decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.kBlueColor),
+                  //   child: Icon(
+                  //     Icons.check_box_outline_blank,
+                  //     size: SizeConfig.screenHeight! * 0.03,
+                  //     color: Colors.grey,
+                  //   ),
+                  // )
                   : SizedBox(
-                height: 2.0,
-              ),
+                      height: 2.0,
+                    ),
             ),
           ),
-
-
-
-
-
-
-
-
-
 
           // Positioned(
           //   // top: SizeConfig.screenHeight! * (-0.032),
