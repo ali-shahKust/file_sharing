@@ -82,4 +82,15 @@ class GeneralUtilities {
     return randomNumber;
   }
 
+
+  static Widget miniLoader(Color color) {
+    return Container(
+      height: SizeConfig.screenHeight! * 0.028,
+      width: SizeConfig.screenWidth! *0.06,
+      child: CircularProgressIndicator(
+        valueColor: new AlwaysStoppedAnimation<Color>(color),
+        strokeWidth: 2.0,
+      ),
+    );
+  }
 }

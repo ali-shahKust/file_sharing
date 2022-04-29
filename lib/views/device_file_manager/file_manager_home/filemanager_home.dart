@@ -32,44 +32,6 @@ class _FileManagerHomeState extends State<FileManagerHome> {
 
     return Scaffold(
       backgroundColor: AppColors.kPrimaryPurpleColor,
-      // appBar: AppBar(
-      //   elevation: 0.0,
-      //   backgroundColor: AppColors.kPrimaryPurpleColor,
-      //   title: Text('Quick Backup'),
-      //   centerTitle: true,
-      //   //TODO uncomment to show premium icon...
-      //   // actions: [
-      //   //   Padding(
-      //   //     padding: EdgeInsets.only(top: SizeConfig.screenHeight! * 0.01),
-      //   //     child: Container(
-      //   //         height: SizeConfig.screenHeight! * 0.15,
-      //   //         width: SizeConfig.screenWidth! * 0.2,
-      //   //         decoration: BoxDecoration(
-      //   //             color: AppColors.kDarkPurpleColor,
-      //   //             borderRadius: BorderRadius.only(topLeft: Radius.circular(20), bottomLeft: Radius.circular(20))),
-      //   //         child: Align(
-      //   //             alignment: Alignment.centerLeft,
-      //   //             child: Padding(
-      //   //               padding: EdgeInsets.only(left: SizeConfig.screenHeight! * 0.015),
-      //   //               child: Icon(
-      //   //                 Icons.workspace_premium,
-      //   //                 color: Colors.red,
-      //   //               ),
-      //   //             ))
-      //   //         // SvgPicture.asset('assets/premium_icon.svg'),
-      //   //         ),
-      //   //   )
-      //   // ],
-      //   leading: IconButton(
-      //     onPressed: () {
-      //       Navigator.pop(context);
-      //     },
-      //     icon: Icon(
-      //       Icons.arrow_back_ios,
-      //       color: AppColors.kWhiteColor,
-      //     ),
-      //   ),
-      // ),
       body: SafeArea(
         child: Container(
           width: SizeConfig.screenWidth,
@@ -140,12 +102,10 @@ class _FileManagerHomeState extends State<FileManagerHome> {
     super.dispose();
   }
 }
-
-//                        _title("${((provider.freeSpace)/1000000000).round()} GB used  ${((provider.totalSpace)/1000000000).round()}  GB"),
 class _CategoriesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final categoryVm = Provider.of<CategoryVm>(context, listen: false);
+
     return Container(
       decoration: BoxDecoration(
           color: AppColors.kWhiteColor,
@@ -158,13 +118,6 @@ class _CategoriesSection extends StatelessWidget {
         itemCount: AppConstants.categories.length,
         itemBuilder: (BuildContext context, int index) {
           Map category = AppConstants.categories[index];
-          // List<int> filesLength = [
-          //   categoryVm.imageList.length,
-          //   categoryVm.videosList.length,
-          //   categoryVm.audiosList.length,
-          //   categoryVm.filesList.length,
-          //   categoryVm.filesList.length,
-          // ];
 
           return CustomListTile(
             title: category['title'],

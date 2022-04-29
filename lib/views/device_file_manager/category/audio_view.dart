@@ -95,7 +95,7 @@ class _AudioViewsState extends State<AudioViews> {
                       ? Expanded(flex: 10, child: GeneralUtilities.LoadingFileWidget())
                       : Expanded(
                           flex: 17,
-                          child: provider.loading == true
+                           child: provider.loading == true
                               ? GeneralUtilities.LoadingFileWidget()
                               : Container(
                                   // height: SizeConfig.screenHeight! * 0.82,
