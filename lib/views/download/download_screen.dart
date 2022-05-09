@@ -22,7 +22,6 @@ class DownloadScreen extends StatefulWidget {
   static const routeName = 'download_screen';
   Map map;
 
-
   DownloadScreen({required this.map});
 
   @override
@@ -84,7 +83,10 @@ class _DownloadScreenState extends State<DownloadScreen> {
   }
 
   Future<bool> _onWillPop() async {
-    return (await Provider.of<DownloadVm>(context, listen: false).queue.isEmpty ? true : iUtills().exitPopUp(context, 'download')) ?? false;
+    return (await Provider.of<DownloadVm>(context, listen: false).queue.isEmpty
+            ? true
+            : iUtills().exitPopUp(context, 'download')) ??
+        false;
   }
 
   @override
@@ -138,7 +140,9 @@ class _DownloadScreenState extends State<DownloadScreen> {
                         : Container(
                             width: SizeConfig.screenWidth,
                             height: SizeConfig.screenHeight,
-                            decoration: BoxDecoration(image: DecorationImage(image: AssetImage(AppConstants.transfer_background), fit: BoxFit.cover)),
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage(AppConstants.transfer_background), fit: BoxFit.cover)),
                             child: Stack(
                               children: [
                                 Align(
@@ -170,7 +174,9 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                               PrimaryText(
                                                 vm.queue.length == 1
                                                     ? "${vm.queue[0]!.progress}%"
-                                                    : "${((vm.completed / vm.queue.length) * 100).toStringAsFixed(0)}%",
+                                                    : (vm.completed / vm.queue.length).isNaN
+                                                        ? "0%"
+                                                        : "${((vm.completed / vm.queue.length) * 100).toStringAsFixed(0)}%",
                                                 fontSize: 34,
                                                 fontWeight: FontWeight.w700,
                                               ),
@@ -211,12 +217,14 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                               SvgPicture.asset(AppConstants.send_file),
                                               vm.completed == vm.queue.length
                                                   ? PrimaryText(
-                                                      "Downloaded ${vm.queue.length}" + "${vm.queue.length == 1 ? " File " : " Files "}",
+                                                      "Downloaded ${vm.queue.length}" +
+                                                          "${vm.queue.length == 1 ? " File " : " Files "}",
                                                       fontSize: 18,
                                                       fontWeight: FontWeight.w600,
                                                     )
                                                   : PrimaryText(
-                                                      "Downloading ${vm.queue.length}" + "${vm.queue.length == 1 ? " File " : " Files "}",
+                                                      "Downloading ${vm.queue.length}" +
+                                                          "${vm.queue.length == 1 ? " File " : " Files "}",
                                                       fontSize: 18,
                                                       fontWeight: FontWeight.w600,
                                                     )
@@ -242,7 +250,8 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                         itemBuilder: (context, index) {
                                           String type = "";
                                           if (mime(vm.queue[index]!.name)!.split('/').first == "application") {
-                                            if (mime(vm.queue[index]!.name)!.split('/').last == "vnd.android.package-archive") {
+                                            if (mime(vm.queue[index]!.name)!.split('/').last ==
+                                                "vnd.android.package-archive") {
                                               type = "application";
                                             } else {
                                               type = 'document';
@@ -250,7 +259,8 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                           } else {
                                             type = mime(vm.queue[index]!.name)!.split('/').first;
                                           }
-                                          String size = FileManagerUtilities.formatBytes(int.parse(vm.queue[index]!.size), 2);
+                                          String size =
+                                              FileManagerUtilities.formatBytes(int.parse(vm.queue[index]!.size), 2);
                                           return Padding(
                                             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 22),
                                             child: Row(
@@ -305,7 +315,8 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                                 SizedBox(
                                                   width: 5,
                                                 ),
-                                                vm.queue[index]!.progress == "100" || vm.queue[index]!.progress == "Exist already"
+                                                vm.queue[index]!.progress == "100" ||
+                                                        vm.queue[index]!.progress == "Exist already"
                                                     ? InkWell(
                                                         onTap: () {
                                                           OpenFile.open(vm.queue[index]!.path);
