@@ -9,7 +9,9 @@ import 'package:quick_backup/custom_widgets/app_text_widget.dart';
 import 'package:quick_backup/custom_widgets/custom_appbar.dart';
 import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
 import 'package:quick_backup/utilities/file_manager_utilities.dart';
+import 'package:quick_backup/utilities/general_utilities.dart';
 import 'package:quick_backup/utilities/i_utills.dart';
+import 'package:quick_backup/views/dashboard/dashboard_vm.dart';
 import 'package:quick_backup/views/download/download_screen.dart';
 import 'package:quick_backup/views/online_backup/compnents/cloud_apps.dart';
 import 'package:quick_backup/views/online_backup/compnents/cloud_audios.dart';
@@ -40,7 +42,8 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<OnlineBackUpVm>(builder: (context, vm, _) {
-      String size = FileManagerUtilities.formatBytes(vm.usedSpace, 2);
+      print('size of the images on cloud is ${vm.images.length}');
+      // String size = FileManagerUtilities.formatBytes(vm.usedSpace, 2);
 
       return Scaffold(
         backgroundColor: AppColors.kPrimaryPurpleColor,
@@ -96,52 +99,70 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      vm.isLoading
+                          ? Container(
+                              child: Image.asset(
+                                AppConstants.loader_gif,
+                                height: SizeConfig.screenHeight! * 0.3,
+                              ),
+                            )
+                          : Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: SizeConfig.screenHeight! * 0.028,
+                                  horizontal: SizeConfig.screenWidth! * 0.05),
+                              child: CircularPercentIndicator(
+                                radius: 178.0,
+                                lineWidth: 13.0,
+                                animation: false,
+                                addAutomaticKeepAlive: false,
+                                // animateFromLastPercent: true,
+                                percent: (int.parse(AppConstants.allow_space) - vm.usedSpace) /
+                                    int.parse(AppConstants.allow_space),
+                                center: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    PrimaryText(
+                                      "${(((int.parse(AppConstants.allow_space) - vm.usedSpace) / int.parse(AppConstants.allow_space)) * 100).toStringAsFixed(0)}%",
+                                      fontSize: SizeConfig.screenHeight! * 0.034,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    PrimaryText(
+                                      "Available",
+                                      fontSize: SizeConfig.screenHeight! * 0.02,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ],
+                                ),
+                                backgroundColor: Color(0xffE7E7E7).withOpacity(0.18),
+                                progressColor: Color(0xff74D5DE),
+                                circularStrokeCap: CircularStrokeCap.round,
+                              ),
+                            ),
                       Padding(
                         padding: EdgeInsets.symmetric(
-                            vertical: SizeConfig.screenHeight! * 0.028, horizontal: SizeConfig.screenWidth! * 0.05),
-
-                        child: CircularPercentIndicator(
-                          radius: 178.0,
-                          lineWidth: 13.0,
-                          animation: true,
-                          percent: (int.parse(AppConstants.allow_space) -
-                                  vm.usedSpace) /
-                              int.parse(AppConstants.allow_space),
-                          center: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              PrimaryText(
-                                "${(((int.parse(AppConstants.allow_space) - vm.usedSpace) / int.parse(AppConstants.allow_space)) * 100).toStringAsFixed(0)}%",
-                              fontSize: SizeConfig.screenHeight!*0.034,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              PrimaryText(
-                                "Available",
-                                fontSize: SizeConfig.screenHeight!*0.02,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ],
-                          ),
-                          backgroundColor: Color(0xffE7E7E7).withOpacity(0.18),
-                          progressColor: Color(0xff74D5DE),
-                          circularStrokeCap: CircularStrokeCap.round,
-                        ),
-                      ),
-                      Padding(
-                        padding:  EdgeInsets.symmetric(
-                            vertical: SizeConfig.screenHeight!*0.012, horizontal: SizeConfig.screenWidth!*0.05),
+                            vertical: SizeConfig.screenHeight! * 0.012, horizontal: SizeConfig.screenWidth! * 0.05),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                PrimaryText(
-                                  size,
-                                  fontSize: SizeConfig.screenHeight! * 0.024,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xff74D5DE),
-                                ),
+                                vm.isLoading
+                                    ? Padding(
+                                        padding: EdgeInsets.only(left: SizeConfig.screenWidth! * 0.03),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            GeneralUtilities.miniLoader(Color(0xff74D5DE)),
+                                          ],
+                                        ),
+                                       )
+                                    : PrimaryText(
+                                        FileManagerUtilities.formatBytes(vm.usedSpace, 2),
+                                        fontSize: SizeConfig.screenHeight! * 0.024,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xff74D5DE),
+                                      ),
                                 SizedBox(height: SizeConfig.screenHeight! * 0.01),
                                 PrimaryText(
                                   "Used",
@@ -188,35 +209,57 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
                                     Navigator.pushNamed(context, CloudImages.routeName, arguments: "Images");
                                   },
                                   child: customTile(
-                                      AppConstants.images_icon, "Images", vm.images.length.toString() + " files "),
+                                      AppConstants.images_icon,
+                                      "Images",
+                                      vm.images.length.toString() + " files ",
+                                      vm.isLoading,
+                                      AppColors.kImageIconDarkColor),
                                 ),
                                 InkWell(
                                   onTap: () {
                                     Navigator.pushNamed(context, CloudVideos.routeName);
                                   },
                                   child: customTile(
-                                      AppConstants.videos_icon, "Videos", vm.videos.length.toString() + " files "),
+                                      AppConstants.videos_icon,
+                                      "Videos",
+                                      vm.videos.length.toString() + " files ",
+                                      vm.isLoading,
+                                      AppColors.kVideoIconDarkColor),
                                 ),
                                 InkWell(
                                   onTap: () {
                                     Navigator.pushNamed(context, CloudAudios.routeName);
                                   },
                                   child: customTile(
-                                      AppConstants.audio_icon, "Audios", vm.audios.length.toString() + " files "),
+                                      AppConstants.audio_icon,
+                                      "Audios",
+                                      vm.audios.length.toString() + " files ",
+                                      vm.isLoading,
+                                      AppColors.kAudioIconDarkColor),
                                 ),
                                 InkWell(
                                   onTap: () {
                                     Navigator.pushNamed(context, CloudDocs.routeName);
                                   },
-                                  child: customTile(AppConstants.document_icon, "Documents",
-                                      vm.documents.length.toString() + " files "),
+                                  child: customTile(
+                                    AppConstants.document_icon,
+                                    "Documents",
+                                    vm.documents.length.toString() + " files ",
+                                    vm.isLoading,
+                                    AppColors.kDocumentsIconDarkColor,
+                                  ),
                                 ),
                                 InkWell(
                                   onTap: () {
                                     Navigator.pushNamed(context, CloudApps.routeName);
                                   },
-                                  child:
-                                      customTile(AppConstants.apps_icon, "Apps", vm.apps.length.toString() + " files "),
+                                  child: customTile(
+                                    AppConstants.apps_icon,
+                                    "Apps",
+                                    vm.apps.length.toString() + " files ",
+                                    vm.isLoading,
+                                    AppColors.kAppsIconDarkColor,
+                                  ),
                                 ),
                               ],
                             ),
@@ -232,7 +275,7 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
     });
   }
 
-  Widget customTile(icon, title, fileslength, {progress}) {
+  Widget customTile(icon, title, fileslength, isLoading, Color color, {progress}) {
     return Row(
       children: [
         SvgPicture.asset(
@@ -257,12 +300,21 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
             SizedBox(
               height: SizeConfig.screenHeight! * 0.005,
             ),
-            PrimaryText(
-              fileslength,
-              fontSize: SizeConfig.screenHeight! * 0.019,
-              fontWeight: FontWeight.w500,
-              color: Color(0xffAFAFAF),
-            ),
+            isLoading
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      GeneralUtilities.miniLoader(
+                        color,
+                      ),
+                    ],
+                  )
+                : PrimaryText(
+                    fileslength,
+                    fontSize: SizeConfig.screenHeight! * 0.019,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xffAFAFAF),
+                  ),
           ],
         ),
         // SizedBox(

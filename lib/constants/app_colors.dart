@@ -48,6 +48,17 @@ class AppColors {
   static Color kAvatarRed= const Color.fromRGBO(242,100,91,1);
   static Color kAvatarAquaBlue = const Color.fromRGBO(77,205,230,1);
   static Color kAvatarDarkGrey = const Color(0xFF5E5E5E);
+  static Color kImageIconLightColor = const Color.fromRGBO(255, 208, 188, 1);
+  static Color kImageIconDarkColor = const Color.fromRGBO(254, 120, 62, 1);
+  static Color kVideoIconLightColor = const Color.fromRGBO(143, 254, 241, 1);
+  static Color kVideoIconDarkColor = const Color.fromRGBO(31, 209, 191, 1);
+  static Color kAudioIconLightColor = const Color.fromRGBO(254, 175, 255, 1);
+  static Color kAudioIconDarkColor = const Color.fromRGBO(251, 98, 254, 1);
+  static Color kDocumentsIconLightColor = const Color.fromRGBO(173, 235, 254, 1);
+  static Color kDocumentsIconDarkColor = const Color.fromRGBO(19, 181, 222, 1);
+  static Color kAppsIconLightColor = const Color.fromRGBO(174, 148, 254, 1);
+  static Color kAppsIconDarkColor = const Color.fromRGBO(55, 36, 255, 1);
+
 
   static List<Color> avatarBgColors = [
     AppColors.kAvatarBlue,

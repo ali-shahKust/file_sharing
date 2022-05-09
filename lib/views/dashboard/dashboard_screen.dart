@@ -119,210 +119,166 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                 fit: BoxFit.cover,
                               )),
                           Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: screenHeight * 0.08,
-                                horizontal: screenWidth * 0.05),
+                            padding:
+                                EdgeInsets.symmetric(vertical: screenHeight * 0.08, horizontal: screenWidth * 0.05),
                             child: Align(
                               alignment: Alignment.topLeft,
                               child: InkWell(
                                   onTap: () {
                                     _advancedDrawerController.showDrawer();
                                   },
-                                  child: SvgPicture.asset(
-                                      AppConstants.drawer_icon)),
+                                  child: SvgPicture.asset(AppConstants.drawer_icon)),
                             ),
                           ),
                           Align(
                               alignment: Alignment.bottomCenter,
-                              child:
-                                  iUtills()
-                                      .upperRoundedContainer(context,
-                                          screenWidth, screenHeight * 0.476,
-                                          color: AppColors.kPrimaryColor,
-                                          child: Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              vertical: screenHeight * 0.01,
-                                              horizontal: screenWidth * 0.05,
+                              child: iUtills().upperRoundedContainer(context, screenWidth, screenHeight * 0.476,
+                                  color: AppColors.kPrimaryColor,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: screenHeight * 0.01,
+                                      horizontal: screenWidth * 0.05,
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            PrimaryText(
+                                              "Files Backup",
+                                              fontSize: screenHeight * 0.034,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white,
                                             ),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    PrimaryText(
-                                                      "Files Backup",
-                                                      fontSize:
-                                                          screenHeight * 0.034,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: Colors.white,
-                                                    ),
-                                                    SvgPicture.asset(
-                                                        AppConstants.cloud_icon)
-                                                  ],
-                                                ),
-                                                InkWell(
-                                                  onTap: () async {
-                                                    PermissionStatus status =
-                                                        osVersion! >= 11
-                                                            ? await Permission
-                                                                .manageExternalStorage
-                                                                .status
-                                                            : await Permission
-                                                                .storage.status;
-                                                    print(
-                                                        'on tap permission status ....$status');
-                                                    if (!status.isGranted) {
-                                                      print('dialoge open...');
-                                                      vm.permissionCheck(
-                                                          parentContext,
-                                                          osVersion,
-                                                          status);
-                                                    } else {
-                                                      if (vm.queue.isEmpty) {
-                                                        Navigator.pushNamed(
-                                                            parentContext!,
-                                                            FileManagerHome
-                                                                .routeName);
-                                                      } else {
-                                                        showDialog(
-                                                            context: context,
-                                                            builder: (BuildContext
-                                                                dialogContext) {
-                                                              return AlertDialog(
-                                                                content: Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .min,
-                                                                  children: [
-                                                                    Text(
-                                                                      "Info!",
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              22,
-                                                                          fontWeight:
-                                                                              FontWeight.w600),
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height:
-                                                                          15,
-                                                                    ),
-                                                                    Text(
-                                                                      "Uploading Already in progress.",
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              14),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                    ),
-                                                                    Text(
-                                                                      "Do you want to view the progress ?",
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              14),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height:
-                                                                          22,
-                                                                    ),
-                                                                    Align(
-                                                                      alignment:
-                                                                          Alignment
-                                                                              .bottomRight,
-                                                                      child:
-                                                                          Row(
-                                                                        children: [
-                                                                          Container(
-                                                                            height:
-                                                                                SizeConfig.screenHeight! * 0.057,
-                                                                            width:
-                                                                                SizeConfig.screenWidth! * 0.3,
-                                                                            margin:
-                                                                                const EdgeInsets.all(15.0),
-                                                                            padding:
-                                                                                const EdgeInsets.all(3.0),
-                                                                            decoration:
-                                                                                BoxDecoration(borderRadius: BorderRadius.circular(15), border: Border.all(color: AppColors.kPrimaryColor)),
-                                                                            child: Center(
-                                                                                child: InkWell(
-                                                                              onTap: () {
-                                                                                Navigator.pop(context);
-                                                                              },
-                                                                              child: PrimaryText(
-                                                                                'Cancel',
-                                                                                color: AppColors.kPrimaryColor,
-                                                                                fontWeight: FontWeight.normal,
-                                                                                fontSize: SizeConfig.screenHeight! * 0.025,
-                                                                              ),
-                                                                            )),
-                                                                          ),
-                                                                          Container(
-                                                                            decoration: BoxDecoration(
-                                                                                borderRadius: BorderRadius.circular(15),
-                                                                                gradient: LinearGradient(colors: [
-                                                                                  Color(0xff7266F8),
-                                                                                  Color(0xff5043D8),
-                                                                                ])),
-                                                                            height:
-                                                                                SizeConfig.screenHeight! * 0.057,
-                                                                            width:
-                                                                                SizeConfig.screenWidth! * 0.3,
-                                                                            child: Center(
-                                                                                child: InkWell(
-                                                                              onTap: () {
-                                                                                Navigator.pushNamed(context, UploadingScreen.routeName, arguments: {
-                                                                                  "drawer": true
-                                                                                });
-                                                                              },
-                                                                              child: PrimaryText(
-                                                                                'Yes',
-                                                                                color: AppColors.kWhiteColor,
-                                                                                fontWeight: FontWeight.normal,
-                                                                                fontSize: SizeConfig.screenHeight! * 0.025,
-                                                                              ),
-                                                                            )),
-                                                                          ),
-                                                                        ],
+                                            SvgPicture.asset(AppConstants.cloud_icon)
+                                          ],
+                                        ),
+                                        InkWell(
+                                          onTap: () async {
+                                            PermissionStatus status = osVersion! >= 11
+                                                ? await Permission.manageExternalStorage.status
+                                                : await Permission.storage.status;
+                                            print('on tap permission status ....$status');
+                                            if (!status.isGranted) {
+                                              print('dialoge open...');
+                                              vm.permissionCheck(parentContext, osVersion, status, false);
+                                            } else {
+                                              if (vm.queue.isEmpty) {
+                                                Navigator.pushNamed(parentContext!, FileManagerHome.routeName);
+                                              } else {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext dialogContext) {
+                                                      return AlertDialog(
+                                                        content: Column(
+                                                          mainAxisSize: MainAxisSize.min,
+                                                          children: [
+                                                            Text(
+                                                              "Info!",
+                                                              style:
+                                                                  TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 15,
+                                                            ),
+                                                            Text(
+                                                              "Uploading Already in progress.",
+                                                              style: TextStyle(fontSize: 14),
+                                                              textAlign: TextAlign.center,
+                                                            ),
+                                                            Text(
+                                                              "Do you want to view the progress ?",
+                                                              style: TextStyle(fontSize: 14),
+                                                              textAlign: TextAlign.center,
+                                                            ),
+                                                            SizedBox(
+                                                              height: 22,
+                                                            ),
+                                                            Align(
+                                                              alignment: Alignment.bottomRight,
+                                                              child: Row(
+                                                                children: [
+                                                                  Container(
+                                                                    height: SizeConfig.screenHeight! * 0.057,
+                                                                    width: SizeConfig.screenWidth! * 0.3,
+                                                                    margin: const EdgeInsets.all(15.0),
+                                                                    padding: const EdgeInsets.all(3.0),
+                                                                    decoration: BoxDecoration(
+                                                                        borderRadius: BorderRadius.circular(15),
+                                                                        border:
+                                                                            Border.all(color: AppColors.kPrimaryColor)),
+                                                                    child: Center(
+                                                                        child: InkWell(
+                                                                      onTap: () {
+                                                                        Navigator.pop(context);
+                                                                      },
+                                                                      child: PrimaryText(
+                                                                        'Cancel',
+                                                                        color: AppColors.kPrimaryColor,
+                                                                        fontWeight: FontWeight.normal,
+                                                                        fontSize: SizeConfig.screenHeight! * 0.025,
                                                                       ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              );
-                                                            });
-                                                      }
-                                                    }
-                                                  },
+                                                                    )),
+                                                                  ),
+                                                                  Container(
+                                                                    decoration: BoxDecoration(
+                                                                        borderRadius: BorderRadius.circular(15),
+                                                                        gradient: LinearGradient(colors: [
+                                                                          Color(0xff7266F8),
+                                                                          Color(0xff5043D8),
+                                                                        ])),
+                                                                    height: SizeConfig.screenHeight! * 0.057,
+                                                                    width: SizeConfig.screenWidth! * 0.3,
+                                                                    child: Center(
+                                                                        child: InkWell(
+                                                                      onTap: () {
+                                                                        Navigator.pushNamed(
+                                                                            context, UploadingScreen.routeName,
+                                                                            arguments: {"drawer": true});
+                                                                      },
+                                                                      child: PrimaryText(
+                                                                        'Yes',
+                                                                        color: AppColors.kWhiteColor,
+                                                                        fontWeight: FontWeight.normal,
+                                                                        fontSize: SizeConfig.screenHeight! * 0.025,
+                                                                      ),
+                                                                    )),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      );
+                                                    });
+                                              }
+                                            }
+                                          },
 
-                                                  // Navigator.pushNamed(context, FileManagerHome.routeName);
+                                          // Navigator.pushNamed(context, FileManagerHome.routeName);
 
-                                                  child: customTile(
-                                                      icon: AppConstants
-                                                          .quick_backup_icon,
-                                                      title: "Quick Backup"),
-                                                ),
-                                                InkWell(
-                                                  onTap: () {
-                                                    Navigator.pushNamed(
-                                                        context,
-                                                        CloudItemsScreen
-                                                            .routeName);
-                                                  },
-                                                  child: customTile(
-                                                      icon: AppConstants
-                                                          .restore_icon,
-                                                      title: "Restore Files"),
-                                                ),
-                                              ],
-                                            ),
-                                          )))
+                                          child:
+                                              customTile(icon: AppConstants.quick_backup_icon, title: "Quick Backup"),
+                                        ),
+                                        InkWell(
+                                          onTap: () async {
+                                            PermissionStatus status = osVersion! >= 11
+                                                ? await Permission.manageExternalStorage.status
+                                                : await Permission.storage.status;
+                                            print('on tap permission status ....$status');
+                                            if (!status.isGranted) {
+                                              print('dialoge open...');
+                                              vm.permissionCheck(parentContext, osVersion, status, true);
+                                            } else if (status.isGranted) {
+                                              Navigator.pushNamed(context, CloudItemsScreen.routeName);
+                                            }
+                                          },
+                                          child: customTile(icon: AppConstants.restore_icon, title: "Restore Files"),
+                                        ),
+                                      ],
+                                    ),
+                                  )))
                         ],
                       ),
                     ),
