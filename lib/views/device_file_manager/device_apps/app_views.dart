@@ -26,11 +26,11 @@ class AppViews extends StatefulWidget {
 }
 
 class _AppViewsState extends State<AppViews> {
-  Color ? randomColor;
+  // Color ? randomColor;
   @override
   void initState() {
-   randomColor =  AppColors
-       .avatarBgColors[GeneralUtilities.getRandomNumber(0, 7)];
+   // randomColor =  AppColors
+   //     .avatarBgColors[GeneralUtilities.getRandomNumber(0, 7)];
     super.initState();
   }
   @override
@@ -135,7 +135,7 @@ class _AppViewsState extends State<AppViews> {
                                               left: 0,
                                               child: Container(
                                                 decoration: BoxDecoration(
-                                                    color: AppColors.kAppsCardLighColor,
+                                                    color: AppColors.kAppsCardLightColor,
                                                     border: Border.all(
                                                       color:AppColors.kPrimaryPurpleColor.withOpacity(0.3),
                                                       width: 1.5,
@@ -272,7 +272,7 @@ class AppGridItems extends StatelessWidget {
               left: 0,
               child: Container(
                 decoration: BoxDecoration(
-                    color: AppColors.kAppsCardLighColor,
+                    color: AppColors.kAppsCardLightColor,
                     border: Border.all(
                       color: Colors.grey,
                       width: 1.5,

@@ -1,6 +1,4 @@
-
 import 'package:flutter/material.dart';
-
 
 class AppConstants {
   static const String appName = "Quick Backup";
@@ -26,11 +24,11 @@ class AppConstants {
   static const String on_boarding_page_two = imagesPath + "on_boarding_page_two.webp";
   static const String on_boarding_page_three = imagesPath + "on_boarding_page_three.webp";
   static const String next_icon = imagesPath + "next_icon.webp";
-  static const String username_background = imagesPath+"username_background.webp";
-  static const String exit_logo = imagesPath+"exit_logo.webp";
+  static const String username_background = imagesPath + "username_background.webp";
+  static const String exit_logo = imagesPath + "exit_logo.webp";
   static String allow_space = "1000000000";
-  static const double padding =20;
-  static const double avatarRadius =45;
+  static const double padding = 20;
+  static const double avatarRadius = 45;
   String pdfNamePrefix = 'S&B_${DateTime.now().microsecondsSinceEpoch}';
   static const kDefaultPadding = 20.0;
 
@@ -98,28 +96,28 @@ class AppConstants {
     {
       'title': 'PDF',
       'icon': 'assets/images/document_pdf.svg',
-       'isSelected':'1',
+      'isSelected': '1',
       'startColor': Color.fromRGBO(143, 254, 241, 1),
       'endColor': Color.fromRGBO(31, 209, 191, 1),
     },
     {
       'title': 'Slides',
       'icon': 'assets/images/document_ppt.svg',
-      'isSelected':'0',
+      'isSelected': '0',
       'startColor': Color.fromRGBO(255, 208, 188, 1),
       'endColor': Color.fromRGBO(254, 120, 62, 1),
     },
     {
       'title': 'DOC',
       'icon': 'assets/images/document_doc.svg',
-      'isSelected':'0',
+      'isSelected': '0',
       'startColor': Color.fromRGBO(254, 175, 255, 1),
       'endColor': Color.fromRGBO(251, 98, 254, 1),
     },
     {
       'title': 'Others',
       'icon': 'assets/images/document_archive.svg',
-      'isSelected':'0',
+      'isSelected': '0',
       'startColor': Color.fromRGBO(173, 235, 254, 1),
       'endColor': Color.fromRGBO(19, 181, 222, 1),
     },

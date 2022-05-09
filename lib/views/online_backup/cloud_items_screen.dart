@@ -123,7 +123,7 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
                             ],
                           ),
                           backgroundColor: Color(0xffE7E7E7).withOpacity(0.18),
-                          progressColor: Color(0xff74D5DE),
+                          progressColor: AppColors.kProgressColor,
                           circularStrokeCap: CircularStrokeCap.round,
                         ),
                       ),
@@ -140,7 +140,7 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
                                   size,
                                   fontSize: SizeConfig.screenHeight! * 0.024,
                                   fontWeight: FontWeight.w600,
-                                  color: Color(0xff74D5DE),
+                                  color: AppColors.kProgressColor,
                                 ),
                                 SizedBox(height: SizeConfig.screenHeight! * 0.01),
                                 PrimaryText(
@@ -158,7 +158,7 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
                                   FileManagerUtilities.formatBytes(int.parse(AppConstants.allow_space), 2),
                                   fontSize: SizeConfig.screenHeight! * 0.024,
                                   fontWeight: FontWeight.w600,
-                                  color: Color(0xff74D5DE),
+                                  color: AppColors.kProgressColor,
                                 ),
                                 SizedBox(height: SizeConfig.screenHeight! * 0.01),
                                 PrimaryText(
