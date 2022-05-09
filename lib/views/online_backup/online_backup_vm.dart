@@ -23,6 +23,7 @@ class OnlineBackUpVm extends BaseVm {
   List<DownloadModel> _audios = [];
   List<DownloadModel> _documents = [];
   List<DownloadModel> _apps = [];
+  bool isLoading=true;
   int _usedSpace = 0;
   List<QueueModel> _selectedFiles = <QueueModel>[];
 
@@ -154,7 +155,7 @@ class OnlineBackUpVm extends BaseVm {
 
   Future<void> listItems(context) async {
     await AuthService.refreshSession();
-
+    isLoading = true;
     try {
       pics.clear();
       audios.clear();
@@ -200,8 +201,10 @@ class OnlineBackUpVm extends BaseVm {
         //   'date': items[i].lastModified,
         //   'size': items[i].size
         // });
-        notifyListeners();
+
       }
+      isLoading =false;
+      notifyListeners();
     } on StorageException catch (e) {
       iUtills().showMessage(context: context, title: "Error", text: e.message.toString());
     } catch (e) {

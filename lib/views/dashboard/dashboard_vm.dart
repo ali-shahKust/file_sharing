@@ -20,6 +20,7 @@ import 'package:quick_backup/views/dashboard/dashboard_screen.dart';
 import 'package:quick_backup/views/device_file_manager/category/category_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/core_vm.dart';
 import 'package:quick_backup/views/device_file_manager/file_manager_home/filemanager_home.dart';
+import 'package:quick_backup/views/online_backup/cloud_items_screen.dart';
 
 import '../../data/models/app_model.dart';
 import '../../data/models/queue_model.dart';
@@ -163,7 +164,7 @@ class DashBoardVm extends BaseVm {
     }
   }
 
-  permissionCheck(BuildContext ?parentContext, int ?osVersion, PermissionStatus status) {
+  permissionCheck(BuildContext ?parentContext, int ?osVersion, PermissionStatus status,bool isRestore) {
     return showDialog(
         barrierDismissible: true,
         context: parentContext!,
@@ -185,8 +186,13 @@ class DashBoardVm extends BaseVm {
                 // Dialogs.showToast('Permission granted...');
                 Provider.of<CoreVm>(parentContext, listen: false).checkSpace();
                 Provider.of<CategoryVm>(parentContext, listen: false).getDeviceFileManager();
-                // Provider.of<CategoryVm>(parentContext, listen: false).fetchAllListLength();
-                Navigator.pushNamed(parentContext, FileManagerHome.routeName);
+                if(!isRestore){
+                  Navigator.pushNamed(parentContext, FileManagerHome.routeName);
+                }
+                else{
+                  Navigator.pushNamed(context, CloudItemsScreen.routeName);
+                }
+
               }
               if (status.isDenied) {
                 PermissionStatus status = osVersion >= 11
@@ -194,6 +200,10 @@ class DashBoardVm extends BaseVm {
                     : await Permission.storage.request();
                 Provider.of<CoreVm>(parentContext, listen: false).checkSpace();
                 Provider.of<CategoryVm>(parentContext, listen: false).getDeviceFileManager();
+                // if(!isRestore){
+                //
+                //   // Provider.of<CategoryVm>(parentContext, listen: false).fetchAllListLength();
+                // }
                 // Provider.of<CategoryVm>(parentContext, listen: false).fetchAllListLength();
 
                 // Dialogs.showToast('Please Grant Storage Permissions');

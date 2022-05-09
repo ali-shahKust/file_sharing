@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quick_backup/constants/app_colors.dart';
+
 
 class AppConstants {
   static const String appName = "Quick Backup";
@@ -14,6 +16,7 @@ class AppConstants {
   static const String person_icon = imagesPath + "person_icon.svg";
   static const String images_icon = imagesPath + "images_icon.svg";
   static const String videos_icon = imagesPath + "videos_icon.svg";
+  static const String loader_gif = imagesPath + "cloud_progress_animation.gif";
   static const String audio_icon = imagesPath + "audio_icon.svg";
   static const String document_icon = imagesPath + "document_icon.svg";
   static const String apps_icon = imagesPath + "apps_icon.svg";
@@ -47,40 +50,40 @@ class AppConstants {
       'icon': 'assets/file_manager_assets/filemanager_home_images.svg',
       'fileSize': '0',
       'noOfFiles': '0 files',
-      'startColor': Color.fromRGBO(255, 208, 188, 1),
-      'endColor': Color.fromRGBO(254, 120, 62, 1),
+      'startColor': AppColors.kImageIconLightColor,
+      'endColor': AppColors.kImageIconDarkColor,
     },
     {
       'title': 'Videos',
       'icon': 'assets/file_manager_assets/filemanager_home_video.svg',
       'fileSize': '0',
       'noOfFiles': '0 files',
-      'startColor': Color.fromRGBO(143, 254, 241, 1),
-      'endColor': Color.fromRGBO(31, 209, 191, 1),
+      'startColor': AppColors.kVideoIconLightColor,
+      'endColor': AppColors.kVideoIconDarkColor,
     },
     {
       'title': 'Audio',
       'icon': 'assets/file_manager_assets/filemanager_home_audio.svg',
       'fileSize': '0',
       'noOfFiles': '0 files',
-      'startColor': Color.fromRGBO(254, 175, 255, 1),
-      'endColor': Color.fromRGBO(251, 98, 254, 1),
+      'startColor': AppColors.kAudioIconLightColor,
+      'endColor': AppColors.kAudioIconDarkColor,
     },
     {
       'title': 'Documents',
       'icon': 'assets/file_manager_assets/filemanager_home_document.svg',
       'fileSize': '0',
       'noOfFiles': '0 files',
-      'startColor': Color.fromRGBO(173, 235, 254, 1),
-      'endColor': Color.fromRGBO(19, 181, 222, 1),
+      'startColor': AppColors.kDocumentsIconLightColor,
+      'endColor': AppColors.kDocumentsIconDarkColor,
     },
     {
       'title': 'Apps',
       'icon': 'assets/file_manager_assets/filemanager_home_app.svg',
       'fileSize': '',
       'noOfFiles': '0 files',
-      'startColor': Color.fromRGBO(174, 148, 254, 1),
-      'endColor': Color.fromRGBO(55, 36, 255, 1),
+      'startColor': AppColors.kAppsIconLightColor,
+      'endColor': AppColors.kAppsIconDarkColor,
     },
   ];
 
