@@ -14,7 +14,7 @@
 
     <application
         android:icon="@mipmap/ic_launcher"
-        android:label="quick_backup"
+        android:label="Quick Backup"
         android:requestLegacyExternalStorage="true">
         <activity
             android:name=".MainActivity"

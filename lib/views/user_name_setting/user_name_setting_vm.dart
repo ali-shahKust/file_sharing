@@ -5,10 +5,11 @@ import 'package:quick_backup/data/base/base_vm.dart';
 
 import '../../utilities/pref_provider.dart';
 
-class UserNameSettingVm extends BaseVm{
+class UserNameSettingVm extends BaseVm {
   TextEditingController userName = TextEditingController(text: FirebaseAuth.instance.currentUser!.displayName);
 
-  getUserName(context)async {
-    userName.text = Provider.of<PreferencesProvider>(context,listen: false).userName;
+  getUserName(context) async {
+    userName.text = Provider.of<PreferencesProvider>(context, listen: false).userName;
   }
+
 }
