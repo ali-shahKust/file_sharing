@@ -35,6 +35,7 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       Provider.of<OnlineBackUpVm>(context, listen: false).listItems(context);
+      Provider.of<OnlineBackUpVm>(context, listen: false).selectedFiles.clear();
     });
     super.initState();
   }

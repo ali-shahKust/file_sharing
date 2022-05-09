@@ -76,9 +76,10 @@ class DownloadVm extends BaseVm {
     for (int i = 0; i < files.length; i++) {
       final filepath = documentsDir +
           "/${AppConstants.appName}" +
-          '/${files[i].key!.replaceAll("${Provider.of<PreferencesProvider>(context, listen: false).userCognito}/", "")}';
+          "/${files[i].key!.replaceAll("${Provider.of<PreferencesProvider>(context, listen: false).userCognito}/", "")}";
       final file = File(filepath);
 
+      print("Download screen view..........with loader${file.path}");
       bool fileExists = await file.exists();
       if (!fileExists) {
         try {
