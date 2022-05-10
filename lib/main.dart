@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get_it/get_it.dart';
 import 'package:quick_backup/data/models/app_model.dart';
 import 'package:quick_backup/data/local_db/database_helper.dart';
@@ -74,6 +75,7 @@ class _MyAppState extends State<MyApp> {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           initialRoute: SplashScreen.routeName,
+          builder: EasyLoading.init(),
           theme: ThemeData(
             fontFamily: 'AvenirNextLTPro',
             // pageTransitionsTheme: const PageTransitionsTheme(builders: {TargetPlatform.android: CupertinoPageTransitionsBuilder(),}),

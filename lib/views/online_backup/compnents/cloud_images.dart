@@ -3,10 +3,12 @@ import 'package:provider/provider.dart';
 import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/constants/app_constants.dart';
+import 'package:quick_backup/constants/app_strings.dart';
 import 'package:quick_backup/custom_widgets/cloud_file_card.dart';
 import 'package:quick_backup/custom_widgets/custom_appbar.dart';
 import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/views/download/download_screen.dart';
+import 'package:quick_backup/views/online_backup/cloud_items_screen.dart';
 import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 import '../../../custom_widgets/app_text_widget.dart';
 import '../../../utilities/general_utilities.dart';
@@ -122,6 +124,7 @@ class _CloudImagesState extends State<CloudImages> {
                                 title: 'Images',
                                 onTap: () {
                                   Navigator.pop(context);
+                                  Navigator.pushReplacementNamed(context, CloudItemsScreen.routeName);
                                 }),
                             Expanded(
                               flex: 2,
@@ -190,6 +193,7 @@ class _CloudImagesState extends State<CloudImages> {
                                                 title: vm.images[index].key,
                                                 item: vm.images[index],
                                                 icon: AppConstants.images_icon,
+                                                type: AppStrings.cloudItemCategories[0],
                                                 isSelected: vm.images[index].isSelected),
                                           );
                                         },

@@ -69,32 +69,6 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
                       Navigator.pop(context);
                       vm.clearAllSelection();
                     }),
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 8.0),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       IconButton(
-                //           onPressed: () {
-                //             Navigator.pop(context);
-                //             vm.clearAllSelection();
-                //           },
-                //           icon: Icon(
-                //             Icons.arrow_back_ios,
-                //             size: SizeConfig.screenHeight! * 0.024,
-                //             color: Colors.white,
-                //           )),
-                //       PrimaryText(
-                //         "Cloud Document",
-                //         fontSize: SizeConfig.screenHeight! * 0.020,
-                //         fontWeight: FontWeight.w500,
-                //       ),
-                //       SizedBox(
-                //         width: 50,
-                //       )
-                //     ],
-                //   ),
-                // ),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Column(

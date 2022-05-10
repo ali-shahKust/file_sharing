@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:glassmorphism/glassmorphism.dart';
@@ -13,15 +15,8 @@ class iUtills {
       width: width,
       height: height,
       decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-                color: Colors.white,
-                spreadRadius: 1,
-                offset: Offset(0.2, 0.2),
-                blurRadius: 1)
-          ],
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(48), topRight: Radius.circular(48)),
+          boxShadow: [BoxShadow(color: Colors.white, spreadRadius: 1, offset: Offset(0.2, 0.2), blurRadius: 1)],
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(48), topRight: Radius.circular(48)),
           color: color),
       child: child,
     );
@@ -33,9 +28,7 @@ class iUtills {
       height: height,
       decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.3),
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(22),
-              bottomRight: Radius.circular(22))),
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(22), bottomRight: Radius.circular(22))),
       child: child,
     );
   }
@@ -109,6 +102,16 @@ class iUtills {
           );
         });
     ;
+  }
+
+  static Future<void> deleteFile(String key) async {
+    try {
+      final RemoveResult result =
+          await Amplify.Storage.remove(key: key, options: RemoveOptions(accessLevel: StorageAccessLevel.protected));
+      print('Deleted file: ${result.key}');
+    } on StorageException catch (e) {
+      print('Error deleting file: $e');
+    }
   }
 }
 
