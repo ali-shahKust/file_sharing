@@ -94,6 +94,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Consumer<DownloadVm>(builder: (context, vm, _) {
+        // print('value of double is ....${vm.queue[0]!.progress}');
         return SafeArea(
           child: Scaffold(
             body: vm.isLoading
@@ -164,7 +165,9 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                           lineWidth: 13.0,
                                           animation: false,
                                           percent: vm.queue.length == 1
-                                              ? double.parse(vm.queue[0]!.progress) / 100
+                                              ?  vm.queue[0]!.progress=='pending'
+                                                  ?0.0
+                                                  :double.parse(vm.queue[0]!.progress) / 100
                                               : (vm.completed / vm.queue.length).isNaN
                                                   ? 0.0
                                                   : vm.completed / vm.queue.length,
