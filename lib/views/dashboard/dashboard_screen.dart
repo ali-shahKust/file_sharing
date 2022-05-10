@@ -119,8 +119,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                 fit: BoxFit.cover,
                               )),
                           Padding(
-                            padding:
-                                EdgeInsets.symmetric(vertical: screenHeight * 0.08, horizontal: screenWidth * 0.05),
+                            padding: EdgeInsets.symmetric(vertical: screenHeight * 0.08, horizontal: screenWidth * 0.05),
                             child: Align(
                               alignment: Alignment.topLeft,
                               child: InkWell(
@@ -156,9 +155,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                         ),
                                         InkWell(
                                           onTap: () async {
-                                            PermissionStatus status = osVersion! >= 11
-                                                ? await Permission.manageExternalStorage.status
-                                                : await Permission.storage.status;
+                                            PermissionStatus status =
+                                                osVersion! >= 11 ? await Permission.manageExternalStorage.status : await Permission.storage.status;
                                             print('on tap permission status ....$status');
                                             if (!status.isGranted) {
                                               print('dialoge open...');
@@ -176,8 +174,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                                           children: [
                                                             Text(
                                                               "Info!",
-                                                              style:
-                                                                  TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                                                              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                                                             ),
                                                             SizedBox(
                                                               height: 15,
@@ -206,8 +203,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                                                     padding: const EdgeInsets.all(3.0),
                                                                     decoration: BoxDecoration(
                                                                         borderRadius: BorderRadius.circular(15),
-                                                                        border:
-                                                                            Border.all(color: AppColors.kPrimaryColor)),
+                                                                        border: Border.all(color: AppColors.kPrimaryColor)),
                                                                     child: Center(
                                                                         child: InkWell(
                                                                       onTap: () {
@@ -233,8 +229,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                                                     child: Center(
                                                                         child: InkWell(
                                                                       onTap: () {
-                                                                        Navigator.pushNamed(
-                                                                            context, UploadingScreen.routeName,
+                                                                        Navigator.pushNamed(context, UploadingScreen.routeName,
                                                                             arguments: {"drawer": true});
                                                                       },
                                                                       child: PrimaryText(
@@ -258,14 +253,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
                                           // Navigator.pushNamed(context, FileManagerHome.routeName);
 
-                                          child:
-                                              customTile(icon: AppConstants.quick_backup_icon, title: "Quick Backup"),
+                                          child: customTile(icon: AppConstants.quick_backup_icon, title: "Quick Backup"),
                                         ),
                                         InkWell(
                                           onTap: () async {
-                                            PermissionStatus status = osVersion! >= 11
-                                                ? await Permission.manageExternalStorage.status
-                                                : await Permission.storage.status;
+                                            PermissionStatus status =
+                                                osVersion! >= 11 ? await Permission.manageExternalStorage.status : await Permission.storage.status;
                                             print('on tap permission status ....$status');
                                             if (!status.isGranted) {
                                               print('dialoge open...');

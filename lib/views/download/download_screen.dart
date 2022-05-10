@@ -370,8 +370,8 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                                 vm.queue[index]!.progress == "100" ||
                                                         vm.queue[index]!.progress == "Exist already"
                                                     ? InkWell(
-                                                        onTap: () {
-                                                          OpenFile.open(vm.queue[index]!.path);
+                                                        onTap: () async {
+                                                          await OpenFile.open(vm.queue[index]!.path);
                                                         },
                                                         child: PrimaryText(
                                                           "Open",

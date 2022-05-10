@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_backup/utilities/pref_provider.dart';
+import 'package:quick_backup/views/user_name_setting/user_name_setting_vm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferenceUtilities {
@@ -77,9 +79,7 @@ class PreferenceUtilities {
     Provider.of<PreferencesProvider>(context, listen: false).setCognitoIdInProvider(cognitoId);
   }
 
-
   //GET AND SET FOR USER DETAILS
-
 
   static Future<void> getUserUserDetailsFromPrefsToProvider(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -99,13 +99,12 @@ class PreferenceUtilities {
     }
 
     if (prefs.getString('cognito_id') != null) {
-      String? userCognito= prefs.getString('cognito_id');
+      String? userCognito = prefs.getString('cognito_id');
       setUserCognitoToPrefs(userCognito!, context);
     } else {
       setUserCognitoToPrefs("", context);
     }
   }
-
 
   static Future<void> setUserDetailsToPrefs(String userName, String cognitoId, BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -114,9 +113,6 @@ class PreferenceUtilities {
     Provider.of<PreferencesProvider>(context, listen: false).setUserNameInProvider(userName);
     Provider.of<PreferencesProvider>(context, listen: false).setCognitoIdInProvider(cognitoId);
   }
-
-
-
 
   // GET AND SET FOR ISONBOARDING VIEWED
   static Future<void> getIsOnBoardingViewedFromPrefsToProvider(BuildContext context) async {
@@ -136,7 +132,11 @@ class PreferenceUtilities {
     Provider.of<PreferencesProvider>(context, listen: false).setIsOnBoardingViewedInProvider(isOnBoardingViewed);
   }
 
-  static Future<void> clearAllPrefs()async {
+  static Future<void> clearAllPrefs(BuildContext context) async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    await auth.signOut();
+
+    Provider.of<PreferencesProvider>(context, listen: false).resetUsersData();
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.clear();
   }

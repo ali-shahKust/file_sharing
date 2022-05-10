@@ -32,13 +32,21 @@ class PreferencesProvider extends BaseVm {
     notifyListeners();
   }
 
-  setCognitoIdInProvider(String userAvatar) {
-    _userCognito = userAvatar;
+  setCognitoIdInProvider(String userCognito) {
+    _userCognito = userCognito;
     notifyListeners();
   }
 
   setIsOnBoardingViewedInProvider(bool isOnBoardingViewed) {
     _isOnBoardingViewed = isOnBoardingViewed;
     notifyListeners();
+  }
+
+  resetUsersData() {
+    _userAuthStatus = false;
+    _userEmail = "";
+    _userName = "";
+    _userCognito = "";
+    _isOnBoardingViewed = false;
   }
 }

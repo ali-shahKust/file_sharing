@@ -131,11 +131,12 @@ class DrawerWidgetItems extends StatelessWidget {
             customTile(Icons.share_outlined, "Share App"),
             customTile(Icons.shield_outlined, "Privacy Policy"),
             InkWell(
-                onTap: () {
-                  PreferenceUtilities.clearAllPrefs();
-                  Navigator.pushNamedAndRemoveUntil(context, LoginScreen.routeName, (route) => false);
-                },
-                child: customTile(Icons.login_outlined, "Logout")),
+              onTap: () {
+                PreferenceUtilities.clearAllPrefs(context);
+                Navigator.pushNamedAndRemoveUntil(context, LoginScreen.routeName, (route) => false);
+              },
+              child: customTile(Icons.login_outlined, "Logout"),
+            ),
           ],
         ),
       ),

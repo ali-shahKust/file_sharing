@@ -180,7 +180,7 @@ class _CloudItemsScreenState extends State<CloudItemsScreen> {
                                   FileManagerUtilities.formatBytes(int.parse(AppConstants.allow_space), 2),
                                   fontSize: SizeConfig.screenHeight! * 0.024,
                                   fontWeight: FontWeight.w600,
-                                  color: Color(0xff74D5DE),
+                                  color: AppColors.kProgressColor,
                                 ),
                                 SizedBox(height: SizeConfig.screenHeight! * 0.01),
                                 PrimaryText(

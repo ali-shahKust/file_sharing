@@ -22,7 +22,6 @@ import '../dashboard/dashboard_vm.dart';
 import '../online_backup/online_backup_vm.dart';
 
 class DownloadVm extends BaseVm {
-
   var queue = GetIt.I.get<AppModel>().downloadQueue;
   int completed = 0;
 
@@ -98,10 +97,18 @@ class DownloadVm extends BaseVm {
                 notifyListeners();
               });
         } on StorageException catch (e) {
+          debugPrint('Here is the StorageException in download_vm: $e');
+          iUtills().showMessage(context: context, title: "Error", text: "Please Try again Later!");
+          await Future.delayed(Duration(seconds: 3)).whenComplete(() => {
+                Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false),
+              });
         } catch (e) {
+          debugPrint('Here is the catch in download_vm: $e');
+          iUtills().showMessage(context: context, title: "Error", text: "Please Try again Later!");
+          await Future.delayed(Duration(seconds: 3)).whenComplete(() => {
+                Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false),
+              });
         }
-
-
       } else {
         queue[i]!.progress = "Exist already";
         queue[i]!.id = i;
@@ -117,9 +124,8 @@ class DownloadVm extends BaseVm {
         completed = 0;
         iUtills().showMessage(context: context, title: "Completed", text: "Files Downloaded successfully");
         await Future.delayed(Duration(seconds: 3)).whenComplete(() => {
-          Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false),
-
-        });
+              Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false),
+            });
 
         notifyListeners();
       }

@@ -23,7 +23,7 @@ class OnlineBackUpVm extends BaseVm {
   List<DownloadModel> _audios = [];
   List<DownloadModel> _documents = [];
   List<DownloadModel> _apps = [];
-  bool isLoading=true;
+  bool isLoading = true;
   int _usedSpace = 0;
   List<QueueModel> _selectedFiles = <QueueModel>[];
 
@@ -141,6 +141,7 @@ class OnlineBackUpVm extends BaseVm {
 
   List get pics => _pics;
 
+
   set pics(List value) {
     _pics = value;
     notifyListeners();
@@ -203,12 +204,12 @@ class OnlineBackUpVm extends BaseVm {
         // });
 
       }
-      isLoading =false;
+      isLoading = false;
       notifyListeners();
     } on StorageException catch (e) {
       iUtills().showMessage(context: context, title: "Error", text: e.message.toString());
-    } catch (e) {
-    }
+      isLoading = false;
+    } catch (e) {}
   }
 
   set removeFromSelectedList(DownloadModel file) {

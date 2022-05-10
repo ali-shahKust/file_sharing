@@ -26,7 +26,6 @@ import '../../data/models/app_model.dart';
 import '../../data/models/queue_model.dart';
 import '../../utilities/general_utilities.dart';
 
-
 class DashBoardVm extends BaseVm {
   int completed = 0;
 
@@ -34,9 +33,7 @@ class DashBoardVm extends BaseVm {
     loader();
   }
 
-  var queue = GetIt.I
-      .get<AppModel>()
-      .queue;
+  var queue = GetIt.I.get<AppModel>().queue;
   List<File> _files = [];
   StreamSubscription? subscription;
 
@@ -45,7 +42,6 @@ class DashBoardVm extends BaseVm {
   List<File> get files => _files;
   bool _connectionLost = false;
   bool _isLoading = true;
-
 
   bool get isLoading => _isLoading;
 
@@ -61,7 +57,6 @@ class DashBoardVm extends BaseVm {
     notifyListeners();
   }
 
-
   set files(List<File> value) {
     _files = value;
     notifyListeners();
@@ -74,9 +69,7 @@ class DashBoardVm extends BaseVm {
   }
 
   checkConnection() async {
-    subscription = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult result) {
+    subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       // Got a new connectivity status!
 
       if (result.name == 'none') {
@@ -98,10 +91,7 @@ class DashBoardVm extends BaseVm {
     await Future.delayed(Duration(seconds: 2));
     for (var element in file) {
       String filename = GeneralUtilities.getFileName(element.path);
-      String date = element
-          .statSync()
-          .modified
-          .toString();
+      String date = element.statSync().modified.toString();
       queue.add(QueueModel(
           id: null,
           name: filename,
@@ -132,8 +122,7 @@ class DashBoardVm extends BaseVm {
             options: UploadFileOptions(accessLevel: StorageAccessLevel.protected),
             key: fileKey,
             onProgress: (progress) async {
-              queue[i]!.progress =
-                  (progress.getFractionCompleted() * 100).round().toString();
+              queue[i]!.progress = (progress.getFractionCompleted() * 100).round().toString();
               notifyListeners();
               queue[i]!.id = i;
               (progress.getFractionCompleted() * 100).round().toString();
@@ -149,30 +138,40 @@ class DashBoardVm extends BaseVm {
         //   dbHelper.insertFileToDb(queue[i]!);
         // }
         notifyListeners();
-      } on StorageException catch (e) {} catch (e) {}
+      } on StorageException catch (e) {
+        debugPrint('Here is the StorageException in download_vm: $e');
+        iUtills().showMessage(context: context, title: "Error", text: "Please Try again Later!");
+        await Future.delayed(Duration(seconds: 3)).whenComplete(() => {
+              Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false),
+            });
+      } catch (e) {
+        debugPrint('Here is the StorageException in download_vm: $e');
+        iUtills().showMessage(context: context, title: "Error", text: "Please Try again Later!");
+        await Future.delayed(Duration(seconds: 3)).whenComplete(() => {
+              Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false),
+            });
+      }
       if (completed != 0 && completed == queue.length) {
         queue.clear();
         completed = 0;
         iUtills().showMessage(context: context, title: "Completed", text: "Files uploaded successfully");
         await Future.delayed(Duration(seconds: 3)).whenComplete(() => {
-        Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false),
-
-        });
+              Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false),
+            });
 
         notifyListeners();
       }
     }
   }
 
-  permissionCheck(BuildContext ?parentContext, int ?osVersion, PermissionStatus status,bool isRestore) {
+  permissionCheck(BuildContext? parentContext, int? osVersion, PermissionStatus status, bool isRestore) {
     return showDialog(
         barrierDismissible: true,
         context: parentContext!,
         builder: (context) {
           return InfoDialoge(
             headingText: 'Storage Permission Needed',
-            subHeadingText:
-            'This App require storage permission to share and receive files',
+            subHeadingText: 'This App require storage permission to share and receive files',
             btnText: 'Ok',
             onBtnTap: () async {
               Navigator.pop(context);
@@ -186,18 +185,14 @@ class DashBoardVm extends BaseVm {
                 // Dialogs.showToast('Permission granted...');
                 Provider.of<CoreVm>(parentContext, listen: false).checkSpace();
                 Provider.of<CategoryVm>(parentContext, listen: false).getDeviceFileManager();
-                if(!isRestore){
+                if (!isRestore) {
                   Navigator.pushNamed(parentContext, FileManagerHome.routeName);
-                }
-                else{
+                } else {
                   Navigator.pushNamed(context, CloudItemsScreen.routeName);
                 }
-
               }
               if (status.isDenied) {
-                PermissionStatus status = osVersion >= 11
-                    ? await Permission.manageExternalStorage.request()
-                    : await Permission.storage.request();
+                PermissionStatus status = osVersion >= 11 ? await Permission.manageExternalStorage.request() : await Permission.storage.request();
                 Provider.of<CoreVm>(parentContext, listen: false).checkSpace();
                 Provider.of<CategoryVm>(parentContext, listen: false).getDeviceFileManager();
                 // if(!isRestore){
@@ -212,16 +207,12 @@ class DashBoardVm extends BaseVm {
               if (status.isRestricted) {
                 // AppSettings.openAppSettings();
 
-                PermissionStatus status = osVersion >= 11
-                    ? await Permission.manageExternalStorage.request()
-                    : await Permission.storage.request();
+                PermissionStatus status = osVersion >= 11 ? await Permission.manageExternalStorage.request() : await Permission.storage.request();
 
                 // Dialogs.showToast('Please Grant Storage Permissions');
                 // PermissionStatus status = await Permission.manageExternalStorage.request();
               } else {
-                PermissionStatus status = osVersion >= 11
-                    ? await Permission.manageExternalStorage.request()
-                    : await Permission.storage.request();
+                PermissionStatus status = osVersion >= 11 ? await Permission.manageExternalStorage.request() : await Permission.storage.request();
 
                 // Dialogs.showToast('Please Grant Storage Permissions');
               }
