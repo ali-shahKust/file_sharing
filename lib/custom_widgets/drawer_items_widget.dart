@@ -25,10 +25,17 @@ class DrawerWidgetItems extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Image.asset(
+            //   'assets/images/app_icon.png',
+            //   height: SizeConfig.screenHeight! * 0.1,
+            // ),
             PrimaryText(
-              "Quick Backup App",
+              "Quick Backup",
               fontSize: SizeConfig.screenHeight! * 0.03,
               fontWeight: FontWeight.w700,
+            ),
+            SizedBox(
+              height: SizeConfig.screenHeight! * 0.021,
             ),
             InkWell(
                 onTap: () {

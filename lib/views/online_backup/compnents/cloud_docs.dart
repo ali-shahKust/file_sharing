@@ -2,10 +2,12 @@ import 'package:provider/provider.dart';
 import 'package:quick_backup/configurations/size_config.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/constants/app_constants.dart';
+import 'package:quick_backup/constants/app_strings.dart';
 import 'package:quick_backup/custom_widgets/cloud_file_card.dart';
 import 'package:quick_backup/custom_widgets/custom_appbar.dart';
 import 'package:quick_backup/custom_widgets/custom_backup_button.dart';
 import 'package:quick_backup/views/download/download_screen.dart';
+import 'package:quick_backup/views/online_backup/cloud_items_screen.dart';
 import 'package:quick_backup/views/online_backup/online_backup_vm.dart';
 import '../../../custom_widgets/app_text_widget.dart';
 import 'package:flutter/material.dart';
@@ -145,6 +147,7 @@ class _CloudDocsState extends State<CloudDocs> {
                       title: 'Documents',
                       onTap: () {
                         Navigator.pop(context);
+                        Navigator.pushReplacementNamed(context, CloudItemsScreen.routeName);
 
                       }),
                   Expanded(
@@ -221,6 +224,7 @@ class _CloudDocsState extends State<CloudDocs> {
                                       title: vm.documents[index].key,
                                       icon: AppConstants.document_icon,
                                       item: vm.documents[index],
+                                      type: AppStrings.cloudItemCategories[3],
                                       isSelected:
                                           vm.documents[index].isSelected),
                                 );
