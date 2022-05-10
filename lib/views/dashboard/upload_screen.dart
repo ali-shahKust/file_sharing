@@ -50,10 +50,7 @@ class _UploadingScreenState extends State<UploadingScreen> {
 
   Future<bool> _onWillPop() async {
     Provider.of<CategoryVm>(context, listen: false).clearAllSelectedLists();
-    return (await Provider.of<DashBoardVm>(context, listen: false).queue.isEmpty
-            ? true
-            : iUtills().exitPopUp(context, 'queue')) ??
-        false;
+    return (await Provider.of<DashBoardVm>(context, listen: false).queue.isEmpty ? true : iUtills().exitPopUp(context, 'queue')) ?? false;
   }
 
   @override
@@ -109,9 +106,7 @@ class _UploadingScreenState extends State<UploadingScreen> {
                         : Container(
                             width: SizeConfig.screenWidth,
                             height: SizeConfig.screenHeight,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(AppConstants.transfer_background), fit: BoxFit.cover)),
+                            decoration: BoxDecoration(image: DecorationImage(image: AssetImage(AppConstants.transfer_background), fit: BoxFit.cover)),
                             child: Stack(
                               children: [
                                 Align(
@@ -138,18 +133,22 @@ class _UploadingScreenState extends State<UploadingScreen> {
                                               fontWeight: FontWeight.w500,
                                             ),
                                             Padding(
-                                              padding:  EdgeInsets.only(right: SizeConfig.screenWidth!*0.04),
+                                              padding: EdgeInsets.only(right: SizeConfig.screenWidth! * 0.04),
                                               child: GestureDetector(
-                                                onTap: (){
+                                                onTap: () {
                                                   showDialog(
                                                       context: context,
                                                       builder: (BuildContext context) {
                                                         return CancelDialoge(
                                                           title: "Do you want to Cancel Upload?",
                                                           description: "",
-                                                          onOkTap: (){
+                                                          onOkTap: () async {
+                                                            iUtills().showMessage(context: context, title: "Info", text: "Uploading Cancelled!");
                                                             vm.queue.clear();
-                                                            Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false);
+                                                            await Future.delayed(Duration(seconds: 1)).whenComplete(() => {
+                                                                  Navigator.pushNamedAndRemoveUntil(
+                                                                      context, DashBoardScreen.routeName, (route) => false),
+                                                                });
                                                           },
                                                         );
                                                       });
@@ -181,23 +180,29 @@ class _UploadingScreenState extends State<UploadingScreen> {
                                           radius: 178.0,
                                           lineWidth: 13.0,
                                           animation: false,
-                                          percent: vm.queue.length == 1
-                                              ? vm.queue[0]!.progress == 'pending'
-                                                  ? 0.0
-                                                  : double.parse(vm.queue[0]!.progress) / 100
-                                              : (vm.completed / vm.queue.length).isNaN
-                                                  ? 0.0
-                                                  : vm.completed / vm.queue.length,
+                                          percent: vm.queue.length != 0
+                                              ? vm.queue.length == 1
+                                                  ? vm.queue[0]!.progress == 'pending'
+                                                      ? 0.0
+                                                      : double.parse(vm.queue[0]!.progress) / 100
+                                                  : (vm.completed / vm.queue.length).isNaN
+                                                      ? 0.0
+                                                      : vm.completed / vm.queue.length
+                                              : 0.0,
                                           center: Column(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
                                               PrimaryText(
-                                                vm.queue.length == 1
-                                                    ? "${vm.queue[0]!.progress}%"
-                                                    : (vm.completed / vm.queue.length).isNaN
-                                                        ? ""
-                                                        : "${((vm.completed / vm.queue.length) * 100).toStringAsFixed(0)}%",
-                                                fontSize: 34,
+                                                vm.queue.length != 0
+                                                    ? vm.queue.length == 1
+                                                        ? vm.queue[0]!.progress == 'pending'
+                                                            ? ""
+                                                            : "${vm.queue[0]!.progress}%"
+                                                        : (vm.completed / vm.queue.length).isNaN
+                                                            ? ""
+                                                            : "${((vm.completed / vm.queue.length) * 100).toStringAsFixed(0)}%"
+                                                    : "",
+                                                fontSize: SizeConfig.screenHeight! * 0.035,
                                                 fontWeight: FontWeight.w700,
                                               ),
                                               PrimaryText(
@@ -237,14 +242,12 @@ class _UploadingScreenState extends State<UploadingScreen> {
                                               SvgPicture.asset(AppConstants.send_file),
                                               vm.completed == vm.queue.length
                                                   ? PrimaryText(
-                                                      "Uploaded ${vm.queue.length}" +
-                                                          "${vm.queue.length == 1 ? " File " : " Files "}",
+                                                      "Uploaded ${vm.queue.length}" + "${vm.queue.length == 1 ? " File " : " Files "}",
                                                       fontSize: 18,
                                                       fontWeight: FontWeight.w600,
                                                     )
                                                   : PrimaryText(
-                                                      "Uploading ${vm.queue.length}" +
-                                                          "${vm.queue.length == 1 ? " File " : " Files "}",
+                                                      "Uploading ${vm.queue.length}" + "${vm.queue.length == 1 ? " File " : " Files "}",
                                                       fontSize: 18,
                                                       fontWeight: FontWeight.w600,
                                                     )
@@ -270,8 +273,7 @@ class _UploadingScreenState extends State<UploadingScreen> {
                                         itemBuilder: (context, index) {
                                           String type = "";
                                           if (mime(vm.queue[index]!.name)!.split('/').first == "application") {
-                                            if (mime(vm.queue[index]!.name)!.split('/').last ==
-                                                "vnd.android.package-archive") {
+                                            if (mime(vm.queue[index]!.name)!.split('/').last == "vnd.android.package-archive") {
                                               type = "application";
                                             } else {
                                               type = 'document';
@@ -279,8 +281,7 @@ class _UploadingScreenState extends State<UploadingScreen> {
                                           } else {
                                             type = mime(vm.queue[index]!.name)!.split('/').first;
                                           }
-                                          String size =
-                                              FileManagerUtilities.formatBytes(int.parse(vm.queue[index]!.size), 2);
+                                          String size = FileManagerUtilities.formatBytes(int.parse(vm.queue[index]!.size), 2);
                                           return Padding(
                                             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 22),
                                             child: Row(
@@ -339,9 +340,8 @@ class _UploadingScreenState extends State<UploadingScreen> {
                                                   radius: 32.0,
                                                   lineWidth: 3.0,
                                                   animation: false,
-                                                  percent: vm.queue[index]!.progress == "pending"
-                                                      ? 0.0
-                                                      : double.parse(vm.queue[index]!.progress) / 100,
+                                                  percent:
+                                                      vm.queue[index]!.progress == "pending" ? 0.0 : double.parse(vm.queue[index]!.progress) / 100,
                                                   center: Column(
                                                     mainAxisAlignment: MainAxisAlignment.center,
                                                     children: [

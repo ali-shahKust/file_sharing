@@ -60,7 +60,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: SizeConfig.screenHeight! * 0.014,
               ),
               PrimaryText(
-                "Backup your files nn Cloud\nand Restore",
+                "Backup your files to Cloud\nand Restore",
                 textAlign: TextAlign.center,
                 fontSize: SizeConfig.screenHeight! * 0.020,
                 color: Color(0xff959595),

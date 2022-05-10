@@ -84,10 +84,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
   }
 
   Future<bool> _onWillPop() async {
-    return (await Provider.of<DownloadVm>(context, listen: false).queue.isEmpty
-            ? true
-            : iUtills().exitPopUp(context, 'download')) ??
-        false;
+    return (await Provider.of<DownloadVm>(context, listen: false).queue.isEmpty ? true : iUtills().exitPopUp(context, 'download')) ?? false;
   }
 
   @override
@@ -142,63 +139,65 @@ class _DownloadScreenState extends State<DownloadScreen> {
                         : Container(
                             width: SizeConfig.screenWidth,
                             height: SizeConfig.screenHeight,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(AppConstants.transfer_background), fit: BoxFit.cover)),
+                            decoration: BoxDecoration(image: DecorationImage(image: AssetImage(AppConstants.transfer_background), fit: BoxFit.cover)),
                             child: Stack(
                               children: [
                                 Align(
                                   alignment: Alignment.topCenter,
                                   child: Column(
                                     children: [
-                                  Padding(
-                                  padding: EdgeInsets.only(top: SizeConfig.screenHeight! * 0.02),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  IconButton(
-                                      onPressed: () {
-                                  iUtills().exitPopUp(context, 'download');
-                                },
-                                      icon: Icon(
-                                        Icons.arrow_back_ios,
-                                        size: SizeConfig.screenHeight! * 0.024,
-                                        color: Colors.white,
-                                      )),
-                                  PrimaryText(
-                                    "Downloading",
-                                    fontSize: SizeConfig.screenHeight! * 0.028,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  Padding(
-                                    padding:  EdgeInsets.only(right: SizeConfig.screenWidth!*0.04),
-                                    child: GestureDetector(
-                                      onTap: (){
-                                         showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return CancelDialoge(
-                                                title: "Do you want to Cancel Download?",
-                                                description: "",
-                                                onOkTap: (){
-                                                  vm.queue.clear();
-                                                  Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false);
+                                      Padding(
+                                        padding: EdgeInsets.only(top: SizeConfig.screenHeight! * 0.02),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            IconButton(
+                                                onPressed: () {
+                                                  iUtills().exitPopUp(context, 'download');
                                                 },
-                                              );
-                                            });
-                                        // iUtills().exitPopUp(context, 'download');
-                                      },
-                                      child: PrimaryText(
-                                        "Cancel",
-                                        fontSize: SizeConfig.screenHeight! * 0.02,
-                                        fontWeight: FontWeight.w500,
-                                        color: AppColors.kWhiteColor,
+                                                icon: Icon(
+                                                  Icons.arrow_back_ios,
+                                                  size: SizeConfig.screenHeight! * 0.024,
+                                                  color: Colors.white,
+                                                )),
+                                            PrimaryText(
+                                              "Downloading",
+                                              fontSize: SizeConfig.screenHeight! * 0.028,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.only(right: SizeConfig.screenWidth! * 0.04),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext context) {
+                                                        return CancelDialoge(
+                                                          title: "Do you want to Cancel Download?",
+                                                          description: "",
+                                                          onOkTap: () async {
+                                                            iUtills().showMessage(context: context, title: "Info", text: "Downloading Cancelled!");
+                                                            vm.queue.clear();
+                                                            await Future.delayed(Duration(seconds: 1)).whenComplete(() => {
+                                                                  Navigator.pushNamedAndRemoveUntil(
+                                                                      context, DashBoardScreen.routeName, (route) => false),
+                                                                });
+                                                          },
+                                                        );
+                                                      });
+                                                  // iUtills().exitPopUp(context, 'download');
+                                                },
+                                                child: PrimaryText(
+                                                  "Cancel",
+                                                  fontSize: SizeConfig.screenHeight! * 0.02,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: AppColors.kWhiteColor,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
                                       // CustomAppBar(
                                       //   title: "Downloading",
                                       //   onTap: () {
@@ -213,23 +212,29 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                           radius: 178.0,
                                           lineWidth: 13.0,
                                           animation: false,
-                                          percent: vm.queue.length == 1
-                                              ?  vm.queue[0]!.progress=='pending'
-                                                  ?0.0
-                                                  :double.parse(vm.queue[0]!.progress) / 100
-                                              : (vm.completed / vm.queue.length).isNaN
-                                                  ? 0.0
-                                                  : vm.completed / vm.queue.length,
+                                          percent: vm.queue.length != 0
+                                              ? vm.queue.length == 1
+                                                  ? vm.queue[0]!.progress == 'pending'
+                                                      ? 0.0
+                                                      : double.parse(vm.queue[0]!.progress) / 100
+                                                  : (vm.completed / vm.queue.length).isNaN
+                                                      ? 0.0
+                                                      : vm.completed / vm.queue.length
+                                              : 0.0,
                                           center: Column(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
                                               PrimaryText(
-                                                vm.queue.length == 1
-                                                    ? "${vm.queue[0]!.progress}%"
-                                                    : (vm.completed / vm.queue.length).isNaN
-                                                        ? "0%"
-                                                        : "${((vm.completed / vm.queue.length) * 100).toStringAsFixed(0)}%",
-                                                fontSize: 34,
+                                                vm.queue.length != 0
+                                                    ? vm.queue.length == 1
+                                                        ? vm.queue[0]!.progress == 'pending'
+                                                            ? ""
+                                                            : "${vm.queue[0]!.progress}%"
+                                                        : (vm.completed / vm.queue.length).isNaN
+                                                            ? ""
+                                                            : "${((vm.completed / vm.queue.length) * 100).toStringAsFixed(0)}%"
+                                                    : "",
+                                                fontSize: SizeConfig.screenHeight! * 0.035,
                                                 fontWeight: FontWeight.w700,
                                               ),
                                               PrimaryText(
@@ -269,14 +274,12 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                               SvgPicture.asset(AppConstants.send_file),
                                               vm.completed == vm.queue.length
                                                   ? PrimaryText(
-                                                      "Downloaded ${vm.queue.length}" +
-                                                          "${vm.queue.length == 1 ? " File " : " Files "}",
+                                                      "Downloaded ${vm.queue.length}" + "${vm.queue.length == 1 ? " File " : " Files "}",
                                                       fontSize: 18,
                                                       fontWeight: FontWeight.w600,
                                                     )
                                                   : PrimaryText(
-                                                      "Downloading ${vm.queue.length}" +
-                                                          "${vm.queue.length == 1 ? " File " : " Files "}",
+                                                      "Downloading ${vm.queue.length}" + "${vm.queue.length == 1 ? " File " : " Files "}",
                                                       fontSize: 18,
                                                       fontWeight: FontWeight.w600,
                                                     )
@@ -302,8 +305,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                         itemBuilder: (context, index) {
                                           String type = "";
                                           if (mime(vm.queue[index]!.name)!.split('/').first == "application") {
-                                            if (mime(vm.queue[index]!.name)!.split('/').last ==
-                                                "vnd.android.package-archive") {
+                                            if (mime(vm.queue[index]!.name)!.split('/').last == "vnd.android.package-archive") {
                                               type = "application";
                                             } else {
                                               type = 'document';
@@ -311,8 +313,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                           } else {
                                             type = mime(vm.queue[index]!.name)!.split('/').first;
                                           }
-                                          String size =
-                                              FileManagerUtilities.formatBytes(int.parse(vm.queue[index]!.size), 2);
+                                          String size = FileManagerUtilities.formatBytes(int.parse(vm.queue[index]!.size), 2);
                                           return Padding(
                                             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 22),
                                             child: Row(
@@ -367,8 +368,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                                 SizedBox(
                                                   width: 5,
                                                 ),
-                                                vm.queue[index]!.progress == "100" ||
-                                                        vm.queue[index]!.progress == "Exist already"
+                                                vm.queue[index]!.progress == "100" || vm.queue[index]!.progress == "Exist already"
                                                     ? InkWell(
                                                         onTap: () async {
                                                           await OpenFile.open(vm.queue[index]!.path);

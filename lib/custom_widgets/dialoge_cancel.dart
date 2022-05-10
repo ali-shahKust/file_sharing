@@ -43,7 +43,7 @@ class CancelDialoge extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     title,
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: SizeConfig.screenHeight! * 0.022, fontWeight: FontWeight.w600),
                   ),
                   SizedBox(
                     height: 15,
