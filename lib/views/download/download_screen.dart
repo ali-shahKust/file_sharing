@@ -6,6 +6,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:quick_backup/constants/app_colors.dart';
 import 'package:quick_backup/constants/app_constants.dart';
 import 'package:quick_backup/custom_widgets/custom_appbar.dart';
+import 'package:quick_backup/custom_widgets/dialoge_cancel.dart';
 import 'package:quick_backup/custom_widgets/file_manager_custom_widgets/custom_divider.dart';
 import 'package:quick_backup/custom_widgets/loading_widget.dart';
 import 'package:quick_backup/data/extension.dart';
@@ -150,12 +151,60 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                   alignment: Alignment.topCenter,
                                   child: Column(
                                     children: [
-                                      CustomAppBar(
-                                        title: "Downloading",
-                                        onTap: () {
-                                          iUtills().exitPopUp(context, 'download');
-                                        },
+                                  Padding(
+                                  padding: EdgeInsets.only(top: SizeConfig.screenHeight! * 0.02),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                  iUtills().exitPopUp(context, 'download');
+                                },
+                                      icon: Icon(
+                                        Icons.arrow_back_ios,
+                                        size: SizeConfig.screenHeight! * 0.024,
+                                        color: Colors.white,
+                                      )),
+                                  PrimaryText(
+                                    "Downloading",
+                                    fontSize: SizeConfig.screenHeight! * 0.028,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  Padding(
+                                    padding:  EdgeInsets.only(right: SizeConfig.screenWidth!*0.04),
+                                    child: GestureDetector(
+                                      onTap: (){
+                                         showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return CancelDialoge(
+                                                title: "Do you want to Cancel Download?",
+                                                description: "",
+                                                onOkTap: (){
+                                                  vm.queue.clear();
+                                                  Navigator.pushNamedAndRemoveUntil(context, DashBoardScreen.routeName, (route) => false);
+                                                },
+                                              );
+                                            });
+                                        // iUtills().exitPopUp(context, 'download');
+                                      },
+                                      child: PrimaryText(
+                                        "Cancel",
+                                        fontSize: SizeConfig.screenHeight! * 0.02,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppColors.kWhiteColor,
                                       ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                                      // CustomAppBar(
+                                      //   title: "Downloading",
+                                      //   onTap: () {
+                                      //     iUtills().exitPopUp(context, 'download');
+                                      //   },
+                                      // ),
                                       Padding(
                                         padding: EdgeInsets.symmetric(
                                           vertical: SizeConfig.screenHeight! * 0.06,
